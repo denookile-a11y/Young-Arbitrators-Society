@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Problem &mdash; Young Arbitrators Society Moot, 2nd Edition 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== Design tokens ===== */
+:root{
+  --ink:#0E141F;
+  --ink-2:#161E2E;
+  --ink-3:#202B40;
+  --ink-text-soft:#9AA4BC;
+  --ink-text-faint:#5C6680;
+  --paper:#FBF8F1;
+  --paper-dim:#F1EBDB;
+  --verify:#1F8A77;
+  --verify-deep:#13594C;
+  --verify-soft:#E4F0EC;
+  --brass:#B5894C;
+  --brass-deep:#8A6736;
+  --text:#221F18;
+  --muted:#6B6354;
+  --hairline:#DED4BC;
+  --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--text);
+  font-family:var(--body);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+/* Subtle ledger-grid texture across the whole shell, evoking a verification registry */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(31,138,119,0.05) 0px, rgba(31,138,119,0.05) 1px, transparent 1px, transparent 34px),
+    repeating-linear-gradient(90deg, rgba(181,137,76,0.035) 0px, rgba(181,137,76,0.035) 1px, transparent 1px, transparent 34px);
+  mix-blend-mode:normal;
+}
+
+/* ===== Header ===== */
+.site-header{
+  position:relative; z-index:2;
+  border-bottom:1px solid var(--ink-3);
+  background:var(--ink-2);
+}
+.site-header-inner{
+  max-width:1240px; margin:0 auto;
+  padding:18px 28px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  flex-wrap:wrap;
+}
+.wordmark{
+  font-family:var(--mono);
+  font-size:0.78rem;
+  letter-spacing:0.14em;
+  color:var(--paper);
+  text-transform:uppercase;
+}
+.wordmark strong{color:var(--verify); font-weight:600}
+.header-meta{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  letter-spacing:0.08em;
+  color:var(--brass);
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+/* ===== Layout ===== */
+.shell{
+  position:relative; z-index:1;
+  max-width:1240px; margin:0 auto;
+  display:grid; grid-template-columns:280px 1fr; gap:32px;
+  padding:32px 28px 80px;
+}
+aside#toc{
+  position:sticky; top:24px; align-self:start;
+  background:var(--ink-2);
+  border:1px solid var(--ink-3);
+  border-radius:4px;
+  padding:18px 16px;
+  max-height:calc(100vh - 48px);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+}
+aside#toc h2{
+  margin:0 0 12px;
+  font-family:var(--mono);
+  font-size:0.7rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--brass);
+  border:none; padding:0;
+}
+.toc-controls{display:flex; gap:8px; margin-bottom:12px}
+.btn{
+  font-family:var(--mono);
+  font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase;
+  padding:5px 10px; border-radius:3px;
+  background:transparent; border:1px solid var(--ink-3);
+  color:var(--ink-text-soft); cursor:pointer;
+}
+.btn:hover{border-color:var(--verify); color:var(--verify)}
+nav#toc-nav{overflow-y:auto; padding-right:4px}
+nav#toc-nav ul{list-style:none; margin:0; padding:0}
+nav#toc-nav li{border-top:1px solid var(--ink-3)}
+nav#toc-nav li:first-child{border-top:none}
+nav#toc-nav a{
+  display:flex; align-items:baseline; gap:10px;
+  padding:8px 4px; text-decoration:none;
+  font-size:0.82rem; color:var(--ink-text-soft);
+  transition:color .15s;
+}
+nav#toc-nav a:hover{color:var(--paper)}
+nav#toc-nav a.active{color:var(--verify)}
+.toc-idx{font-family:var(--mono); font-size:0.7rem; color:var(--brass); flex-shrink:0}
+.toc-label{line-height:1.35}
+
+main{min-width:0}
+article{
+  background:var(--paper);
+  border-radius:4px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.35);
+  padding:0;
+}
+
+/* ===== Cover ===== */
+.cover{
+  padding:72px 64px 56px;
+  text-align:center;
+  border-bottom:1px solid var(--hairline);
+  position:relative;
+}
+.cover-eyebrow{
+  font-family:var(--mono); font-size:0.74rem; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--verify-deep); margin-bottom:18px;
+}
+.cover h1{
+  font-family:var(--display); font-weight:600; font-size:2.7rem;
+  line-height:1.25;
+  margin:0 0 18px; letter-spacing:0.005em; color:var(--text);
+}
+.cover h1 .vs{
+  display:block;
+  font-size:1rem; font-weight:400; font-style:italic;
+  color:var(--brass-deep); margin:6px 0;
+  letter-spacing:0.1em;
+}
+.cover .cover-sub{
+  font-family:var(--display); font-weight:500; font-style:italic; font-size:1.35rem;
+  color:var(--verify-deep); margin:6px 0 26px;
+}
+.cover .cover-place{
+  font-family:var(--mono); font-size:0.85rem; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:30px;
+}
+.cover .cover-org{
+  font-size:0.95rem; color:var(--muted); max-width:420px; margin:0 auto;
+}
+.cover .cover-org strong{color:var(--text)}
+.stamp{
+  width:122px; height:122px; margin:38px auto 0;
+  border-radius:50%;
+  border:1.5px solid var(--verify);
+  outline:1px solid var(--brass);
+  outline-offset:6px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.stamp-inner{
+  font-family:var(--mono); text-align:center; line-height:1.3;
+}
+.stamp-inner .l1{display:block; font-size:0.62rem; letter-spacing:0.15em; color:var(--verify-deep); text-transform:uppercase}
+.stamp-inner .l2{display:block; font-size:0.62rem; letter-spacing:0.15em; color:var(--verify-deep); text-transform:uppercase; margin-bottom:6px}
+.stamp-inner .l3{display:block; font-size:0.58rem; color:var(--brass-deep)}
+
+/* ===== Body content ===== */
+.content-pad{padding:48px 64px 72px}
+article h2{
+  font-family:var(--display); font-weight:600; font-size:1.7rem;
+  line-height:1.3;
+  color:var(--text); letter-spacing:0.01em;
+  margin:2.6rem 0 1.1rem; padding-top:0.2rem;
+  border-top:2px solid var(--verify);
+  padding-top:0.9rem;
+  position:relative;
+}
+article > .content-pad > h2:first-child{margin-top:0}
+article h2 a.anchor{color:inherit; text-decoration:none}
+article h3{
+  font-family:var(--display); font-weight:600; font-style:italic; font-size:1.25rem;
+  line-height:1.35;
+  color:var(--verify-deep); margin:1.8rem 0 0.8rem;
+}
+article h4{
+  font-family:var(--mono); font-size:0.78rem; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--brass-deep);
+  margin:1.6rem 0 0.7rem;
+  border-bottom:1px solid var(--hairline); padding-bottom:6px;
+}
+article p{margin:0.75rem 0; color:var(--text)}
+article strong{color:var(--text); font-weight:600}
+article em{color:var(--muted)}
+article a{color:var(--verify-deep)}
+
+/* Exhibit / Procedural Order margin numerals */
+h2.exhibit-heading, h2.order-heading{
+  padding-left:0; 
+}
+h2.exhibit-heading::after, h2.order-heading::after{
+  content:attr(data-tag);
+  display:block;
+  font-family:var(--mono); font-weight:500; font-size:0.78rem;
+  letter-spacing:0.12em; color:var(--brass-deep);
+  margin-top:4px;
+}
+
+/* Ordered lists -- numbered facts/witness paragraphs */
+article ol{
+  list-style:none; counter-reset:item;
+  margin:1rem 0; padding:0;
+}
+article ol > li{
+  counter-increment:item;
+  position:relative;
+  padding-left:2.6rem;
+  margin:0.85rem 0;
+}
+article ol > li::before{
+  content:counter(item);
+  position:absolute; left:0; top:0.1em;
+  font-family:var(--mono); font-size:0.78rem; font-weight:600;
+  color:var(--paper); background:var(--verify-deep);
+  width:1.7rem; height:1.7rem; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+article ul{margin:0.85rem 0; padding-left:1.4rem}
+article ul li{margin:0.35rem 0}
+
+/* Blockquote -- rule / clause citations, styled as a verification record */
+blockquote.ledger-quote{
+  margin:1.1rem 0; padding:16px 20px;
+  background:var(--paper-dim);
+  border-left:3px solid var(--verify);
+  border-radius:0 3px 3px 0;
+  font-family:var(--mono); font-size:0.88rem; line-height:1.75;
+  color:#33392F;
+}
+blockquote.ledger-quote p{margin:0; color:inherit}
+blockquote.ledger-quote em{color:inherit; font-style:normal}
+
+/* Tables */
+.table-wrap{margin:1.2rem 0; overflow-x:auto; border:1px solid var(--hairline); border-radius:3px}
+table{border-collapse:collapse; width:100%; background:var(--paper)}
+th,td{padding:10px 14px; text-align:left; border-bottom:1px solid var(--hairline); font-size:0.92rem}
+th{
+  font-family:var(--mono); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--paper); background:var(--verify-deep);
+}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:var(--paper-dim)}
+td{font-variant-numeric:tabular-nums}
+
+/* Section dividers (rendered from markdown ---) */
+.divider{display:flex; align-items:center; justify-content:center; margin:2.4rem 0}
+.divider-mark{
+  font-family:var(--mono); color:var(--brass); font-size:0.85rem;
+  border:1px solid var(--hairline); border-radius:50%;
+  width:26px; height:26px; display:flex; align-items:center; justify-content:center;
+}
+hr{display:none}
+
+code{font-family:var(--mono); background:var(--paper-dim); padding:1px 5px; border-radius:2px; font-size:0.88em}
+
+/* Footer credit */
+.doc-footer{
+  padding:28px 64px 48px; border-top:1px solid var(--hairline);
+  font-family:var(--mono); font-size:0.72rem; color:var(--muted);
+  letter-spacing:0.04em;
+}
+
+/* ===== Print ===== */
+@media print{
+  body{background:#fff}
+  body::before{display:none}
+  .site-header, aside#toc{display:none}
+  .shell{display:block; padding:0; max-width:100%}
+  article{box-shadow:none; border-radius:0}
+  .content-pad, .cover{padding:0 6mm}
+  blockquote.ledger-quote{background:#f3f3f3; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  th{background:#333 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+}
+
+/* ===== Responsive ===== */
+@media (max-width:980px){
+  .shell{grid-template-columns:1fr}
+  aside#toc{position:relative; top:0; order:2; max-height:none}
+  .cover{padding:48px 28px 36px}
+  .cover h1{font-size:2.5rem}
+  .content-pad{padding:36px 26px 56px}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="wordmark"><strong>Young Arbitrators Society Moot</strong> &middot; Second Edition, 2026</div>
+    <div class="header-meta">Record No. NCIA/ARB/2024/047</div>
+  </div>
+</header>
+
+<div class="shell">
+  <aside id="toc">
+    <h2>Case Index</h2>
+    <div class="toc-controls">
+      <button id="toc-toggle" class="btn" type="button">Collapse</button>
+      <button id="toc-print" class="btn" type="button">Print</button>
+    </div>
+    <nav id="toc-nav">
+      <ul>
+<li><a href="#content"><span class="toc-idx">01</span><span class="toc-label">CONTENT</span></a></li>
+<li><a href="#zara-kamau-associates"><span class="toc-idx">02</span><span class="toc-label">ZARA KAMAU & ASSOCIATES</span></a></li>
+<li><a href="#notice-of-arbitration"><span class="toc-idx">03</span><span class="toc-label">NOTICE OF ARBITRATION</span></a></li>
+<li><a href="#claimant-exhibit-c-1"><span class="toc-idx">04</span><span class="toc-label">CLAIMANT EXHIBIT C 1</span></a></li>
+<li><a href="#claimant-exhibit-c-2"><span class="toc-idx">05</span><span class="toc-label">CLAIMANT EXHIBIT C 2</span></a></li>
+<li><a href="#claimant-exhibit-c-3"><span class="toc-idx">06</span><span class="toc-label">CLAIMANT EXHIBIT C 3</span></a></li>
+<li><a href="#claimant-exhibit-c-4"><span class="toc-idx">07</span><span class="toc-label">CLAIMANT EXHIBIT C 4</span></a></li>
+<li><a href="#claimant-exhibit-c-5"><span class="toc-idx">08</span><span class="toc-label">CLAIMANT EXHIBIT C 5</span></a></li>
+<li><a href="#claimant-exhibit-c-6"><span class="toc-idx">09</span><span class="toc-label">CLAIMANT EXHIBIT C 6</span></a></li>
+<li><a href="#claimant-exhibit-c-7"><span class="toc-idx">10</span><span class="toc-label">CLAIMANT EXHIBIT C 7</span></a></li>
+<li><a href="#email-ncia-on-applicable-rules"><span class="toc-idx">11</span><span class="toc-label">Email: NCIA on Applicable Rules</span></a></li>
+<li><a href="#email-kamau-on-applicable-rules"><span class="toc-idx">12</span><span class="toc-label">Email: Kamau on Applicable Rules</span></a></li>
+<li><a href="#email-holloway-on-applicable-rules"><span class="toc-idx">13</span><span class="toc-label">Email: Holloway on Applicable Rules</span></a></li>
+<li><a href="#ncia-commencement-letter"><span class="toc-idx">14</span><span class="toc-label">NCIA Commencement Letter</span></a></li>
+<li><a href="#response-to-the-notice-of-arbitration"><span class="toc-idx">15</span><span class="toc-label">RESPONSE TO THE NOTICE OF ARBITRATION</span></a></li>
+<li><a href="#respondent-exhibit-r-1"><span class="toc-idx">16</span><span class="toc-label">RESPONDENT EXHIBIT R 1</span></a></li>
+<li><a href="#respondent-exhibit-r-2"><span class="toc-idx">17</span><span class="toc-label">RESPONDENT EXHIBIT R 2</span></a></li>
+<li><a href="#respondent-exhibit-r-3"><span class="toc-idx">18</span><span class="toc-label">RESPONDENT EXHIBIT R 3</span></a></li>
+<li><a href="#respondent-exhibit-r-4"><span class="toc-idx">19</span><span class="toc-label">RESPONDENT EXHIBIT R 4</span></a></li>
+<li><a href="#letter-by-advocate-kamau-16-october-2024"><span class="toc-idx">20</span><span class="toc-label">Letter by Advocate Kamau (16 October 2024)</span></a></li>
+<li><a href="#ncia-letter-on-tribunal-constitution-10-november-2024"><span class="toc-idx">21</span><span class="toc-label">NCIA Letter on Tribunal Constitution (10 November 2024)</span></a></li>
+<li><a href="#letter-by-presiding-arbitrator-19-november-2024"><span class="toc-idx">22</span><span class="toc-label">Letter by Presiding Arbitrator (19 November 2024)</span></a></li>
+<li><a href="#procedural-order-no-1"><span class="toc-idx">23</span><span class="toc-label">PROCEDURAL ORDER NO. 1</span></a></li>
+<li><a href="#procedural-order-no-2"><span class="toc-idx">24</span><span class="toc-label">PROCEDURAL ORDER NO. 2</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <article>
+      <div class="cover">
+        <div class="cover-eyebrow">The Problem</div>
+        <h1>Savanna Carbon Solutions Ltd<span class="vs">v.</span>DigiCarbon International PLC</h1>
+        <div class="cover-sub">Young Arbitrators Society Moot &mdash; Second Edition, 2026</div>
+        <div class="cover-place">Nairobi, Kenya</div>
+        <div class="cover-org">Organised by<br><strong>The Young Arbitrators Society</strong>, Kenyatta University School of Law</div>
+        <div class="stamp" aria-hidden="true">
+          <div class="stamp-inner">
+            <span class="l1">Verified</span>
+            <span class="l2">Record</span>
+            <span class="l3">NCIA &middot; ARB &middot; 2024 &middot; 047</span>
+          </div>
+        </div>
+      </div>
+      <div class="content-pad">
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="content">CONTENT</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Document</th><th>Page</th></tr></thead>
+<tbody>
+<tr><td>Letter by Kamau (1 September 2024)</td><td>1</td></tr>
+<tr><td>Notice of Arbitration</td><td>2</td></tr>
+<tr><td>Claimant Exhibit C 1 (Witness Statement – Dr. Amara Njoroge)</td><td>7</td></tr>
+<tr><td>Claimant Exhibit C 2 (Smart Carbon Purchase Agreement – Excerpts)</td><td>9</td></tr>
+<tr><td>Claimant Exhibit C 3 (Verra VCS Certificate – Mau Project)</td><td>13</td></tr>
+<tr><td>Claimant Exhibit C 4 (CarbonAI Rejection Report – 5 October 2023)</td><td>14</td></tr>
+<tr><td>Claimant Exhibit C 5 (Bureau Veritas Re-verification Report – 15 November 2023)</td><td>15</td></tr>
+<tr><td>Claimant Exhibit C 6 (Witness Statement – Felix Ochieng)</td><td>16</td></tr>
+<tr><td>Claimant Exhibit C 7 (Nairobi Business Observer Article – 10 May 2024)</td><td>18</td></tr>
+<tr><td>NCIA Email on Applicable Rules (15 September 2024)</td><td>19</td></tr>
+<tr><td>Email by Kamau on Applicable Rules (20 September 2024)</td><td>20</td></tr>
+<tr><td>Email by Holloway on Applicable Rules (25 September 2024)</td><td>21</td></tr>
+<tr><td>NCIA Commencement Letter (1 October 2024)</td><td>22</td></tr>
+<tr><td>Response to Notice of Arbitration (15 October 2024)</td><td>26</td></tr>
+<tr><td>Respondent Exhibit R 1 (Witness Statement – Lars Voss)</td><td>31</td></tr>
+<tr><td>Respondent Exhibit R 2 (CarbonAI Protocol Overview – Non-Proprietary Excerpt)</td><td>33</td></tr>
+<tr><td>Respondent Exhibit R 3 (DigiCarbon Internal Data Analysis Note – Excerpt)</td><td>34</td></tr>
+<tr><td>Respondent Exhibit R 4 (Nairobi Financial Review Article – 1 October 2024)</td><td>35</td></tr>
+<tr><td>Letter by Kamau (16 October 2024)</td><td>36</td></tr>
+<tr><td>NCIA Letter on Tribunal Constitution (10 November 2024)</td><td>37</td></tr>
+<tr><td>Letter by Presiding Arbitrator (19 November 2024)</td><td>39</td></tr>
+<tr><td>Procedural Order No. 1</td><td>40</td></tr>
+<tr><td>Procedural Order No. 2</td><td>43</td></tr>
+</tbody>
+</table></div>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="zara-kamau-associates">ZARA KAMAU &amp; ASSOCIATES</h2>
+<p>Advocates | Arbitration Practitioners<br>14 Waiyaki Way, Westlands<br>Nairobi, Kenya<br>Tel: +254 20 444 9900<br><a href="mailto:zkamau@zkaadvocates.co.ke">zkamau@zkaadvocates.co.ke</a></p>
+<p>1 September 2024</p>
+<p>By Email and Courier</p>
+<p><strong>Nairobi Centre for International Arbitration (NCIA)</strong><br>The Registrar<br>Anniversary Towers, 6th Floor, University Way<br>Nairobi, Kenya</p>
+<p>Dear Sir/Madam,</p>
+<p>On behalf of our client, <strong>Savanna Carbon Solutions Ltd</strong>, we submit the enclosed Notice of Arbitration pursuant to Rule 3 of the NCIA Arbitration Rules 2015. The parties agreed in their arbitration clause that disputes shall be resolved in accordance with the current Arbitration Rules of the NCIA, which were the NCIA Arbitration Rules 2015 at the time of contracting. A copy of the Power of Attorney authorising us to represent Savanna Carbon Solutions Ltd is enclosed.</p>
+<p>A copy of this Notice has been served on Respondent by email on 1 September 2024 and by courier. The filing fee has been paid; confirmation of payment is attached.</p>
+<p>Claimant requests damages for Respondent&#39;s breach of the Smart Carbon Purchase Agreement dated 15 March 2023.</p>
+<p>The arbitration clause provides that the seat of arbitration is Nairobi, Kenya, and that proceedings shall be conducted in English. The arbitration agreement provides for three arbitrators. Savanna Carbon Solutions Ltd hereby nominates <strong>Dr. Wanjiru Kabiru</strong> as its co-arbitrator.</p>
+<p>The required documents are attached.</p>
+<p>Yours faithfully,</p>
+<p><strong>Zara Kamau</strong><br>Zara Kamau &amp; Associates</p>
+<p><em>Attachments: Notice of Arbitration with Exhibits C1–C7; Power of Attorney (not reproduced); CV of Dr. Wanjiru Kabiru (not reproduced); Proof of Service on Respondent (not reproduced); Confirmation of Payment of Filing Fee (not reproduced)</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="notice-of-arbitration">NOTICE OF ARBITRATION</h2>
+<p><em>(Pursuant to Rule 3, NCIA Arbitration Rules 2015)</em></p>
+<p><em>in the Arbitral Proceedings</em></p>
+<h3 id="savanna-carbon-solutions-ltd-v-digicarbon-international-plc">Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</h3>
+<p><strong>Savanna Carbon Solutions Ltd</strong><br>Carbon Park, Upperhill<br>Nairobi, Kenya</p>
+<p>— CLAIMANT —</p>
+<p>Represented by Zara Kamau, Zara Kamau &amp; Associates</p>
+<p><strong>DigiCarbon International PLC</strong><br>17 Innovation Crescent<br>Port Nova, Novaterra</p>
+<p>— RESPONDENT —</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="statement-of-facts">STATEMENT OF FACTS</h3>
+<ol>
+<li><p>Claimant, <strong>Savanna Carbon Solutions Ltd (&quot;Savanna&quot;)</strong>, is a company incorporated under the laws of Kenya and engaged in the development, verification, and sale of voluntary carbon credits generated through nature-based projects in Kenya. Its flagship project is the Mau Forest Carbon Conservation Project (&quot;Mau Project&quot;), covering approximately 37,000 hectares of the Mau Forest Complex, Rift Valley. The Mau Project operates under the REDD+ framework and has been certified by Verra under the Verified Carbon Standard (&quot;VCS&quot;) since 2019, generating Verified Carbon Units (&quot;VCUs&quot;). Each VCU represents one metric tonne of CO₂ equivalent reduced or avoided through verified forest conservation activities.</p>
+</li>
+<li><p>Respondent, <strong>DigiCarbon International PLC (&quot;DigiCarbon&quot;)</strong>, is a company incorporated under the laws of Novaterra. It operates a digital platform called &quot;CarbonChain&quot; for the purchase, tokenization, and resale of voluntary carbon credits to institutional buyers. Central to the CarbonChain platform is DigiCarbon&#39;s proprietary artificial intelligence system, <strong>&quot;CarbonAI&quot;</strong>, which it uses to verify the quality and compliance of carbon credits submitted by sellers. DigiCarbon also issues a proprietary blockchain-based virtual asset, the <strong>&quot;GreenToken&quot; (symbol: GRT)</strong>, which it uses as its primary payment instrument for carbon credit purchases. GRT is traded on digital exchanges including CarbonChain.</p>
+</li>
+<li><p>VCS-certified VCUs are listed on the Verra Registry, an internationally recognised and publicly accessible database. Verra, the administrator of the VCS, audits and registers VCUs following rigorous independent third-party verification by accredited Validation and Verification Bodies (&quot;VVBs&quot;). Under Kenya&#39;s Climate Change Act, 2016 (as amended by the Climate Change Amendment Act, 2023) and the Carbon Markets Regulations, 2024 (&quot;CMR 2024&quot;), VCS-certified VCUs are recognised as valid voluntary carbon credits.</p>
+</li>
+<li><p>GRT is not designated as legal tender in Kenya or Novaterra. As at 15 March 2023 (date of contracting), 1 GRT was equivalent to approximately USD 2.00. By 15 May 2024 (the date Respondent purported to terminate the Smart Carbon Purchase Agreement), 1 GRT traded at approximately USD 2.50.</p>
+</li>
+<li><p>DigiCarbon approached Savanna in January 2023 expressing interest in procuring large quantities of Mau Project VCUs for resale on the CarbonChain platform. DigiCarbon explained that it required high-quality, VCS-certified VCUs and that its CarbonAI verification system applied &quot;Verra&#39;s VCS methodology as the definitive evaluation standard.&quot; During negotiations, Savanna inquired about the specific parameters of CarbonAI&#39;s verification algorithm to ensure compatibility with its VCUs. DigiCarbon&#39;s Chief Technology Officer, Ms. Yuki Tanaka, declined to disclose the proprietary algorithm but confirmed in writing on 20 February 2023 that CarbonAI &quot;uses the Verra VCS methodology as its evaluation framework&quot; and that &quot;a valid Verra Registry certificate and third-party verification report are the primary inputs to CarbonAI&#39;s assessment.&quot; (Claimant Exhibit C 1)</p>
+</li>
+<li><p>On 15 March 2023, the parties entered into the <strong>Smart Carbon Purchase Agreement (&quot;SCPA&quot;)</strong> (Claimant Exhibit C 2), under which Savanna agreed to sell 500,000 VCUs from the Mau Project to DigiCarbon in two tranches of 250,000 VCUs each. The price was 12 GRT per VCU, totalling 6,000,000 GRT. Payment was to be effected automatically by an embedded smart contract on the CarbonChain platform: upon CarbonAI&#39;s verification of each tranche, the smart contract would auto-release GRT payment to Savanna&#39;s designated digital wallet. Tranche 1 was due by 1 October 2023; Tranche 2 by 1 April 2024. The SCPA is governed by the laws of Kenya.</p>
+</li>
+<li><p>On 1 October 2023, Savanna submitted the first tranche of 250,000 VCUs through the CarbonChain platform, together with corresponding Verra Registry transfer documentation and independent verification reports. (Claimant Exhibit C 3)</p>
+</li>
+<li><p>On 5 October 2023, CarbonAI generated an automated Rejection Report (&quot;Rejection Report&quot;) flagging 180,000 of the 250,000 submitted VCUs as non-compliant under three proprietary parameters: a &quot;Non-Additionality Risk Index&quot; of 0.72 (against a threshold of 0.60), a &quot;Permanence Concern Index&quot; of 0.65 (against a threshold of 0.55), and an &quot;Anomalous Baseline Deviation&quot; of 0.58 (against a threshold of 0.50). The smart contract auto-released 840,000 GRT in payment for the 70,000 approved VCUs only. No payment was released for the 180,000 rejected VCUs. (Claimant Exhibit C 4)</p>
+</li>
+<li><p>The three parameters cited in the Rejection Report are not standard Verra VCS reporting metrics and their thresholds do not correspond to any published VCS Methodology. Savanna engaged Bureau Veritas Kenya Ltd, a Verra-accredited VVB, to independently re-verify all 250,000 Tranche 1 VCUs. Bureau Veritas issued its report on 15 November 2023 confirming that all 250,000 VCUs were fully compliant with VCS Methodology VM0015 as applied to the Mau Project and that there were no additionality, permanence, or baseline concerns. (Claimant Exhibit C 5)</p>
+</li>
+<li><p>Between November and December 2023, the parties exchanged correspondence about the CarbonAI rejection. Savanna requested access to CarbonAI&#39;s evaluation parameters to understand the discrepancy with Verra&#39;s certification. DigiCarbon refused, citing trade secret protection. DigiCarbon maintained that Clause 8.2 of the SCPA made CarbonAI&#39;s determination conclusive for payment purposes. Savanna submitted a formal request to Verra on 10 December 2023 to review the CarbonAI rejection in light of the Bureau Veritas report, as provided for in Clause 8.3 of the SCPA. On 20 December 2023, Verra responded that it does not adjudicate disputes between sellers and buyers regarding third-party AI verification systems and declined to intervene. No resolution was reached between the parties. (Claimant Exhibit C 6)</p>
+</li>
+<li><p>On 1 January 2024, the <strong>NCIA Arbitration Rules 2024 (&quot;NCIA Rules 2024&quot;)</strong> came into force. Rule 1.4 thereof provides: <em>&quot;These Rules shall apply to any arbitration administered by the NCIA that is commenced on or after 1 January 2024, unless the parties have otherwise agreed in writing.&quot;</em> The 2024 Rules introduced, among other provisions, Rule 38 (AI Systems in Arbitral Proceedings), Rule 39 (Smart Contracts as Evidence), and Rule 40 (Digital Asset Valuation in Damages).</p>
+</li>
+<li><p>On 1 April 2024, Savanna was ready to deliver the second tranche of 250,000 VCUs, all duly certified on the Verra Registry. Savanna notified DigiCarbon and requested activation of the CarbonChain platform to receive the second tranche submission. DigiCarbon refused to activate the platform, citing the unresolved Tranche 1 dispute and asserting that Savanna was in fundamental breach of the SCPA.</p>
+</li>
+<li><p>On 10 May 2024, the <em>Nairobi Business Observer</em>, an online financial publication, published an article titled &quot;Questions Raised Over Mau Forest Carbon Project Accounting&quot; (the &quot;Article&quot;), citing allegations by an unnamed civil society source that the Mau Project&#39;s carbon accounting figures had been inflated by approximately 15% due to alleged baseline manipulation. No regulatory authority had opened any formal investigation. Verra confirmed in a public statement on 12 May 2024 that it had received no formal complaint regarding the Mau Project and that the project&#39;s certification remained valid and in good standing. (Claimant Exhibit C 7)</p>
+</li>
+<li><p>On 15 May 2024, DigiCarbon sent Savanna a formal notice declaring the SCPA terminated on three stated grounds: (i) Savanna&#39;s delivery of non-compliant VCUs in Tranche 1, constituting a fundamental breach; (ii) integrity concerns regarding the Mau Project raised by the Article; and (iii) alleged impracticability of performance arising from Kenya&#39;s Carbon Markets Regulations, 2024. DigiCarbon gave no prior written force majeure notice under Clause 12 of the SCPA.</p>
+</li>
+<li><p>Following DigiCarbon&#39;s termination, Savanna was left with 180,000 rejected Tranche 1 VCUs and 250,000 undelivered Tranche 2 VCUs — 430,000 VCUs in total — for which no payment had been received. The ongoing carrying cost of maintaining these VCUs in the Verra Registry, including project maintenance, monitoring, and verification expenses, amounted to KES 500 (approximately USD 3.85) per VCU per month, creating strong commercial pressure to sell promptly. Moreover, Savanna required the greenhouse capacity... — the verification capacity and registry space for a new cycle of VCU issuances scheduled to begin in May 2024.</p>
+</li>
+<li><p>On 1 June 2024, after approaching six potential buyers, Savanna entered into a cover sale with <strong>ClimateFirst Partners Ltd (&quot;ClimateFirst&quot;)</strong>, an independent Kenyan impact investment fund, for all 430,000 remaining VCUs at <strong>8 GRT per VCU</strong> — the best price obtainable in a market experiencing downward pressure due to high-profile global controversies over carbon credit quality. ClimateFirst had no prior corporate relationship with Savanna.</p>
+</li>
+<li><p>On 15 June 2024, Savanna initiated mediation proceedings before the Nairobi Centre for International Mediation. The mediation terminated on 31 July 2024 without resolution, after the parties confirmed an impasse.</p>
+</li>
+<li><p>On 1 September 2024, Savanna filed this Notice of Arbitration.</p>
+</li>
+</ol>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="legal-evaluation">LEGAL EVALUATION</h3>
+<h4 id="procedure">Procedure</h4>
+<ol start="19">
+<li>The Arbitral Tribunal has jurisdiction pursuant to <strong>Clause 15 of the SCPA</strong>, which provides:</li>
+</ol>
+<blockquote class="ledger-quote"><p><em>&quot;Any dispute arising out of or in connection with this Agreement, including any question regarding its existence, validity or termination, shall be referred to and finally resolved by arbitration administered by the Nairobi Centre for International Arbitration (&quot;NCIA&quot;) in accordance with the current Arbitration Rules of the Nairobi Centre for International Arbitration (&quot;NCIA Arbitration Rules&quot;). The seat of the arbitration shall be Nairobi, Kenya. The Tribunal shall consist of three arbitrators. The language of the arbitration shall be English. This Agreement is governed by the laws of Kenya.&quot;</em></p>
+</blockquote>
+<ol start="20">
+<li><p>The parties agreed to resolve their disputes under the NCIA Arbitration Rules current at the time of contracting, that is, the NCIA Arbitration Rules 2015. The NCIA Rules 2024 do not govern this arbitration. DigiCarbon contends otherwise; Savanna contests that position.</p>
+</li>
+<li><p>To fund this arbitration, Savanna has obtained litigation financing from <strong>AfriArb Capital Ltd</strong> (Nairobi) and adverse cost insurance from <strong>InsureTrade Ltd</strong> (Nairobi), both of which are disclosed in this Notice.</p>
+</li>
+</ol>
+<h4 id="substance">Substance</h4>
+<ol start="22">
+<li><p>DigiCarbon breached the SCPA by: (a) wrongfully refusing to release payment for 180,000 fully VCS-compliant Tranche 1 VCUs, relying on an opaque and biased CarbonAI determination that contradicted Verra&#39;s certification and Bureau Veritas&#39;s independent re-verification; and (b) refusing to accept the second tranche of 250,000 VCUs and wrongfully terminating the SCPA.</p>
+</li>
+<li><p>CarbonAI&#39;s determination is not contractually final or conclusive in the face of Verra certification. Clause 8.2 of the SCPA must be read consistently with Clause 5.2 (which designates VCS Methodology VM0015 as the quality standard) and Clause 8.3 (which preserves Verra as the referee in cases of conflict). Where CarbonAI&#39;s parameters are not grounded in any published VCS Methodology — as confirmed by Bureau Veritas — the contractually agreed standard (VCS) prevails.</p>
+</li>
+<li><p>None of DigiCarbon&#39;s stated grounds for termination are valid: (i) Savanna did not breach the SCPA; (ii) the Article is unverified and Verra confirmed no complaint; and (iii) the CMR 2024 does not render performance impracticable — the Mau Project was registered under the CMR 2024 on 1 February 2024, prior to the Tranche 2 delivery date.</p>
+</li>
+<li><p>Following DigiCarbon&#39;s breach and wrongful termination, Savanna effected a reasonable cover sale on 1 June 2024 at 8 GRT per VCU. Savanna is entitled to damages equal to the difference between the contract price (12 GRT per VCU) and the cover sale price (8 GRT per VCU) multiplied by 430,000 VCUs: <strong>1,720,000 GRT</strong>. At the exchange rate prevailing on the date of DigiCarbon&#39;s termination notice (15 May 2024), being USD 2.50 per GRT, this equates to <strong>USD 4,300,000</strong>. Savanna claims this sum in USD given GRT&#39;s volatility.</p>
+</li>
+<li><p>Savanna reserves the right to claim further damages, including reasonable financing costs, as appropriate.</p>
+</li>
+</ol>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="requests">REQUESTS</h3>
+<ol start="27">
+<li><p>In light of the above, and reserving its right to amend and enlarge its claims, Claimant requests the Arbitral Tribunal to order:</p>
+</li>
+<li><p>That the NCIA Arbitration Rules 2015 govern these proceedings;</p>
+</li>
+<li><p>That Respondent pay damages of USD 4,300,000 (or the equivalent in GRT at the exchange rate of USD 2.50 per GRT prevailing on 15 May 2024);</p>
+</li>
+<li><p>That Respondent pay the costs of these proceedings;</p>
+</li>
+<li><p>Any further relief the Arbitral Tribunal considers appropriate.</p>
+</li>
+</ol>
+<p><strong>Zara Kamau</strong><br>Zara Kamau &amp; Associates</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-1" class="exhibit-heading" data-tag="C·1">CLAIMANT EXHIBIT C 1</h2>
+<h3 id="witness-statement-of-dr-amara-njoroge">Witness Statement of Dr. Amara Njoroge</h3>
+<ol>
+<li><p>I am the Chief Executive Officer of Savanna Carbon Solutions Ltd (&quot;Savanna&quot;), a position I have held since the company&#39;s founding in 2018. I hold a PhD in Environmental Science from the University of Nairobi and a Master&#39;s degree in Carbon Finance from the University of Edinburgh. I began my career in forest conservation at the Kenya Forest Service and subsequently worked in voluntary carbon market development for ten years before co-founding Savanna.</p>
+</li>
+<li><p>Savanna&#39;s Mau Forest Carbon Conservation Project (&quot;Mau Project&quot;) has been certified by Verra under the Verified Carbon Standard since 2019. The project has been independently verified three times by different Verra-accredited VVBs. Each verification has confirmed the project&#39;s compliance with VCS Methodology VM0015 (Avoided Unplanned Deforestation, version 1.3). The most recent verification, completed by EcoAudit Africa Ltd in July 2023, confirmed the issuance of 612,447 VCUs for the 2022 verification period.</p>
+</li>
+<li><p>In January 2023, I received a communication from Mr. Lars Voss, CEO of DigiCarbon International PLC, expressing DigiCarbon&#39;s interest in purchasing large volumes of Mau Project VCUs for resale on its CarbonChain platform. Mr. Voss described DigiCarbon as a leading digital carbon market operator that tokenizes voluntary carbon credits as GreenTokens (GRT) for institutional buyers seeking blockchain-based carbon offsetting solutions.</p>
+</li>
+<li><p>During our negotiations in February 2023, I asked Mr. Voss and Ms. Yuki Tanaka, DigiCarbon&#39;s Chief Technology Officer, to explain how CarbonAI would evaluate our VCUs. Ms. Tanaka stated clearly that CarbonAI &quot;directly implements Verra&#39;s VCS methodology&quot; and that any VCU bearing a valid Verra Registry certificate and independent verification report &quot;would, as a matter of course, pass CarbonAI verification.&quot; I relied on this representation. Ms. Tanaka&#39;s email of 20 February 2023 confirmed that a valid Verra Registry certificate and third-party verification report are &quot;the primary inputs to CarbonAI&#39;s assessment.&quot; I understood &quot;primary inputs&quot; to mean the determinative inputs — the VCS certification was the standard against which CarbonAI measured compliance.</p>
+</li>
+<li><p>DigiCarbon proposed Clause 8.2 of the SCPA, under which CarbonAI&#39;s determination would be &quot;conclusive&quot; for payment purposes. I accepted this clause only because DigiCarbon had represented that CarbonAI faithfully implemented the VCS methodology and because Clause 8.3 was included as a safeguard: where there was a material conflict between CarbonAI&#39;s determination and a valid Verra certificate, the parties agreed to refer the matter to Verra within 30 days.</p>
+</li>
+<li><p>Following the Rejection Report of 5 October 2023, I reviewed the three parameters CarbonAI had flagged. The &quot;Non-Additionality Risk Index,&quot; &quot;Permanence Concern Index,&quot; and &quot;Anomalous Baseline Deviation&quot; are not defined metrics under VCS Methodology VM0015 or any other published Verra VCS methodology. I consulted with Verra&#39;s technical team directly, and they confirmed that these are not VCS standard reporting parameters. There was therefore a material conflict between CarbonAI&#39;s determination and the VCS certification, triggering Clause 8.3.</p>
+</li>
+<li><p>I engaged Bureau Veritas Kenya Ltd to re-verify the 250,000 Tranche 1 VCUs. Their report of 15 November 2023 confirmed full VCS compliance. I submitted this report to DigiCarbon and, separately, invoked Clause 8.3 by requesting Verra to review the conflict. Verra declined to intervene in a buyer-seller AI dispute. Despite this, I considered that Savanna had done all it reasonably could under Clause 8.3.</p>
+</li>
+<li><p>Regarding the Article published on 10 May 2024 alleging inflated carbon accounting: the allegations were anonymous and sourced to a single unnamed NGO. Verra confirmed on 12 May 2024 that no complaint had been received and that our certification remains valid. All three independent verifications of the Mau Project have been conducted by different Verra-accredited bodies and each has confirmed the integrity of our carbon accounting methodology.</p>
+</li>
+<li><p>The cover sale with ClimateFirst Partners Ltd on 1 June 2024 at 8 GRT per VCU was the best price available in the market at that time for a bulk transaction of 430,000 VCUs. I approached six potential buyers. The voluntary carbon market was under significant downward pressure globally due to unrelated controversies. ClimateFirst&#39;s offer of 8 GRT per VCU was the highest received.</p>
+</li>
+</ol>
+<p><em>Nairobi, 15 August 2024</em></p>
+<p><strong>Dr. Amara Njoroge</strong></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-2" class="exhibit-heading" data-tag="C·2">CLAIMANT EXHIBIT C 2</h2>
+<h3 id="smart-carbon-purchase-agreement-excerpts">SMART CARBON PURCHASE AGREEMENT (EXCERPTS)</h3>
+<p><em>(&quot;SCPA&quot;)</em></p>
+<p><em>Dated: 15 March 2023</em></p>
+<p><strong>Between:</strong></p>
+<ol>
+<li><strong>Savanna Carbon Solutions Ltd</strong>, incorporated in Kenya, Carbon Park, Upperhill, Nairobi (&quot;Seller&quot;); and</li>
+<li><strong>DigiCarbon International PLC</strong>, incorporated in Novaterra, 17 Innovation Crescent, Port Nova (&quot;Buyer&quot;).</li>
+</ol>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>1. DEFINITIONS</strong></p>
+<p><strong>&quot;CarbonAI&quot;</strong> means Buyer&#39;s proprietary artificial intelligence verification system as deployed on the CarbonChain platform.</p>
+<p><strong>&quot;CarbonAI Verification&quot;</strong> means the assessment by CarbonAI of VCUs submitted by Seller against the VCS Methodology applicable to the Project.</p>
+<p><strong>&quot;CarbonChain Platform&quot;</strong> means Buyer&#39;s digital marketplace and payment infrastructure operated at <a href="http://www.carbonchain.dg">www.carbonchain.dg</a>.</p>
+<p><strong>&quot;GreenToken&quot; or &quot;GRT&quot;</strong> means the digital token issued by Buyer with ticker symbol GRT, traded on the CarbonChain exchange and other digital asset exchanges.</p>
+<p><strong>&quot;Mau Project&quot;</strong> means the Mau Forest Carbon Conservation Project registered with Verra under Project No. 2891.</p>
+<p><strong>&quot;Smart Contract&quot;</strong> means the automated blockchain-based payment protocol embedded in the CarbonChain platform that releases GRT payment to Seller&#39;s designated digital wallet upon CarbonAI Verification.</p>
+<p><strong>&quot;VCU&quot;</strong> means a Verified Carbon Unit issued by Verra under the VCS, representing one metric tonne CO₂ equivalent.</p>
+<p><strong>&quot;VCS&quot;</strong> means the Verified Carbon Standard administered by Verra.</p>
+<p><strong>&quot;VCS Methodology&quot;</strong> means VCS Methodology VM0015 (Avoided Unplanned Deforestation, version 1.3) as applicable to the Mau Project.</p>
+<p><strong>&quot;Verra&quot;</strong> means the international standards body Verra, administrator of the VCS, or its successor.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>2. SALE AND PURCHASE</strong></p>
+<p>2.1 <strong>Quantity.</strong> Seller shall sell and Buyer shall purchase 500,000 VCUs from the Mau Project in two tranches:</p>
+<ul>
+<li>Tranche 1: 250,000 VCUs, to be delivered by 1 October 2023;</li>
+<li>Tranche 2: 250,000 VCUs, to be delivered by 1 April 2024.</li>
+</ul>
+<p>2.2 <strong>Standards.</strong> All VCUs shall be certified by Verra under the VCS and duly registered on the Verra Registry at the time of delivery.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>3. PRICE AND PAYMENT</strong></p>
+<p>3.1 <strong>Price.</strong> The price is 12 GRT per VCU, totalling 6,000,000 GRT for 500,000 VCUs.</p>
+<p>3.2 <strong>Payment Mechanism.</strong> Payment shall be effected automatically by the Smart Contract upon CarbonAI Verification of each delivered tranche. Buyer shall at all times maintain sufficient GRT in the Smart Contract escrow wallet to ensure prompt payment upon verification.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>4. DELIVERY</strong></p>
+<p>4.1 <strong>Delivery.</strong> Seller shall deliver each tranche of VCUs by uploading the corresponding Verra Registry transfer documentation and applicable verification reports to the CarbonChain platform portal by the respective delivery date.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>5. VCU QUALITY AND STANDARDS</strong></p>
+<p>5.1 All VCUs delivered shall be certified by Verra under the VCS and duly registered on the Verra Registry, free from encumbrances, cancellations, or retirement.</p>
+<p>5.2 The VCS Methodology VM0015 as applied to the Mau Project shall be the reference standard for VCU quality under this Agreement.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>8. AI VERIFICATION AND PAYMENT</strong></p>
+<p>8.1 CarbonAI Verification is the agreed mechanism for determining whether delivered VCUs comply with the VCS Methodology for the purposes of triggering payment.</p>
+<p>8.2 <strong>Conclusive Determination.</strong> CarbonAI&#39;s determination of VCU compliance shall constitute <strong>conclusive determination of VCU compliance for purposes of triggering payment</strong> under this Agreement.</p>
+<p>8.3 <strong>Conflict Resolution.</strong> CarbonAI shall apply the VCS Methodology as the gold standard of evaluation. In the event of a <strong>material and demonstrable conflict</strong> between CarbonAI&#39;s determination and a valid Verra Registry certificate for the same VCUs, the parties shall refer such conflict to Verra for resolution within 30 days before initiating any other dispute resolution process under Clause 15.</p>
+<p>8.4 Buyer warrants that CarbonAI shall at all times implement evaluation criteria grounded in the VCS Methodology applicable to the Project.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>12. FORCE MAJEURE</strong></p>
+<p>12.1 Neither party shall be liable for failure to perform its obligations where such failure is directly caused by an event beyond its reasonable control, including acts of God, government orders having the force of law, regulatory changes with direct effect of law on the performance of this Agreement, cyberattacks on the CarbonChain platform preventing system operation, and market-wide collapse of the voluntary carbon market.</p>
+<p>12.2 The affected party shall notify the other in writing within 7 days of the commencement of the force majeure event and shall take all reasonable steps to mitigate its effects. Performance obligations are suspended for the duration of the force majeure event.</p>
+<p><strong>[…]</strong></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>15. DISPUTE RESOLUTION</strong></p>
+<p>Any dispute arising out of or in connection with this Agreement, including any question regarding its existence, validity or termination, shall be referred to and finally resolved by arbitration administered by the Nairobi Centre for International Arbitration (&quot;NCIA&quot;) in accordance with the <strong>current Arbitration Rules of the Nairobi Centre for International Arbitration (&quot;NCIA Arbitration Rules&quot;)</strong>. The seat of the arbitration shall be Nairobi, Kenya. The Tribunal shall consist of three arbitrators. The language of the arbitration shall be English.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>16. GOVERNING LAW</strong></p>
+<p>This Agreement is governed by and construed in accordance with the laws of Kenya.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-3" class="exhibit-heading" data-tag="C·3">CLAIMANT EXHIBIT C 3</h2>
+<h3 id="verra-vcs-vcu-issuance-notice">VERRA VCS VCU ISSUANCE NOTICE</h3>
+<p><strong>[VERRA]</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td>Project Name</td><td>Mau Forest Carbon Conservation Project</td></tr>
+<tr><td>Project ID</td><td>2891</td></tr>
+<tr><td>Project Developer</td><td>Savanna Carbon Solutions Ltd</td></tr>
+<tr><td>Methodology</td><td>VCS Methodology VM0015 (Avoided Unplanned Deforestation, v1.3)</td></tr>
+<tr><td>Verification Period</td><td>1 January 2022 – 31 December 2022</td></tr>
+<tr><td>Third-Party Verifier</td><td>EcoAudit Africa Ltd (Verra-accredited VVB)</td></tr>
+<tr><td>VCUs Issued</td><td>612,447 VCUs</td></tr>
+<tr><td>Issuance Date</td><td>15 July 2023</td></tr>
+<tr><td>Verra Registry</td><td><a href="http://www.verra.org/project/2891">www.verra.org/project/2891</a></td></tr>
+</tbody>
+</table></div>
+<p>This notice confirms that the above VCUs have been issued on the Verra Registry following independent third-party verification in accordance with VCS Methodology VM0015. The project&#39;s additionality, permanence, baseline, and monitoring methodology have been verified and found compliant with all VCS Program requirements.</p>
+<p><em>Verra, 15 July 2023</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-4" class="exhibit-heading" data-tag="C·4">CLAIMANT EXHIBIT C 4</h2>
+<h3 id="carbonai-automated-assessment-report">CarbonAI Automated Assessment Report</h3>
+<p><strong>CarbonChain Platform | Report ID: CAI-2023-10-05-0091</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td>Seller</td><td>Savanna Carbon Solutions Ltd</td></tr>
+<tr><td>Project</td><td>Mau Forest Carbon Conservation Project (Verra No. 2891)</td></tr>
+<tr><td>Submitted VCUs</td><td>250,000</td></tr>
+<tr><td>Assessment Date</td><td>5 October 2023</td></tr>
+<tr><td>Assessor</td><td>CarbonAI v4.2 (DigiCarbon Proprietary AI System)</td></tr>
+</tbody>
+</table></div>
+<p><strong>OUTCOME: PARTIAL APPROVAL</strong></p>
+<p>VCUs Approved: <strong>70,000</strong><br>VCUs Rejected: <strong>180,000</strong></p>
+<p><strong>Rejection Parameters for 180,000 VCUs:</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Parameter</th><th>Score</th><th>Threshold</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Non-Additionality Risk Index</td><td>0.72</td><td>0.60</td><td>EXCEEDED</td></tr>
+<tr><td>Permanence Concern Index</td><td>0.65</td><td>0.55</td><td>EXCEEDED</td></tr>
+<tr><td>Anomalous Baseline Deviation</td><td>0.58</td><td>0.50</td><td>EXCEEDED</td></tr>
+</tbody>
+</table></div>
+<p><em>Note: CarbonAI&#39;s assessment draws on satellite imagery analysis, historical deforestation patterns, regional biodiversity indices, and proprietary AI model training data. Detailed methodology is proprietary and confidential.</em></p>
+<p><em>Pursuant to Clause 8.2 of the Smart Carbon Purchase Agreement, this determination constitutes conclusive determination of VCU compliance for payment purposes. The Smart Contract has released 840,000 GRT in payment for 70,000 approved VCUs.</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-5" class="exhibit-heading" data-tag="C·5">CLAIMANT EXHIBIT C 5</h2>
+<h3 id="bureau-veritas-kenya-ltd-independent-verification-report-summary">Bureau Veritas Kenya Ltd — Independent Verification Report (Summary)</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Field</th><th>Detail</th></tr></thead>
+<tbody>
+<tr><td>Commissioned by</td><td>Savanna Carbon Solutions Ltd</td></tr>
+<tr><td>Project</td><td>Mau Forest Carbon Conservation Project (Verra No. 2891)</td></tr>
+<tr><td>Scope</td><td>Independent re-verification of 250,000 VCUs (2022 vintage)</td></tr>
+<tr><td>Report Date</td><td>15 November 2023</td></tr>
+</tbody>
+</table></div>
+<p><strong>CONCLUSION:</strong></p>
+<p>Bureau Veritas Kenya Ltd, as a Verra-accredited Validation and Verification Body, has independently assessed the 250,000 VCUs submitted by Savanna Carbon Solutions Ltd against VCS Methodology VM0015 as applicable to the Mau Forest Carbon Conservation Project.</p>
+<p><strong>We confirm that:</strong></p>
+<ol>
+<li>All 250,000 VCUs fully comply with VCS Methodology VM0015 in all material respects.</li>
+<li>The additionality demonstration satisfies all requirements under the VCS Program.</li>
+<li>The permanence risk buffer contribution is consistent with Verra&#39;s Pooled Buffer Account requirements.</li>
+<li>There are no baseline anomalies in the project&#39;s GHG accounting that would invalidate the issued VCUs.</li>
+<li>The project&#39;s deforestation reference level is appropriately derived from the applicable historical reference period and complies with VM0015 requirements.</li>
+</ol>
+<p><strong>We are unable to evaluate the CarbonAI system&#39;s specific parameters</strong> — &quot;Non-Additionality Risk Index,&quot; &quot;Permanence Concern Index,&quot; and &quot;Anomalous Baseline Deviation&quot; — as these terms do not appear in VCS Methodology VM0015, the VCS Standard, or any published Verra Programme guidance document known to us.</p>
+<p><em>Chief Verification Officer, Bureau Veritas Kenya Ltd, 15 November 2023</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-6" class="exhibit-heading" data-tag="C·6">CLAIMANT EXHIBIT C 6</h2>
+<h3 id="witness-statement-of-felix-ochieng">Witness Statement of Felix Ochieng</h3>
+<ol>
+<li><p>I am Head of Carbon Markets at Savanna Carbon Solutions Ltd, a position I have held since January 2022. I led the negotiation of the SCPA with DigiCarbon and managed the Tranche 1 submission and subsequent dispute.</p>
+</li>
+<li><p>During negotiations in February 2023, I specifically requested that Ms. Tanaka explain CarbonAI&#39;s verification criteria to ensure our VCUs would pass. She declined to share the algorithm but confirmed in her email of 20 February 2023 that CarbonAI uses &quot;the Verra VCS methodology as its evaluation framework&quot; and that a valid Verra Registry certificate and verification report are &quot;the primary inputs.&quot; I understood this to mean that VCS certification was the governing standard. Had Ms. Tanaka disclosed that CarbonAI applied additional proprietary parameters that could override VCS certification, Savanna would have sought either their disclosure or appropriate contractual protections beyond Clause 8.3.</p>
+</li>
+<li><p>Following the Rejection Report of 5 October 2023, I reviewed the three flagged parameters against all published Verra VCS methodologies. None of them — &quot;Non-Additionality Risk Index,&quot; &quot;Permanence Concern Index,&quot; or &quot;Anomalous Baseline Deviation&quot; — appears in any VCS Methodology or Verra Programme guidance. I contacted Verra&#39;s technical team; they confirmed these are not defined VCS parameters. I communicated this to DigiCarbon in writing on 12 October 2023.</p>
+</li>
+<li><p>Regarding the Clause 8.3 referral to Verra: I submitted a formal request to Verra on 10 December 2023, enclosing the Rejection Report and the Bureau Veritas re-verification report and asking Verra to review the conflict between CarbonAI&#39;s determination and the VCS certification. On 20 December 2023, Verra responded by email that it &quot;does not adjudicate commercial disputes between carbon credit buyers and sellers in relation to third-party AI verification systems&quot; and declined to intervene. I promptly forwarded this response to DigiCarbon. DigiCarbon did not propose any alternative referral mechanism and maintained that Clause 8.2 rendered CarbonAI&#39;s determination final.</p>
+</li>
+<li><p>Regarding the cover sale: by late May 2024, I had approached six potential buyers for the 430,000 VCUs. The voluntary carbon market was experiencing downward pressure due to high-profile investigations into unrelated carbon projects globally. The best offer received was 8 GRT per VCU from ClimateFirst Partners Ltd. Four other parties offered between 6 and 7.5 GRT per VCU. One party declined to bid. ClimateFirst&#39;s offer was the most commercially reasonable and was consistent with prevailing market prices for bulk REDD+ VCUs in mid-2024 given market conditions.</p>
+</li>
+<li><p>At the time of the cover sale on 1 June 2024, 1 GRT was trading at approximately USD 2.45 per GRT on the CarbonChain exchange and other digital asset platforms.</p>
+</li>
+</ol>
+<p><em>Nairobi, 20 August 2024</em></p>
+<p><strong>Felix Ochieng</strong></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="claimant-exhibit-c-7" class="exhibit-heading" data-tag="C·7">CLAIMANT EXHIBIT C 7</h2>
+<h3 id="nairobi-business-observer-10-may-2024">Nairobi Business Observer — 10 May 2024</h3>
+<p><strong>&quot;QUESTIONS RAISED OVER MAU FOREST CARBON PROJECT ACCOUNTING&quot;</strong></p>
+<p><em>Nairobi Business Observer | Climate &amp; Environment</em></p>
+<p>Questions have emerged over the carbon accounting practices of Savanna Carbon Solutions Ltd&#39;s Mau Forest Carbon Conservation Project, one of Kenya&#39;s most commercially active REDD+ projects.</p>
+<p>A source affiliated with a civil society organization has alleged that the project&#39;s greenhouse gas baseline figures may have been inflated by approximately 15%, resulting in an over-issuance of Verified Carbon Units. The allegation focuses on the project&#39;s choice of baseline scenario, which the source claims relies on a 2015 land-use survey rather than more current data.</p>
+<p>Savanna Carbon Solutions Ltd denied any irregularity and stated that all issued VCUs have been independently verified by Verra-accredited verification bodies.</p>
+<p>Verra, the global administrator of the Verified Carbon Standard, confirmed in a statement on 12 May 2024 that it has received <strong>no formal complaint</strong> regarding the Mau Forest Carbon Conservation Project and that the project&#39;s <strong>certification remains valid and in good standing.</strong></p>
+<p>Industry analysts caution against drawing conclusions from unverified and anonymous allegations. Similar allegations regarding other projects in recent months have not resulted in any Verra decertification.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="email-ncia-on-applicable-rules">Email: NCIA on Applicable Rules</h2>
+<p><strong>From:</strong> Reginald Muriithi &lt;<a href="mailto:rmuriithi@ncia.or.ke">rmuriithi@ncia.or.ke</a>&gt;<br><strong>Sent:</strong> Sunday, 15 September 2024, 2:15 pm<br><strong>To:</strong> Zara Kamau &lt;<a href="mailto:zkamau@zkaadvocates.co.ke">zkamau@zkaadvocates.co.ke</a>&gt;<br><strong>CC:</strong> Marcus Holloway &lt;<a href="mailto:mholloway@hollowaychambersNV.com">mholloway@hollowaychambersNV.com</a>&gt;; VIS NCIA &lt;<a href="mailto:vis@ncia.or.ke">vis@ncia.or.ke</a>&gt;<br><strong>Re:</strong> Notice of Arbitration – Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</p>
+<p>Dear Counsel,</p>
+<p><strong>IN REFERENCE TO A NOTICE OF ARBITRATION DATED 1 SEPTEMBER 2024 IN ARBITRAL PROCEEDINGS BETWEEN SAVANNA CARBON SOLUTIONS LTD (&quot;CLAIMANT&quot;) AND DIGICARBON INTERNATIONAL PLC (&quot;RESPONDENT&quot;)</strong></p>
+<ol>
+<li><p>We acknowledge receipt of the Notice of Arbitration dated 1 September 2024 together with the filing fee.</p>
+</li>
+<li><p>We note that Claimant seeks to conduct these proceedings under the NCIA Arbitration Rules 2015.</p>
+</li>
+<li><p>We draw the parties&#39; attention to Rule 1.4 of the NCIA Arbitration Rules 2024, which came into force on 1 January 2024 and provides:</p>
+</li>
+</ol>
+<blockquote class="ledger-quote"><p><em>&quot;These Rules shall apply to any arbitration administered by the NCIA that is commenced on or after 1 January 2024, unless the parties have otherwise agreed in writing.&quot;</em></p>
+</blockquote>
+<ol start="4">
+<li><p>The arbitration clause at Clause 15 of the SCPA refers to &quot;the current Arbitration Rules of the Nairobi Centre for International Arbitration.&quot; We request clarification from both parties on which version of the NCIA Arbitration Rules governs these proceedings.</p>
+</li>
+<li><p>We request both parties to submit their positions no later than <strong>25 September 2024</strong>.</p>
+</li>
+</ol>
+<p>Sincerely,</p>
+<p><strong>Reginald Muriithi</strong><br>Deputy Registrar<br>Nairobi Centre for International Arbitration</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="email-kamau-on-applicable-rules">Email: Kamau on Applicable Rules</h2>
+<p><strong>From:</strong> Zara Kamau &lt;<a href="mailto:zkamau@zkaadvocates.co.ke">zkamau@zkaadvocates.co.ke</a>&gt;<br><strong>Sent:</strong> Friday, 20 September 2024, 10:40 am<br><strong>To:</strong> Reginald Muriithi &lt;<a href="mailto:rmuriithi@ncia.or.ke">rmuriithi@ncia.or.ke</a>&gt;<br><strong>CC:</strong> Marcus Holloway &lt;<a href="mailto:mholloway@hollowaychambersNV.com">mholloway@hollowaychambersNV.com</a>&gt;; VIS NCIA &lt;<a href="mailto:vis@ncia.or.ke">vis@ncia.or.ke</a>&gt;<br><strong>Re:</strong> RE: Notice of Arbitration – Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</p>
+<p>Dear Mr. Muriithi,</p>
+<p>Claimant&#39;s position is that the <strong>NCIA Arbitration Rules 2015</strong> govern these proceedings, for two reasons.</p>
+<p><strong>First</strong>, Clause 15 refers to &quot;the current Arbitration Rules of the NCIA.&quot; Under Kenyan principles of contract interpretation and general international commercial law, a reference in an arbitration clause to the &quot;current&quot; rules of an institution refers to the rules in force at the time of contracting. The parties contracted on 15 March 2023, when only the NCIA Rules 2015 existed. Savanna negotiated and agreed to the arbitration clause on the basis of those Rules. The NCIA Rules 2024 did not exist at contracting and therefore cannot represent what the parties agreed to.</p>
+<p><strong>Second</strong>, and independently, the NCIA Rules 2024 introduce provisions of a fundamentally different character that the parties could not have anticipated in March 2023 — in particular, Rules 38, 39, and 40, which specifically govern AI systems, smart contracts, and digital asset valuation. These are provisions directly relevant to, and in some respects designed to regulate, the very type of contractual mechanism and dispute at issue here. It would be anomalous for a party that deployed an AI system in contractual performance to derive procedural benefits from rules specifically designed to address such systems, when those rules did not exist when the contract was made.</p>
+<p>Yours faithfully,</p>
+<p><strong>Zara Kamau</strong><br>Zara Kamau &amp; Associates</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="email-holloway-on-applicable-rules">Email: Holloway on Applicable Rules</h2>
+<p><strong>From:</strong> Marcus Holloway &lt;<a href="mailto:mholloway@hollowaychambersNV.com">mholloway@hollowaychambersNV.com</a>&gt;<br><strong>Sent:</strong> Wednesday, 25 September 2024, 3:05 pm<br><strong>To:</strong> Reginald Muriithi &lt;<a href="mailto:rmuriithi@ncia.or.ke">rmuriithi@ncia.or.ke</a>&gt;; Zara Kamau &lt;<a href="mailto:zkamau@zkaadvocates.co.ke">zkamau@zkaadvocates.co.ke</a>&gt;<br><strong>CC:</strong> VIS NCIA &lt;<a href="mailto:vis@ncia.or.ke">vis@ncia.or.ke</a>&gt;<br><strong>Re:</strong> RE: RE: Notice of Arbitration – Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</p>
+<p>Dear Mr. Muriithi,</p>
+<p>Respondent&#39;s position is that the <strong>NCIA Arbitration Rules 2024</strong> govern these proceedings.</p>
+<p>The arbitration clause refers to &quot;the <strong>current</strong> Arbitration Rules of the NCIA.&quot; The word &quot;current&quot; is temporal: it refers to the rules in force at the relevant time. The relevant time is not the date of contracting but the date of commencement of the arbitration, since the rules govern the arbitral proceedings, not the underlying contract. This arbitration was commenced on 1 September 2024. The rules current on that date are the NCIA Rules 2024. Rule 1.4 of those Rules confirms this: they apply to arbitrations commenced on or after 1 January 2024, with no contrary agreement having been made in writing.</p>
+<p>Claimant&#39;s interpretation reads &quot;current&quot; as &quot;historical,&quot; which is linguistically untenable and commercially unsound. Parties choosing institutional arbitration agree to the institution&#39;s regulatory framework, including the institution&#39;s authority to update its rules. The NCIA Rules 2024&#39;s provisions on AI systems, smart contracts, and digital assets are precisely the procedural tools this Tribunal will need to fairly resolve a dispute that is at its core about an AI verification system&#39;s outputs and a blockchain-based payment mechanism. Applying the 2015 Rules, which have no provisions addressing these matters, would deprive the Tribunal of essential procedural tools.</p>
+<p>Respondent will elaborate in its Response to the Notice of Arbitration.</p>
+<p>Kind regards,</p>
+<p><strong>Marcus Holloway</strong><br>Holloway Chambers, Port Nova, Novaterra</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="ncia-commencement-letter">NCIA Commencement Letter</h2>
+<p><strong>[NCIA LOGO]</strong></p>
+<p>Our Ref: NCIA/ARB/2024/047</p>
+<p><strong>1 October 2024</strong></p>
+<p><strong>CLAIMANT:</strong> Savanna Carbon Solutions Ltd, c/o Zara Kamau &amp; Associates, 14 Waiyaki Way, Westlands, Nairobi — <em>By Email:</em> <a href="mailto:zkamau@zkaadvocates.co.ke">zkamau@zkaadvocates.co.ke</a></p>
+<p><strong>RESPONDENT:</strong> DigiCarbon International PLC, c/o Marcus Holloway, Holloway Chambers, 17 Commerce Place, Port Nova, Novaterra — <em>By Email:</em> <a href="mailto:mholloway@hollowaychambersNV.com">mholloway@hollowaychambersNV.com</a></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>NCIA ARBITRATION 2024/047</strong></p>
+<p><strong>IN THE MATTER OF AN ARBITRATION UNDER THE NAIROBI CENTRE FOR INTERNATIONAL ARBITRATION ARBITRATION RULES 2015 BETWEEN SAVANNA CARBON SOLUTIONS LTD (&quot;CLAIMANT&quot;) AND DIGICARBON INTERNATIONAL PLC (&quot;RESPONDENT&quot;)</strong></p>
+<ol>
+<li><p>We acknowledge receipt of the Notice of Arbitration dated 1 September 2024, received by the NCIA on 1 September 2024, together with the filing fee of KES 45,000.</p>
+</li>
+<li><p>The Registrar has determined that this arbitration commenced on <strong>1 September 2024</strong>, pursuant to Rule 3.2 of the NCIA Arbitration Rules 2015. This matter is assigned the case reference <strong>NCIA/ARB/2024/047</strong>. Please quote this reference in all future communications.</p>
+</li>
+<li><p>We note the parties&#39; respective positions on the applicable version of the NCIA Rules as set out in their emails of 20 and 25 September 2024. This arbitration has been commenced under the <strong>NCIA Arbitration Rules 2015</strong> as invoked by the Claimant. The parties are at liberty to address the applicable version of the NCIA Rules before the Tribunal upon its constitution.</p>
+</li>
+</ol>
+<p><strong>Response to Notice of Arbitration</strong></p>
+<ol start="4">
+<li>Pursuant to Rule 4 of the NCIA Rules 2015, Respondent shall file a Response to the Notice of Arbitration with the Registrar within 14 days of receipt of the Notice, sending a copy simultaneously to Claimant.</li>
+</ol>
+<p><strong>Constitution of the Tribunal</strong></p>
+<ol start="5">
+<li><p>We note Claimant&#39;s nomination of <strong>Dr. Wanjiru Kabiru</strong> as its co-arbitrator.</p>
+</li>
+<li><p>We draw the parties&#39; attention to Rule 11 of the NCIA Rules 2015, which provides that each party shall nominate one co-arbitrator. The Registrar shall appoint the presiding arbitrator from the NCIA Panel.</p>
+</li>
+<li><p>We invite Respondent to nominate its co-arbitrator within 14 days of receipt of this letter.</p>
+</li>
+<li><p>All arbitrator nominees are subject to confirmation by the NCIA Registrar in accordance with Rule 9 of the NCIA Rules 2015.</p>
+</li>
+</ol>
+<p><strong>Third-Party Funding</strong></p>
+<ol start="9">
+<li>We note that Claimant has disclosed in the Notice that this claim is funded by <strong>AfriArb Capital Ltd</strong> and that Claimant holds adverse cost insurance with <strong>InsureTrade Ltd</strong>. We draw the parties&#39; attention to the NCIA Practice Note on Third-Party Funding and Adverse Cost Insurance (PN-NCIA-01/2022), a copy of which is enclosed.</li>
+</ol>
+<p><strong>Financial Matters</strong></p>
+<ol start="10">
+<li>Based on the sum in dispute of USD 4,300,000, the total estimated costs of arbitration for a three-member tribunal amount to KES 3,850,000 (approximately USD 29,600). The parties are each requested to pay half of the first deposit of KES 1,200,000 within 21 days.</li>
+</ol>
+<p>Sincerely,</p>
+<p><strong>Reginald Muriithi</strong><br>Deputy Registrar, Nairobi Centre for International Arbitration<br>Anniversary Towers, 6th Floor, University Way, Nairobi, Kenya</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="response-to-the-notice-of-arbitration">RESPONSE TO THE NOTICE OF ARBITRATION</h2>
+<p><em>(Pursuant to Rule 4, NCIA Arbitration Rules 2015 / Rule 7, NCIA Arbitration Rules 2024)</em></p>
+<p><em>in the Arbitral Proceedings</em></p>
+<p><strong>Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</strong><br>NCIA/ARB/2024/047</p>
+<p>15 October 2024</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="introduction">Introduction</h3>
+<ol>
+<li>Respondent, <strong>DigiCarbon International PLC (&quot;DigiCarbon&quot;)</strong>, hereby denies all claims raised by Claimant. Claimant&#39;s Notice of Arbitration presents a selective account of events and arrives at legally incorrect conclusions.</li>
+</ol>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="facts">Facts</h3>
+<ol start="2">
+<li><p>DigiCarbon developed CarbonAI between 2018 and 2022 at a cost of approximately USD 8 million. CarbonAI was trained on a proprietary dataset of over 4,000 REDD+ projects globally, incorporating satellite imagery from 2005 to 2022, dynamic ecological risk models, and socioeconomic data. CarbonAI&#39;s purpose is to identify latent and dynamic risks in carbon credit quality that static third-party verification — which is based on project documentation and a point-in-time field assessment — cannot capture. CarbonAI is what institutional buyers on the CarbonChain platform pay a premium for: a real-time, data-driven quality assurance layer over and above VCS certification. (Respondent Exhibit R 1)</p>
+</li>
+<li><p>During negotiations with Savanna in early 2023, DigiCarbon provided a non-proprietary overview of CarbonAI&#39;s evaluation approach. Ms. Tanaka&#39;s email of 20 February 2023 described VCS certification as &quot;the primary input&quot; to CarbonAI&#39;s assessment — <strong>not the sole or determinative input</strong>. DigiCarbon explicitly stated, both orally and in writing, that CarbonAI&#39;s evaluation is not limited to replicating VCS certification. Savanna&#39;s counsel now characterizes the word &quot;primary&quot; as meaning &quot;determinative&quot;; this is a post-hoc reinterpretation of the plain meaning of the word. (Respondent Exhibit R 2)</p>
+</li>
+<li><p>Clause 8.2 of the SCPA — under which CarbonAI&#39;s determination is &quot;conclusive&quot; for payment purposes — was a deliberately negotiated and commercially essential term. Without it, DigiCarbon could not operate its business model: its institutional clients purchase GRT-tokenized VCUs on the specific assurance that CarbonAI has verified their quality. DigiCarbon&#39;s liability to those clients depends on the integrity of CarbonAI&#39;s assessment.</p>
+</li>
+<li><p>Clause 8.3 of the SCPA does not make CarbonAI&#39;s determination subordinate to VCS certification generally. It applies only where there is a &quot;material and demonstrable conflict&quot; between CarbonAI&#39;s determination and a valid Verra Registry certificate. CarbonAI&#39;s assessment does not conflict with the VCS certification: the VCS certification assessed the Mau Project at a point in time using static documentation. CarbonAI assessed real-time satellite imagery and dynamic ecological data unavailable to the original VVB. These are different evaluations, not conflicting ones. (Respondent Exhibit R 2)</p>
+</li>
+<li><p>The Bureau Veritas re-verification relied upon by Savanna was conducted using the same documentation previously submitted to Verra. Bureau Veritas expressly stated that it could not evaluate CarbonAI&#39;s parameters because they are not defined in VM0015. This confirms that CarbonAI&#39;s evaluation goes beyond VM0015 — it does not conflict with it.</p>
+</li>
+<li><p>Independent of CarbonAI&#39;s rejection, DigiCarbon&#39;s own data science team had by April 2024 identified material inconsistencies between the Mau Project&#39;s deforestation reference level — derived from a 2015 land-use survey — and updated satellite data from 2020 to 2024 showing that agricultural encroachment into the project boundary buffer zone had increased by approximately 23%. This analysis indicated a potential overstatement of credited emissions reductions of between 10 and 18%, consistent with the allegations in the Article of 10 May 2024. (Respondent Exhibit R 3)</p>
+</li>
+<li><p>Kenya&#39;s <strong>Carbon Markets Regulations, 2024</strong> came into force on 1 March 2024 and introduced new requirements for carbon projects participating in voluntary carbon trading, including compliance with Article 6 of the Paris Agreement safeguards. DigiCarbon&#39;s legal team advised that Tranche 2 VCUs might not be lawfully traded on international markets without CMR 2024 compliance documentation. Savanna had not, as at the Tranche 2 delivery date of 1 April 2024, confirmed CMR 2024 compliance to DigiCarbon.</p>
+</li>
+<li><p>DigiCarbon&#39;s termination notice of 15 May 2024 was justified. The three stated grounds — Savanna&#39;s fundamental breach through delivery of non-compliant Tranche 1 VCUs, integrity concerns regarding the Mau Project, and regulatory uncertainty under CMR 2024 — were each independently sufficient to justify refusal to perform.</p>
+</li>
+</ol>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="legal-considerations">Legal Considerations</h3>
+<h4 id="applicable-rules">Applicable Rules</h4>
+<ol start="10">
+<li><p>The NCIA Arbitration Rules 2024 govern these proceedings. As set out in DigiCarbon&#39;s email of 25 September 2024, the word &quot;current&quot; in Clause 15 refers to the rules in force at the time of commencement of the arbitration — 1 September 2024 — which are the NCIA Rules 2024. Rule 1.4 of those Rules is clear and unambiguous. No written contrary agreement was made.</p>
+</li>
+<li><p>The NCIA Rules 2024 are directly relevant to this dispute. Rule 38 provides the Tribunal with tools to assess and scrutinize the CarbonAI verification system. Rule 39 addresses the evidentiary weight of smart contract outputs. Rule 40 governs the methodology for valuing GRT-denominated damages. Applying the 2015 Rules would deprive the Tribunal of these essential procedural instruments precisely when they are most needed.</p>
+</li>
+</ol>
+<h4 id="disclosure">Disclosure</h4>
+<ol start="12">
+<li><p>Pursuant to Rule 38 of the NCIA Rules 2024 (or, alternatively, under the Tribunal&#39;s general procedural powers under the 2015 Rules), DigiCarbon requests the Tribunal to order <strong>Claimant to disclose the full terms of its funding agreement with AfriArb Capital Ltd and its adverse cost insurance agreement with InsureTrade Ltd.</strong></p>
+</li>
+<li><p>AfriArb Capital Ltd is known in the East African litigation funding market as a high-risk funder that selects claims based on defendant financial strength rather than claim merit, charges unusually high returns of between 35 and 40% of any recovery, is the only East African funder that has declined to subscribe to the East Africa Litigation Funding Code of Conduct (2023), and is reported to require claimants to obtain its consent before accepting any settlement offer. (Respondent Exhibit R 4). These matters are directly relevant to DigiCarbon&#39;s potential application for security for costs.</p>
+</li>
+<li><p>DigiCarbon notes, for full transparency and without accepting any disclosure obligation, that it receives litigation support in these proceedings from its parent company, DigiCarbon Holdings PLC (Novaterra).</p>
+</li>
+</ol>
+<h4 id="substance-2">Substance</h4>
+<ol start="15">
+<li>Savanna&#39;s claims are unfounded for the following reasons:</li>
+</ol>
+<p>(a) <strong>No breach by DigiCarbon.</strong> CarbonAI&#39;s rejection of 180,000 Tranche 1 VCUs was a valid and contractually conclusive determination under Clause 8.2. Clause 8.3 does not override Clause 8.2 in the present circumstances, where there is no conflict between CarbonAI&#39;s evaluation and VCS certification — both can be simultaneously correct, addressing different temporal and methodological dimensions of quality assessment. Furthermore, Savanna&#39;s purported invocation of Clause 8.3 was procedurally defective: Verra declined to engage, and Savanna did not propose any alternative referral mechanism before commencing this arbitration.</p>
+<p>(b) <strong>Justified refusal of Tranche 2.</strong> Savanna&#39;s failure to remedy the Tranche 1 breach, combined with DigiCarbon&#39;s own independent data analysis revealing potential baseline manipulation, justified DigiCarbon&#39;s refusal to accept a further 250,000 VCUs from the same project.</p>
+<p>(c) <strong>Force majeure.</strong> Alternatively, DigiCarbon&#39;s obligations are excused under Clause 12 of the SCPA, as the CMR 2024 constitutes a regulatory change with direct effect on the lawfulness of trading Mau Project VCUs internationally. Additionally, under Kenyan common law, the doctrine of frustration applies where an unforeseen change in law renders performance radically different from what was contracted.</p>
+<p>(d) <strong>No valid cover sale.</strong> Even if Savanna is entitled to damages, the cover sale with ClimateFirst does not qualify as a proper cover sale under Kenyan law entitling Savanna to a simple price difference calculation because: (i) Savanna began arranging the cover sale on 1 June 2024, only 17 days after the termination notice — an unusually short interval that did not allow the market to be properly tested; and (ii) the measure of damages, if any, cannot be converted from GRT to USD because GRT is not legal tender in Kenya and the Virtual Assets Service Providers Act, 2023 does not recognize GRT as a lawful payment currency, making a GRT-to-USD conversion exercise speculative and unreliable.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h3 id="requests-for-relief">Requests for Relief</h3>
+<ol start="16">
+<li>DigiCarbon requests the Arbitral Tribunal to:</li>
+</ol>
+<p>(a) Declare that the NCIA Arbitration Rules 2024 govern these proceedings;<br>(b) Order Claimant to disclose the full terms of its funding agreement with AfriArb Capital Ltd and its adverse cost insurance agreement with InsureTrade Ltd;<br>(c) Dismiss Claimant&#39;s claims in their entirety;<br>(d) Order Claimant to bear all costs of these proceedings.</p>
+<p><strong>Marcus Holloway</strong><br>Holloway Chambers</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="respondent-exhibit-r-1" class="exhibit-heading" data-tag="R·1">RESPONDENT EXHIBIT R 1</h2>
+<h3 id="witness-statement-of-lars-voss">Witness Statement of Lars Voss</h3>
+<ol>
+<li><p>I am Chief Executive Officer of DigiCarbon International PLC (&quot;DigiCarbon&quot;), which I co-founded in 2018. DigiCarbon&#39;s mission is to bring institutional-grade quality assurance to the voluntary carbon market through AI-powered verification.</p>
+</li>
+<li><p>CarbonAI was developed between 2018 and 2022 at a total cost of approximately USD 8 million. It was trained on data from over 4,000 REDD+ and afforestation/reforestation projects globally, including projects that received VCS certification but were later found to have overstated their emission reductions. CarbonAI identifies patterns of risk that VCS certification — which assesses a project at a point in time based on submitted documentation — may not detect. This includes changes in deforestation patterns, land-use encroachment, and ecological dynamics that occur between verification cycles.</p>
+</li>
+<li><p>During negotiations with Savanna in early 2023, I made clear to Dr. Njoroge that CarbonAI verification was non-negotiable. Our institutional clients pay a premium for CarbonAI-verified VCUs. The entire commercial model of CarbonChain depends on the integrity of CarbonAI&#39;s assessment. Clause 8.2 is what makes that model viable.</p>
+</li>
+<li><p>The CarbonAI Rejection Report of 5 October 2023 was a legitimate and technically grounded output. Our data science team confirmed the rejection findings after reviewing updated LANDSAT and Sentinel-2 satellite imagery of the Mau Forest project area. The rejection was not manufactured or manipulated. I did not instruct any member of my team to produce a rejection outcome for any reason other than the technical assessment.</p>
+</li>
+<li><p>Regarding our internal data analysis note of 30 April 2024 (Respondent Exhibit R 3): this was prepared by our data science team as part of our standard post-rejection due diligence. The findings corroborated the CarbonAI rejection and additionally identified a specific methodological concern about the project&#39;s deforestation baseline. The fact that this note was prepared after the Rejection Report does not undermine the Rejection Report itself; it is independent corroboration.</p>
+</li>
+<li><p>The Article of 10 May 2024 in the <em>Nairobi Business Observer</em> was published without any input from DigiCarbon. However, the specific concern it raised about the 2015 land-use baseline was consistent with what our own analysis had already found independently, which lent it credibility in our assessment.</p>
+</li>
+<li><p>I terminated the SCPA in good faith, based on genuine technical, integrity, and regulatory concerns. DigiCarbon had no commercial interest in avoiding its payment obligations for VCUs that genuinely passed quality standards — the entire value of the CarbonChain platform depends on the credibility of VCUs it tokenizes.</p>
+</li>
+</ol>
+<p><em>Port Nova, Novaterra, 15 October 2024</em></p>
+<p><strong>Lars Voss</strong></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="respondent-exhibit-r-2" class="exhibit-heading" data-tag="R·2">RESPONDENT EXHIBIT R 2</h2>
+<h3 id="carbonai-protocol-overview-non-proprietary-summary-v42">CarbonAI Protocol Overview — Non-Proprietary Summary (v4.2)</h3>
+<p><strong>[DIGICARBON]</strong></p>
+<p><strong>1. Purpose</strong><br>CarbonAI is DigiCarbon&#39;s proprietary AI verification system for voluntary carbon credits. It supplements VCS certification with real-time and dynamic data analysis to identify latent and evolving quality risks.</p>
+<p><strong>2. Evaluation Dimensions (Non-Proprietary Summary)</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Dimension</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Additionality Risk</td><td>Probability that protected emissions reductions would have occurred in the project&#39;s absence (draws on dynamic regional land-use change models)</td></tr>
+<tr><td>Permanence Risk</td><td>Probability of reversal of protected emissions over the crediting period (draws on current satellite imagery and ecological risk models)</td></tr>
+<tr><td>Baseline Integrity</td><td>Consistency of the project&#39;s baseline deforestation scenario with current land-use data</td></tr>
+<tr><td>Leakage Risk</td><td>Probability that project activities displace emissions to unprotected areas</td></tr>
+<tr><td>Regulatory Compliance</td><td>Consistency of the project with host-country carbon market regulations current at assessment date</td></tr>
+</tbody>
+</table></div>
+<p><strong>3. Relationship to VCS Methodology</strong><br>CarbonAI uses VCS Methodology requirements as foundational inputs. CarbonAI&#39;s evaluation parameters are not limited to those assessed in standard VCS verification; they incorporate real-time and dynamic data not available to traditional VVBs at the time of their field verification. CarbonAI&#39;s evaluation supplements rather than duplicates the VCS verification.</p>
+<p><strong>4. Confidentiality</strong><br>The CarbonAI algorithm, training dataset, weighting parameters, threshold calibration, and model architecture are proprietary to DigiCarbon International PLC and constitute trade secrets protected under applicable intellectual property laws.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="respondent-exhibit-r-3" class="exhibit-heading" data-tag="R·3">RESPONDENT EXHIBIT R 3</h2>
+<h3 id="digicarbon-data-science-team-internal-analysis-note-excerpt">DigiCarbon Data Science Team — Internal Analysis Note (Excerpt)</h3>
+<p><em>Re: Mau Forest Carbon Conservation Project — Baseline Integrity Assessment</em><br><em>Date: 30 April 2024</em><br><em>Classification: Confidential</em></p>
+<p><strong>Summary of Findings:</strong></p>
+<p>Our analysis of LANDSAT-8 and Sentinel-2 satellite imagery covering the Mau Project boundary zone for the period 2020–2024 identifies the following:</p>
+<ol>
+<li><p>Agricultural encroachment into the project&#39;s buffer zone increased by approximately 23% between 2015 and 2023. This encroachment pattern was not accounted for in the project&#39;s 2015-based historical reference level.</p>
+</li>
+<li><p>Deforestation rates in the comparable reference region used to derive the project&#39;s historical reference level declined during 2017–2023 relative to the 2005–2015 period used in the baseline. Under a current baseline, the additionality of the project&#39;s interventions would be reduced.</p>
+</li>
+<li><p>On the basis of these findings, we estimate a potential overstatement of credited emission reductions of between 10% and 18% relative to current conditions.</p>
+</li>
+</ol>
+<p><em>Note: These findings were produced independently of the CarbonAI Rejection Report of October 2023, which was generated by CarbonAI&#39;s automated assessment. This note represents additional post-rejection due diligence undertaken by the DigiCarbon data science team.</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="respondent-exhibit-r-4" class="exhibit-heading" data-tag="R·4">RESPONDENT EXHIBIT R 4</h2>
+<h3 id="nairobi-financial-review-1-october-2024">Nairobi Financial Review — 1 October 2024</h3>
+<p><strong>&quot;THE RISE OF HIGH-RISK LITIGATION FUNDERS IN EAST AFRICA&quot;</strong></p>
+<p><em>Nairobi Financial Review | Legal &amp; Finance</em></p>
+<p>Third-party litigation funding has expanded rapidly in East Africa over the past five years, with funders providing capital for commercial arbitration claims in exchange for a share of any recovery. The practice offers genuine access-to-justice benefits for claimants with meritorious claims who lack resources to pursue them.</p>
+<p>However, not all funders operate to the same standard. The recently published <strong>East Africa Litigation Funding Code of Conduct (2023)</strong>, developed by the East Africa Dispute Finance Association, establishes minimum standards for the industry, including: transparency on fee structures, prohibition on influencing case strategy, and an obligation to fund adverse cost awards where ordered.</p>
+<p><strong>AfriArb Capital Ltd</strong>, incorporated in Nairobi, is the only active East African funder that has not subscribed to the Code. Industry sources describe AfriArb as willing to fund high-risk claims that mainstream funders reject, in exchange for returns of 35–40% of any recovery. Of particular concern to arbitration practitioners is a reported contractual right in AfriArb&#39;s standard agreements to <strong>approve or veto settlement offers below a specified threshold</strong>, a feature that other funders and practitioners consider inconsistent with due process principles and the client&#39;s autonomous right to settle.</p>
+<p>A legal practitioner familiar with the industry commented that AfriArb&#39;s model &quot;prioritizes funder returns over client outcomes and due process in ways that most responsible funders have moved away from.&quot;</p>
+<p>AfriArb Capital Ltd declined to comment. No regulatory finding or court order has been made against AfriArb Capital Ltd.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="letter-by-advocate-kamau-16-october-2024">Letter by Advocate Kamau (16 October 2024)</h2>
+<p><strong>ZARA KAMAU &amp; ASSOCIATES</strong><br>14 Waiyaki Way, Westlands, Nairobi, Kenya<br><a href="mailto:zkamau@zkaadvocates.co.ke">zkamau@zkaadvocates.co.ke</a></p>
+<p>16 October 2024</p>
+<p>By Email</p>
+<p>Nairobi Centre for International Arbitration<br>Marcus Holloway, Holloway Chambers</p>
+<p><strong>Re: Savanna Carbon Solutions Ltd v. DigiCarbon International PLC — NCIA/ARB/2024/047</strong></p>
+<p>Dear Mr. Muriithi and Mr. Holloway,</p>
+<p>Respondent&#39;s Response raises two matters requiring prompt clarification.</p>
+<p><strong>First</strong>, on the applicable NCIA Rules: Respondent simultaneously argues that SIAC&#39;s [NCIA&#39;s] decision to commence under the 2015 Rules is non-binding, while relying on the NCIA&#39;s determination that the arbitration commenced on 1 September 2024 to support its argument that the 2024 Rules apply. These positions are mutually inconsistent. If the NCIA&#39;s commencement determination is authoritative, so too is its determination that this arbitration is being administered under the 2015 Rules.</p>
+<p><strong>Second</strong>, on disclosure of funding terms: The NCIA Rules 2015 do not grant the Tribunal power to order disclosure of third-party funding agreements. Respondent cites Rule 38 of the NCIA Rules 2024 — but that Rule addresses AI system disclosure, not funding disclosure. Even if the 2024 Rules applied, no Rule in those Rules grants power to compel disclosure of funding terms comparable to the power Respondent seeks. The general procedural powers of the Tribunal under either version of the Rules are not a blank warrant for intrusive disclosure orders that would prejudice Claimant&#39;s ability to pursue a legitimate claim.</p>
+<p>Claimant further notes that Respondent discloses its own litigation support from DigiCarbon Holdings PLC but resists any disclosure obligation itself. Claimant&#39;s external funding is fully disclosed in its Notice; the terms of that funding are no more relevant to the merits than the terms of Respondent&#39;s corporate financing.</p>
+<p>Yours faithfully,</p>
+<p><strong>Zara Kamau</strong><br>Zara Kamau &amp; Associates</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="ncia-letter-on-tribunal-constitution-10-november-2024">NCIA Letter on Tribunal Constitution (10 November 2024)</h2>
+<p><strong>[NCIA LOGO]</strong></p>
+<p>Our Ref: NCIA/ARB/2024/047</p>
+<p>10 November 2024</p>
+<p>[Parties and Counsel as above]</p>
+<p><strong>NCIA ARBITRATION 2024/047</strong></p>
+<ol>
+<li><p>We are pleased to inform you that the NCIA President has appointed <strong>Prof. Asha Oduor</strong> (Nairobi, Kenya) as Presiding Arbitrator. The Tribunal is therefore constituted as follows:</p>
+<ul>
+<li><strong>Prof. Asha Oduor</strong> — Presiding Arbitrator</li>
+<li><strong>Dr. Wanjiru Kabiru</strong> — Co-Arbitrator (nominated by Claimant)</li>
+<li><strong>Mr. Benjamin Steele</strong> — Co-Arbitrator (nominated by Respondent)</li>
+</ul>
+</li>
+<li><p>Prof. Oduor&#39;s appointment is made pursuant to Rule 11.3 of the NCIA Arbitration Rules 2015.</p>
+</li>
+<li><p>We note the parties&#39; respective positions on the applicable NCIA Rules. This arbitration has been commenced under the NCIA Arbitration Rules 2015 as invoked by Claimant. The parties are at liberty to address the applicable version of the Rules before the Tribunal.</p>
+</li>
+<li><p>We draw the Tribunal&#39;s attention to the NCIA Practice Note on Third-Party Funding (PN-NCIA-01/2022) and the NCIA Practice Note on Technology-Assisted Arbitration (PN-NCIA-02/2024), both of which may be relevant to the conduct of these proceedings.</p>
+</li>
+</ol>
+<p>Sincerely,</p>
+<p><strong>Reginald Muriithi</strong><br>Deputy Registrar, NCIA</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="letter-by-presiding-arbitrator-19-november-2024">Letter by Presiding Arbitrator (19 November 2024)</h2>
+<p>Prof. Asha Oduor<br>Presiding Arbitrator<br>c/o Department of Law, University of Nairobi<br><a href="mailto:oduor.asha@arbpractice.co.ke">oduor.asha@arbpractice.co.ke</a></p>
+<p><em>By Email</em></p>
+<p>Joseph Langweiler... — <em>[correct parties:]</em> Zara Kamau &amp; Associates and Holloway Chambers</p>
+<p>cc. NCIA</p>
+<p><strong>Arbitral Proceedings: Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</strong><br><strong>NCIA/ARB/2024/047</strong></p>
+<p>19 November 2024</p>
+<p>Dear Colleagues,</p>
+<p>The Arbitral Tribunal would like to convene a preliminary conference call on <strong>3 December 2024</strong> to discuss the further conduct of these proceedings. Please confirm availability.</p>
+<p>Kind regards,</p>
+<p>For the Arbitral Tribunal</p>
+<p><strong>Prof. Asha Oduor</strong><br>Presiding Arbitrator</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="procedural-order-no-1" class="order-heading" data-tag="PO·1">PROCEDURAL ORDER NO. 1</h2>
+<p><em>of 9 December 2024</em></p>
+<p><strong>Arbitral Proceedings: Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</strong><br><strong>NCIA/ARB/2024/047</strong></p>
+<p><strong>I.</strong> Following receipt of the file on 10 November 2024, the Arbitral Tribunal conducted a preliminary conference with both parties on 3 December 2024.</p>
+<p><strong>II.</strong> The Arbitral Tribunal takes note that in the preliminary conference of 3 December 2024, both parties agreed:</p>
+<ul>
+<li>That the Smart Carbon Purchase Agreement dated 15 March 2023 is governed by the laws of Kenya;</li>
+<li>That the NCIA&#39;s determination of the applicable Rules is of a preliminary nature;</li>
+<li>To empower the Arbitral Tribunal to decide on the applicable version of the NCIA Arbitration Rules and thereafter continue the proceedings on the basis of those Rules without the need to initiate new proceedings;</li>
+<li>That Kenya and Novaterra are each Member States of the New York Convention on the Recognition and Enforcement of Foreign Arbitral Awards, 1958, and parties to the Paris Agreement on Climate Change, 2015, and the UNFCCC;</li>
+<li>That Kenya has adopted the UNCITRAL Model Law on International Commercial Arbitration (1985, with 2006 amendments) through the Arbitration Act, Cap. 49 (as amended, 2009);</li>
+<li>That Kenyan common law of contract, as received under the Law of Contract Act, Cap. 23 and as developed in Kenyan jurisprudence, governs the SCPA;</li>
+<li>That the UNIDROIT Principles on International Commercial Contracts (2016) may be relied upon as a persuasive reference where relevant.</li>
+</ul>
+<p><strong>III.</strong> The Arbitral Tribunal hereby makes the following orders:</p>
+<p><strong>1. Issues for Submissions and Oral Hearing</strong></p>
+<p>In their next submissions and at the Oral Hearing, the Parties are required to address the following issues:</p>
+<p><strong>(a)</strong> Which version of the NCIA Arbitration Rules governs this arbitration: the <strong>NCIA Arbitration Rules 2015</strong> or the <strong>NCIA Arbitration Rules 2024</strong>?</p>
+<p><strong>(b)</strong> Should the Arbitral Tribunal order:</p>
+<ul>
+<li>(i) <strong>Respondent</strong> to disclose CarbonAI&#39;s decision logic, evaluation parameters, and training data methodology to the extent necessary for a fair determination of the dispute; and/or</li>
+<li>(ii) <strong>Claimant</strong> to disclose the full terms of its funding agreement with AfriArb Capital Ltd and its adverse cost insurance agreement with InsureTrade Ltd?</li>
+</ul>
+<p><strong>(c)</strong> Did <strong>Respondent breach the SCPA</strong> by refusing to release payment for the 180,000 Tranche 1 VCUs rejected by CarbonAI, and/or by refusing to accept the Tranche 2 VCUs and purporting to terminate the Agreement on 15 May 2024? If Respondent breached the SCPA, is that breach excused by:</p>
+<ul>
+<li>(i) the force majeure clause at Clause 12 of the SCPA; or</li>
+<li>(ii) the common law doctrine of frustration under Kenyan contract law?</li>
+</ul>
+<p><strong>(d)</strong> If Claimant is entitled to damages, can Claimant recover damages calculated as the difference between the contract price (12 GRT per VCU) and the cover sale price (8 GRT per VCU) multiplied by 430,000 VCUs (= 1,720,000 GRT), converted to USD at the exchange rate of USD 2.50 per GRT prevailing on 15 May 2024?</p>
+<p><strong>The Parties are free to address these issues in the order of their choosing. No questions going to quantum of damages beyond the issue stated in paragraph (d) above should be addressed at this stage of the proceedings.</strong></p>
+<p><strong>2. Procedural Timetable</strong></p>
+<p>(a) Claimant&#39;s Written Submission: no later than [date per Moot Rules];<br>(b) Respondent&#39;s Written Submission: no later than [date per Moot Rules].</p>
+<p><strong>3. Additional Agreed and Undisputed Facts</strong></p>
+<p>(a) The Mau Forest Carbon Conservation Project remains certified by Verra. No formal investigation has been commenced by Verra or any regulatory authority into the Mau Project&#39;s carbon accounting.</p>
+<p>(b) Kenya&#39;s <strong>Carbon Markets Regulations, 2024</strong> (&quot;CMR 2024&quot;) require carbon projects wishing to participate in Kenya&#39;s domestic voluntary carbon market to register with the Kenya National Carbon Registry. The CMR 2024 does not invalidate previously issued VCS-certified VCUs or impose additional verification requirements on VCUs already certified under the VCS. Projects already holding VCS certification retain that certification; CMR 2024 registration is required for domestic market participation.</p>
+<p>(c) Kenya&#39;s <strong>Virtual Assets Service Providers Act, 2023</strong> (&quot;VASPA&quot;) establishes a regulatory framework for virtual asset service providers operating in Kenya. GRT is not designated as legal tender in Kenya. The VASPA does not prohibit the use of virtual assets as contractual payment instruments between sophisticated commercial parties; it regulates service providers.</p>
+<p>(d) Both Kenya and Novaterra have enacted arbitration laws based on the UNCITRAL Model Law.</p>
+<p>(e) Neither Kenya nor Novaterra has ratified the Singapore Convention on Mediation.</p>
+<p>(f) The general contract law of Novaterra is the common law of contract.</p>
+<p><strong>4. Requests for Clarification</strong></p>
+<p>Requests for Clarification must be submitted no later than [date per Moot Rules] via the Moot platform. No team may submit more than ten questions. Clarifications must be categorized as follows:</p>
+<ol>
+<li>Questions relating to the parties and their business;</li>
+<li>Questions relating to CarbonAI, its development, methodology, and the Rejection Report;</li>
+<li>Questions relating to the negotiation, drafting, and interpretation of the arbitration clause (Clause 15) and the applicable NCIA Rules;</li>
+<li>Questions relating to the negotiation, drafting, and interpretation of the SCPA, including Clauses 8.2, 8.3, and 12;</li>
+<li>Questions relating to the Mau Project, VCS certification, and the Carbon Markets Regulations 2024;</li>
+<li>Questions relating to the third-party funding (AfriArb Capital Ltd) and adverse cost insurance (InsureTrade Ltd);</li>
+<li>Questions relating to GreenToken (GRT), its characteristics, and digital asset valuation;</li>
+<li>Questions relating to applicable Kenyan law and international law;</li>
+<li>Other questions.</li>
+</ol>
+<p><strong>IV.</strong> Both parties are invited to attend the Oral Hearing scheduled for Nairobi, Kenya. Details of timing and venue will follow.</p>
+<p><em>Nairobi, 9 December 2024</em></p>
+<p>For the Arbitral Tribunal</p>
+<p><strong>Prof. Asha Oduor</strong><br>Presiding Arbitrator</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<h2 id="procedural-order-no-2" class="order-heading" data-tag="PO·2">PROCEDURAL ORDER NO. 2</h2>
+<p><em>of [Clarification Date]</em></p>
+<p><strong>Arbitral Proceedings: Savanna Carbon Solutions Ltd v. DigiCarbon International PLC</strong><br><strong>NCIA/ARB/2024/047</strong></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>1. What are the exact provisions of the NCIA Rules relevant to these proceedings?</strong></p>
+<p><strong>NCIA Arbitration Rules 2015, Rule 1.2:</strong> &quot;These Rules shall apply to all arbitrations commenced under the auspices of the Nairobi Centre for International Arbitration where the parties have agreed to arbitration under these Rules or under the Rules of the NCIA.&quot;</p>
+<p><strong>NCIA Arbitration Rules 2015, Rule 26 (Case Management Powers):</strong> &quot;The Tribunal may make such orders and give such directions as it considers appropriate to facilitate the fair, efficient and expeditious resolution of the dispute, including orders for the production and inspection of documents and other evidence.&quot;</p>
+<p><strong>NCIA Arbitration Rules 2024, Rule 1.4:</strong> &quot;These Rules shall apply to any arbitration administered by the NCIA that is commenced on or after 1 January 2024, unless the parties have otherwise agreed in writing.&quot;</p>
+<p><strong>NCIA Arbitration Rules 2024, Rule 38 (AI Systems in Arbitral Proceedings):</strong></p>
+<blockquote class="ledger-quote"><p>&quot;38.1 Where an AI system has been used by a party in the performance of the contract in dispute, the Tribunal may, upon application by the other party, order the producing party to disclose the AI system&#39;s decision logic, evaluation parameters, and bias assessment methodology, to the extent the Tribunal finds necessary for a fair determination of the dispute.<br>38.2 Such disclosure shall be subject to appropriate confidentiality protections as the Tribunal may order in its discretion, including production to the Tribunal only or to the other party subject to a confidentiality undertaking.<br>38.3 The Tribunal may appoint a technical expert to assist in the evaluation of any disclosed AI system information.<br>38.4 A party that has used an AI system in contractual performance shall, upon request, disclose to the other party whether the AI system&#39;s parameters or thresholds may have been modified between the contract date and the date of performance.&quot;</p>
+</blockquote>
+<p><strong>NCIA Arbitration Rules 2024, Rule 39 (Smart Contracts as Evidence):</strong></p>
+<blockquote class="ledger-quote"><p>&quot;39.1 A smart contract execution log is admissible as evidence of the automated functions it performed.<br>39.2 A smart contract execution log does not, of itself, constitute conclusive evidence of performance of an underlying contractual obligation where such obligation is defined by the express terms of the parties&#39; written agreement.<br>39.3 The Tribunal shall weigh smart contract evidence in light of all terms of the parties&#39; agreement and applicable law.&quot;</p>
+</blockquote>
+<p><strong>NCIA Arbitration Rules 2024, Rule 40 (Digital Asset Valuation):</strong></p>
+<blockquote class="ledger-quote"><p>&quot;40.1 Where a party claims damages denominated in or by reference to a virtual asset, the Tribunal shall determine the applicable valuation methodology having regard to: (a) the nature and characteristics of the virtual asset; (b) prevailing market rates at the relevant valuation date; (c) the law of the seat on legal tender and currency; and (d) the applicable principle of full compensation.<br>40.2 The Tribunal is not precluded from awarding damages in a fiat currency where necessary to achieve full compensation under applicable law.&quot;</p>
+</blockquote>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>2. Was CarbonAI&#39;s full methodology disclosed to Savanna at any point before or during negotiations?</strong></p>
+<p>No. DigiCarbon disclosed only the non-proprietary summary attached as Respondent Exhibit R 2. The specific algorithm, threshold values, parameter definitions, and training dataset were not disclosed at any stage.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>3. Did the parties discuss the meaning and effect of Clause 8.3 during negotiations?</strong></p>
+<p>Yes, briefly. Mr. Ochieng proposed Clause 8.3 as a safeguard ensuring that Verra&#39;s certification would have meaningful weight in the event of a CarbonAI rejection. Ms. Tanaka accepted the clause but stated orally that DigiCarbon viewed Clause 8.3 as applicable only to cases of &quot;demonstrable system error,&quot; not routine disagreements between CarbonAI&#39;s dynamic assessment and a point-in-time VCS certification. This oral statement was not recorded in the contract. The clause as drafted is as set out in Claimant Exhibit C 2. No separate document elaborating the parties&#39; mutual understanding of Clause 8.3 exists.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>4. Were the CarbonAI threshold values in the Rejection Report (Non-Additionality Risk Index: 0.60; Permanence Concern Index: 0.55; Baseline Anomaly: 0.50) applied consistently across all projects on the CarbonChain platform in October 2023?</strong></p>
+<p>Yes. These threshold values were applied uniformly to all REDD+ projects on the CarbonChain platform using CarbonAI v4.2. They had not been changed between the contracting date (15 March 2023) and the assessment date (5 October 2023).</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>5. Did CarbonAI&#39;s parameters change between the date of contracting and the Rejection Report?</strong></p>
+<p>No. CarbonAI v4.2 was the version deployed from March 2023 through the end of 2023. No modification to the algorithm, parameters, or thresholds was made between 15 March 2023 and 5 October 2023.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>6. Did Savanna comply with the CMR 2024 before the Tranche 2 delivery date?</strong></p>
+<p>Yes. Savanna registered the Mau Project with the Kenya National Carbon Registry on 1 February 2024. Savanna notified DigiCarbon of this registration on 1 February 2024 by email. DigiCarbon did not request CMR 2024 compliance documentation prior to refusing the Tranche 2 submission.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>7. Did DigiCarbon give any notice under Clause 12.2 of the SCPA regarding force majeure?</strong></p>
+<p>No formal written notice was given under Clause 12.2. DigiCarbon&#39;s termination notice of 15 May 2024 cited regulatory uncertainty as one of three grounds for termination. No prior force majeure notification was sent at any point.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>8. At what GRT exchange rates should the parties and Tribunal calculate relevant values?</strong></p>
+<div class="table-wrap"><table>
+<thead><tr><th>Date</th><th>Event</th><th>1 GRT = USD</th></tr></thead>
+<tbody>
+<tr><td>15 March 2023</td><td>Contract date</td><td>2.00</td></tr>
+<tr><td>1 October 2023</td><td>Tranche 1 delivery</td><td>1.90</td></tr>
+<tr><td>5 October 2023</td><td>CarbonAI Rejection Report</td><td>1.90</td></tr>
+<tr><td>1 April 2024</td><td>Tranche 2 delivery date</td><td>2.30</td></tr>
+<tr><td>15 May 2024</td><td>DigiCarbon&#39;s termination notice</td><td>2.50</td></tr>
+<tr><td>1 June 2024</td><td>Cover sale to ClimateFirst</td><td>2.45</td></tr>
+<tr><td>[Date of this PO2]</td><td>—</td><td>1.95</td></tr>
+</tbody>
+</table></div>
+<p>GRT is volatile. These rates are taken from the CarbonChain exchange and corroborated by independent digital asset price aggregators.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>9. Was the cover sale with ClimateFirst Partners Ltd an arm&#39;s-length transaction?</strong></p>
+<p>Yes. ClimateFirst Partners Ltd is an independent Kenyan impact investment fund. There is no corporate or personal relationship between Savanna and ClimateFirst beyond one prior commercial transaction in 2022, conducted at market rates. Savanna approached six potential buyers before agreeing the cover sale price of 8 GRT per VCU. ClimateFirst&#39;s offer was the highest received.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>10. What are the prevailing market prices for bulk REDD+ VCUs in mid-2024?</strong></p>
+<p>In June 2024, bulk transactions of REDD+ VCUs on the voluntary carbon market attracted prices in the range of USD 4 to USD 12, with significant variation depending on project quality, certification vintage, and buyer due diligence requirements. The 8 GRT per VCU cover sale price (equivalent to approximately USD 19.60 at the 1 June 2024 exchange rate) reflected the premium commanded by Verra VCS-certified VCUs from a well-established Kenyan project, offset by downward market pressure from global carbon credit quality controversies.</p>
+<p><em>Note: VCU prices and GRT prices are separate variables; the cover sale price of 8 GRT per VCU must be assessed in the context of both the GRT/VCU price and the GRT/USD exchange rate.</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>11. Does AfriArb Capital Ltd have the right to approve or reject settlement offers?</strong></p>
+<p>Yes. The funding agreement between Savanna and AfriArb Capital Ltd contains a provision that Savanna shall not accept any settlement offer of less than 60% of the claimed sum (i.e., less than USD 2,580,000) without AfriArb Capital&#39;s prior written consent.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>12. Do the funding agreements between Savanna and AfriArb Capital Ltd, and between Savanna and InsureTrade Ltd, contain confidentiality clauses?</strong></p>
+<p>Yes. Both agreements contain the following provision: <em>&quot;The Parties agree to maintain the existence and terms of this Agreement in strict confidence and shall not disclose them to any third party without prior written consent, except as required by applicable law or by order of a court of competent jurisdiction or arbitral tribunal, or as required to comply with mandatory regulatory disclosure obligations.&quot;</em></p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>13. Could Savanna have pursued this arbitration without AfriArb Capital&#39;s funding?</strong></p>
+<p>Probably not on its own resources. In June 2024, Savanna was the subject of a cybersecurity incident that compromised part of its GRT wallet holdings. Recovery from that incident is ongoing. Savanna&#39;s financial position would make sustaining a lengthy arbitration difficult without external funding. Savanna entered into its funding agreement with AfriArb Capital in August 2024, prior to filing the Notice of Arbitration.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>14. Is GRT legal tender in Kenya or Novaterra?</strong></p>
+<p>No. GRT is not legal tender in either jurisdiction. The Kenyan Virtual Assets Service Providers Act, 2023 does not designate any virtual asset as legal tender. The VASPA regulates virtual asset service providers but does not prohibit the use of virtual assets as contractual payment instruments between sophisticated commercial parties contracting under Kenyan law.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>15. Has any Kenyan court or arbitral tribunal addressed whether damages may be awarded in virtual assets or by reference to virtual asset values?</strong></p>
+<p>There is no direct Kenyan judicial or arbitral authority on the point. Kenyan courts have awarded damages in foreign fiat currencies in appropriate commercial cases, applying the principle that damages are assessed to provide full compensation to the injured party.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>16. Are there any restrictions on the trading of Mau Project VCUs under Kenyan law, CITES, or international law?</strong></p>
+<p>VCUs are intangible rights, not physical goods. No law or treaty restricts their transfer once lawfully issued. The Paris Agreement, Article 6, sets out conditions for the international transfer of mitigation outcomes between states; these provisions apply to government-level transfers and do not directly restrict private voluntary carbon credit transactions. The CMR 2024 requires project registration for domestic market participation but does not restrict international voluntary carbon credit transactions.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>17. What is the basis for DigiCarbon&#39;s assertion that the CMR 2024 rendered Tranche 2 performance impracticable?</strong></p>
+<p>DigiCarbon&#39;s legal team took the view that institutional buyers on CarbonChain, being regulated entities in various jurisdictions, required assurance that VCUs they purchased were compliant with both VCS standards and the host-country&#39;s domestic carbon market regulations. DigiCarbon argued it could not resell non-CMR-compliant VCUs on its platform without potential regulatory exposure. This interpretation was DigiCarbon&#39;s own; the CMR 2024 itself imposes no obligation on buyers to verify the domestic regulatory compliance of sellers.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>18. Did Respondent attempt to obtain its own independent verification of the rejected Tranche 1 VCUs?</strong></p>
+<p>No. DigiCarbon did not commission any independent third-party verification of the 180,000 rejected VCUs from an accredited Verra VVB at any point before or after issuing the termination notice.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>19. Is InsureTrade Ltd&#39;s reputation in the East African market positive?</strong></p>
+<p>Yes. InsureTrade Ltd is a well-regarded adverse cost insurer operating in Kenya and the broader East Africa region, known for prompt payment and adherence to industry standards. No adverse finding has been made against it.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>20. Did Claimant accept the partial payment of 840,000 GRT (for 70,000 VCUs) without reservation?</strong></p>
+<p>No. Savanna accepted the partial payment under written protest, communicating to DigiCarbon on 7 October 2023 that it accepted the 840,000 GRT payment &quot;without prejudice to and in full reservation of all of Savanna&#39;s rights under the SCPA in respect of the 180,000 VCUs wrongfully rejected by CarbonAI.&quot;</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>21. Has Respondent disclosed whether any other sellers&#39; VCUs have been rejected by CarbonAI at similar rates?</strong></p>
+<p>DigiCarbon states that CarbonAI rejection rates vary by project and that rejection data for other projects is confidential. DigiCarbon declines to disclose aggregate rejection rates or comparative data. No prior rejection rate data was shared with Savanna before contracting.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>22. Were the NCIA Arbitration Rules 2024 developed through public consultation?</strong></p>
+<p>Yes. The NCIA Rules 2024 were developed through a 2022–2023 public consultation process involving arbitration practitioners, technology specialists, regulators, and NCIA stakeholders. The 2024 Rules do not purport to apply retroactively to contracts concluded before 1 January 2024; they govern the conduct of arbitral proceedings commenced on or after that date.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>23. Are there any further points of clarification regarding applicable law?</strong></p>
+<p>The following undisputed points should be noted:</p>
+<ul>
+<li>Equatoriana, Mediterraneo and Danubia have no role in this moot. The relevant jurisdictions are Kenya (seat; Claimant&#39;s domicile; governing law), Novaterra (Respondent&#39;s domicile), and any jurisdiction where enforcement might be sought.</li>
+<li>No reservations to the New York Convention have been declared by Kenya or Novaterra that are relevant to this arbitration.</li>
+<li>Kenya is a signatory to the Paris Agreement and submitted its NDC (Nationally Determined Contribution) in 2020 and its updated NDC in 2023; these instruments do not restrict voluntary carbon credit transactions.</li>
+</ul>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>24. Are the NGO allegations in the Nairobi Business Observer Article traceable to DigiCarbon or any affiliated party?</strong></p>
+<p>No connection between DigiCarbon or any affiliated entity and the anonymous source cited in the Article has been identified.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>25. Was the ClimateFirst cover sale concluded before or after DigiCarbon&#39;s termination notice?</strong></p>
+<p>The cover sale agreement with ClimateFirst was concluded on 1 June 2024. DigiCarbon&#39;s termination notice was dated 15 May 2024. The cover sale was therefore concluded 17 days after the termination notice.</p>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><strong>Clarification:</strong></p>
+<ul>
+<li>Savanna Carbon Solutions Ltd, DigiCarbon International PLC, and all named individuals are fictional entities created for this moot problem.</li>
+<li>&quot;GreenToken&quot; (GRT), &quot;CarbonAI,&quot; and &quot;CarbonChain&quot; are fictional constructs created for the purposes of this problem.</li>
+<li>&quot;Novaterra&quot; is a fictional jurisdiction whose general contract law is the common law of contract.</li>
+<li>The <strong>NCIA Arbitration Rules 2024</strong>, the <strong>Virtual Assets Service Providers Act, 2023 (Kenya)</strong>, and the <strong>Carbon Markets Regulations, 2024 (Kenya)</strong> are fictional instruments created for this problem, reflecting realistic policy directions in Kenya as at the time of drafting.</li>
+<li>The NCIA Arbitration Rules 2015, the Climate Change Act 2016, the Arbitration Act Cap. 49, the Paris Agreement, and all other real instruments are used in their real-world context, with fictional facts applied to them.</li>
+<li>The Mau Forest is a real forest in Kenya, but all facts relating to a Mau Forest Carbon Conservation Project in this problem are entirely fictional.</li>
+</ul>
+<div class="divider" aria-hidden="true"><span class="divider-mark">&sect;</span></div>
+<p><em>Nairobi, [Clarification Date]</em></p>
+<p>For the Arbitral Tribunal</p>
+<p><strong>Prof. Asha Oduor</strong><br>Presiding Arbitrator</p>
+
+      </div>
+      <div class="doc-footer">
+        Young Arbitrators Society Moot, Second Edition 2026 &mdash; Nairobi, Kenya. A fictional academic moot problem prepared for educational purposes.
+      </div>
+    </article>
+  </main>
+</div>
+
+<script>
+(function(){
+  var toggleBtn = document.getElementById('toc-toggle');
+  var nav = document.getElementById('toc-nav');
+  var collapsed = false;
+  toggleBtn.addEventListener('click', function(){
+    collapsed = !collapsed;
+    nav.style.display = collapsed ? 'none' : 'block';
+    toggleBtn.textContent = collapsed ? 'Expand' : 'Collapse';
+  });
+  document.getElementById('toc-print').addEventListener('click', function(){ window.print(); });
+
+  // Active-section highlight on scroll
+  var links = Array.prototype.slice.call(document.querySelectorAll('#toc-nav a'));
+  var sections = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(a){ a.classList.remove('active'); });
+    if (current){
+      var match = links.find(function(a){ return a.getAttribute('href') === '#' + current.id; });
+      if (match) match.classList.add('active');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
