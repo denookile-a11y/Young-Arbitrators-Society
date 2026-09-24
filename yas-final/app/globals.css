@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* ============================================================
+   YAS Design System — ported from the original static build's
+   assets/css/style.css. These are the same 10 tokens; changing
+   any value here reskins the whole app consistently.
+   ============================================================ */
+:root {
+  --color-navy-deep: #0A1A3C;
+  --color-navy-mid: #132B5E;
+  --color-white: #FFFFFF;
+  --color-off-white: #F7F8FA;
+  --color-gold: #B8912F;
+  --color-gold-soft: #D9BC72;
+  --color-ink: #15151A;
+  --color-ink-soft: #4A4E5A;
+  --color-hairline: rgba(10, 26, 60, 0.12);
+  --color-hairline-on-navy: rgba(255, 255, 255, 0.16);
+}
+
+@theme inline {
+  --color-navy-deep: var(--color-navy-deep);
+  --color-navy-mid: var(--color-navy-mid);
+  --color-off-white: var(--color-off-white);
+  --color-gold: var(--color-gold);
+  --color-gold-soft: var(--color-gold-soft);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-on-navy: var(--color-hairline-on-navy);
+
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Manrope", -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-white);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker-scroll 32s linear infinite;
+}
+.group\/ticker:hover .animate-ticker {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-indicator {
+  0% { top: -100%; }
+  50% { top: 0; }
+  100% { top: 100%; }
+}
+.animate-scroll-indicator::after {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-gold-soft);
+  animation: scroll-indicator 2.2s ease-in-out infinite;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
