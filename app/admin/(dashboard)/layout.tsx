@@ -52,11 +52,11 @@ export default async function AdminDashboardLayout({
   // costs nothing.
   const admin = await getCurrentAdmin();
   if (!admin) redirect("/admin/login");
+const visibleSections = NAV_SECTIONS.filter((s) =>
+  s.visible ? s.visible(admin) : !s.minRole || hasRole(admin, s.minRole)
+);
 
-  const visibleSections = NAV_SECTIONS.filter((s) =>
-    s.visible ? s.visible(admin) : !s.minRole || hasRole(admin, s.minRole)
-  const mobileNavItems = visibleSections.map(({ visible, ...section }) => section);
-  );
+const mobileNavItems = visibleSections.map(({ visible, ...section }) => section);
 
   return (
     <div className="min-h-screen bg-off-white">
