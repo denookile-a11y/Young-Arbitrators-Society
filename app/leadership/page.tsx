@@ -80,7 +80,16 @@ export default async function LeadershipPage({
               <div className="mb-16 grid grid-cols-1 gap-8 sm:grid-cols-2">
                 {executives.map((role) => (
                   <div key={role.id} className="flex flex-col gap-3.5">
-                    <div className="aspect-[3/3.2] bg-gradient-to-br from-navy-mid to-navy-deep" />
+                    <div className="aspect-[3/3.2] overflow-hidden bg-gradient-to-br from-navy-mid to-navy-deep">
+                      {role.profile?.portrait_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={role.profile.portrait_url}
+                          alt={role.profile.full_name ?? "Leadership portrait"}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : null}
+                    </div>
                     <div className="font-serif text-[1.5rem] font-normal">
                       {role.profile?.full_name ?? "Unassigned"}
                     </div>
@@ -97,7 +106,16 @@ export default async function LeadershipPage({
               <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
                 {departmentHeads.map((role) => (
                   <div key={role.id} className="flex flex-col gap-2.5">
-                    <div className="aspect-square bg-gradient-to-br from-navy-mid to-navy-deep" />
+                    <div className="aspect-square overflow-hidden bg-gradient-to-br from-navy-mid to-navy-deep">
+                      {role.profile?.portrait_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={role.profile.portrait_url}
+                          alt={role.profile.full_name ?? "Leadership portrait"}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : null}
+                    </div>
                     <div className="font-serif text-[1.1rem] font-normal leading-tight">
                       {role.profile?.full_name ?? "Unassigned"}
                     </div>

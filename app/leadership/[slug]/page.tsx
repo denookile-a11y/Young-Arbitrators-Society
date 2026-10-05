@@ -31,7 +31,16 @@ export default async function LeadershipProfilePage({
       />
       <section className="px-6 py-18 md:px-10">
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-14 md:grid-cols-[300px_1fr]">
-          <div className="aspect-[3/3.6] bg-gradient-to-br from-navy-mid to-navy-deep" />
+          <div className="aspect-[3/3.6] overflow-hidden bg-gradient-to-br from-navy-mid to-navy-deep">
+            {profile.portrait_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.portrait_url}
+                alt={profile.full_name}
+                className="h-full w-full object-cover"
+              />
+            ) : null}
+          </div>
           <div className="max-w-[560px] space-y-6">
             {profile.bio && <p className="text-[1.02rem] leading-relaxed text-ink-soft">{profile.bio}</p>}
             <div className="flex flex-wrap gap-4 text-sm">
