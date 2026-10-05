@@ -55,6 +55,7 @@ export default async function AdminDashboardLayout({
 
   const visibleSections = NAV_SECTIONS.filter((s) =>
     s.visible ? s.visible(admin) : !s.minRole || hasRole(admin, s.minRole)
+  const mobileNavItems = visibleSections.map(({ visible, ...section }) => section);
   );
 
   return (
@@ -62,7 +63,7 @@ export default async function AdminDashboardLayout({
       <header className="border-b border-hairline bg-white">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-10 lg:py-5">
           <div className="flex min-w-0 items-center gap-3">
-            <AdminMobileNav items={visibleSections} />
+            <AdminMobileNav items={mobileNavItems} />
             <Link
               href="/admin"
               className="flex min-w-0 items-center gap-2.5 truncate font-serif text-base text-navy-deep lg:text-lg"
