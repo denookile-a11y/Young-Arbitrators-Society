@@ -14,19 +14,21 @@ export function NewsletterForm() {
 
   return (
     <form action={formAction} className="max-w-[400px] space-y-2">
-      <div className="flex items-center gap-0 border-b-[1.5px] border-hairline pb-3.5 transition-colors focus-within:border-navy-deep">
+      <div className="nl-field flex items-stretch rounded-[2px] border border-hairline bg-white transition-colors focus-within:border-navy-deep focus-within:ring-2 focus-within:ring-gold/40">
         <input
           type="email"
           name="email"
-          placeholder="Your email address"
+          aria-label="Email address"
+          autoComplete="email"
+          placeholder="Email address"
           required
           disabled={isPending}
-          className="flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-soft"
+          className="min-h-12 min-w-0 flex-1 bg-transparent px-4 text-base text-ink outline-none placeholder:text-ink-soft sm:text-sm"
         />
         <button
           type="submit"
           disabled={isPending}
-          className="flex items-center gap-1.5 whitespace-nowrap text-sm font-bold text-gold-on-light transition-colors hover:text-navy-deep disabled:opacity-60 disabled:hover:text-gold-on-light"
+          className="m-1 inline-flex min-h-10 shrink-0 items-center justify-center whitespace-nowrap rounded-[2px] bg-navy-deep px-5 text-sm font-bold text-white transition-colors hover:bg-gold hover:text-navy-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy-deep disabled:opacity-60 disabled:hover:bg-navy-deep disabled:hover:text-white"
         >
           {isPending ? "Subscribing…" : "Subscribe"}
         </button>

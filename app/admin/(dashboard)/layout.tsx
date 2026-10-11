@@ -56,7 +56,12 @@ const visibleSections = NAV_SECTIONS.filter((s) =>
   s.visible ? s.visible(admin) : !s.minRole || hasRole(admin, s.minRole)
 );
 
-const mobileNavItems = visibleSections.map(({ visible, ...section }) => section);
+const mobileNavItems = visibleSections.map((section) => {
+  // `visible` is a function; functions cannot cross the server → client boundary.
+  const item = { ...section };
+  delete item.visible;
+  return item;
+});
 
   return (
     <div className="min-h-screen bg-off-white">

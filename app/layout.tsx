@@ -1,5 +1,28 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
+import { PremiumExperience } from "@/components/ui/premium-experience";
+
+// Self-hosted (SIL OFL) so the type renders identically online or offline and
+// needs no third-party request: Cormorant Garamond (display serif) + Manrope (UI sans).
+const cormorant = localFont({
+  src: [
+    { path: "./fonts/cormorant-garamond-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-700-normal.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-400-italic.woff2", weight: "400", style: "italic" },
+    { path: "./fonts/cormorant-garamond-latin-500-italic.woff2", weight: "500", style: "italic" },
+  ],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+const manrope = localFont({
+  src: "./fonts/manrope-latin-wght-normal.woff2",
+  weight: "200 800",
+  variable: "--font-manrope",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   // Required for next/metadata to resolve relative OG image URLs (used on
@@ -21,15 +44,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Manrope:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${cormorant.variable} ${manrope.variable}`}
+      data-scroll-behavior="smooth"
+    >
+      <body>
+        {children}
+        <PremiumExperience />
+      </body>
     </html>
   );
 }

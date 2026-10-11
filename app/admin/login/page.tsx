@@ -1,44 +1,43 @@
-import Image from "next/image";
 import { Suspense } from "react";
 import { LoginForm } from "@/components/admin/login-form";
+import { YasSeal } from "@/components/hero/yas-seal";
 
 /**
  * Server Component wrapper. The form itself needs useSearchParams() (to
  * read redirectTo) and useActionState(), which requires "use client" —
  * but a Client Component calling useSearchParams() must be wrapped in
  * Suspense or Next.js can't statically generate the page at build time.
+ *
+ * Presentation only: the background is the still atmosphere used across the
+ * public site (no video is loaded here). Authentication is unchanged and is
+ * enforced server-side by proxy.ts and Row Level Security.
  */
 export default function AdminLoginPage() {
   return (
-    <section className="relative flex min-h-[calc(100vh-0px)] items-center overflow-hidden bg-gradient-to-br from-navy-deep via-[#0d2148] to-navy-mid px-6 py-24 text-white">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 85% 20%, rgba(184,145,47,0.08) 0%, transparent 45%)",
-        }}
-      />
-      <div className="relative z-10 mx-auto w-full max-w-[420px]">
-        <Image
-          src="/img/yas-logo-web.jpg"
-          alt="Young Arbitrators Society, Kenyatta University School of Law"
-          width={72}
-          height={72}
-          className="mb-6 h-[72px] w-[72px] rounded-full object-cover ring-1 ring-white/25"
-        />
-        <span className="mb-4 block text-xs font-bold tracking-wide text-gold-soft">
-          Admin
-        </span>
-        <h1 className="mb-8 font-serif text-3xl font-normal">Sign in to the CMS</h1>
+    <section className="atmosphere flex min-h-dvh items-center justify-center px-4 py-12 text-white sm:px-6">
+      <div className="crystal relative w-full max-w-[420px] px-6 pb-8 pt-9 sm:px-9 sm:pt-10" data-lens="navy">
+        <div className="flex flex-col items-center text-center">
+          <YasSeal className="w-[68px]" rings={false} priority />
+          <p className="mt-6 text-[0.7rem] font-bold uppercase tracking-[0.28em] text-gold-soft">
+            Administration
+          </p>
+          <h1 className="mt-3 font-serif text-[1.75rem] font-normal leading-tight">
+            Young Arbitrators Society
+          </h1>
+          <p className="mt-1.5 text-[0.82rem] text-white/70">
+            Kenyatta University School of Law
+          </p>
+        </div>
+
+        <div aria-hidden className="my-7 h-px w-full bg-gradient-to-r from-transparent via-gold-soft/60 to-transparent" />
 
         <Suspense fallback={<div className="h-[220px]" aria-hidden="true" />}>
           <LoginForm />
         </Suspense>
 
-        <p className="mt-8 text-xs text-white/50">
-          Authenticated via Supabase Auth. Sessions are enforced server-side by{" "}
-          <code className="text-white/70">proxy.ts</code> and Row Level Security —
-          not by hiding this page in the navigation.
+        <div aria-hidden className="mb-5 mt-8 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <p className="text-center text-[0.72rem] tracking-wide text-white/55">
+          Secure institutional administration
         </p>
       </div>
     </section>

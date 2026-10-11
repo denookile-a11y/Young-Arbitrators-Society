@@ -1,122 +1,240 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { YasSeal } from "./yas-seal";
 
+type Mode = "pending" | "video" | "static";
+type Blocked = "data-saver" | null;
+
+const NARROW = "(max-width: 767px)";
+
+/**
+ * Homepage hero.
+ *
+ * Layer order (back to front):
+ *   1. static poster (always rendered — first paint, data-saver, fallback)
+ *   2. looping atmospheric video, faded in once it can actually play
+ *   3. navy readability overlay + warm glow behind the seal
+ *   4. glass surfaces, the YAS seal and the typography
+ *
+ * The <video> is mounted only after the client has decided it is appropriate
+ * (no data-saver request), so a single file is
+ * requested — the lighter 480p file on narrow screens, WebM/MP4 on desktop.
+ */
 export function VideoHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [decided, setDecided] = useState(false);
+  const [blockedBy, setBlockedBy] = useState<Blocked>(null);
+  const [narrow, setNarrow] = useState(false);
+  const [ready, setReady] = useState(false);
+  // Set only when the browser definitively cannot play any offered source.
+  const [failed, setFailed] = useState(false);
+
+  const wantsVideo = blockedBy === null;
+  const mode: Mode = !decided ? "pending" : wantsVideo ? "video" : "static";
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    // Intentional: syncing from a real external system (the OS-level media
-    // query) on mount, then subscribing to its changes below — not
-    // deriving state from props/state already available to React.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReducedMotion(mq.matches);
-    const onChange = () => setReducedMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    const narrowMq = window.matchMedia(NARROW);
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+
+    // The background plays automatically. It is a slowed, soft-focus loop, so it
+    // is deliberately NOT gated on the OS "reduce motion" flag (which is also set
+    // by remote desktops, VMs and "animations off" on Windows and left visitors
+    // with a permanent still). Only an explicit data-saver request holds it back.
+    const decide = () => {
+      setNarrow(narrowMq.matches);
+      setFailed(false);
+      setReady(false);
+      const blocked: Blocked = conn?.saveData ? "data-saver" : null;
+      setBlockedBy(blocked);
+      setDecided(true);
+      if (blocked && process.env.NODE_ENV !== "production") {
+        console.info(`[VideoHero] showing the poster because the device reports "${blocked}".`);
+      }
+    };
+    // Intentional: syncing from external systems (viewport, network hints) on
+    // mount and on change — not derived from props or state.
+    decide();
+    narrowMq.addEventListener("change", decide);
+    return () => {
+      narrowMq.removeEventListener("change", decide);
+    };
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (mode !== "video") return;
     const video = videoRef.current;
-    if (!video) return;
+    const section = sectionRef.current;
+    if (!video || !section) return;
 
-    // Autoplay can be blocked by the browser even with muted+playsInline in
-    // rare cases (e.g. very restrictive mobile data-saver modes). If play()
-    // rejects, fall back to the poster image rather than showing a paused,
-    // dead-looking video frame with no explanation.
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => setVideoFailed(true));
-    }
+    // React does not reliably emit the `muted` attribute; autoplay policies
+    // (notably iOS Safari) key off it, so set it before any play() attempt.
+    video.defaultMuted = true;
+    video.muted = true;
+    video.setAttribute("muted", "");
 
-    // Pause the video once it scrolls out of view (performance — no need to
-    // decode frames for a hero the user has scrolled past) and resume if
-    // they scroll back up to it.
+    // The hero is the first section, so assume visible until the observer says
+    // otherwise — otherwise the first sync() could pause a video that just started.
+    let inView = true;
+    let cancelled = false;
+
+    const sync = () => {
+      if (cancelled) return;
+      const eligible = inView && document.visibilityState === "visible";
+      if (eligible) {
+        if (!video.paused) return; // already playing — no repeated play() calls
+        const attempt = video.play();
+        if (attempt !== undefined) {
+          attempt.catch((err: unknown) => {
+            const name = err instanceof DOMException ? err.name : "";
+            // AbortError: interrupted by pause()/reload/remount — routine, and
+            // sync() will run again on the next event. Never treat as fatal.
+            // NotAllowedError: autoplay blocked — keep the poster, retry on the
+            // next gesture/visibility event. Only an unsupported source is final.
+            if (name === "NotSupportedError") setFailed(true);
+          });
+        }
+      } else if (!video.paused) {
+        video.pause();
+      }
+    };
+
+    // Don't decode frames for a hero that has scrolled out of view.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
+        inView = entry.isIntersecting;
+        sync();
       },
-      { threshold: 0.1 }
+      { threshold: 0.05, rootMargin: "80px 0px" }
     );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, [reducedMotion]);
+    observer.observe(section);
 
-  const showVideo = !reducedMotion && !videoFailed;
+    const onVisibility = () => sync();
+    document.addEventListener("visibilitychange", onVisibility);
+    // Data may arrive after the first play() attempt; retry once playable.
+    video.addEventListener("canplay", sync);
+    // If autoplay was blocked, the first gesture is a legitimate retry point.
+    const onGesture = () => sync();
+    window.addEventListener("pointerdown", onGesture, { once: true, passive: true });
+    window.addEventListener("keydown", onGesture, { once: true });
+
+    sync();
+
+    // Watchdog: if the video is eligible but not advancing (autoplay refused,
+    // a stall, a throttled tab coming back), nudge it, and publish its state on
+    // the section so a halted video can be diagnosed from DevTools.
+    let lastT = -1;
+    const watchdog = window.setInterval(() => {
+      if (cancelled) return;
+      const eligible = inView && document.visibilityState === "visible";
+      if (process.env.NODE_ENV !== "production") section.dataset.videoDebug = `rs=${video.readyState} ns=${video.networkState} paused=${video.paused} t=${video.currentTime.toFixed(1)} err=${video.error?.code ?? 0} src=${video.currentSrc.split("/").pop() ?? ""}`;
+      if (!eligible) return;
+      const stuck = !video.paused && video.currentTime === lastT && video.readyState < 3;
+      lastT = video.currentTime;
+      if (video.paused || stuck) {
+        if (stuck && video.networkState === HTMLMediaElement.NETWORK_IDLE) video.load();
+        sync();
+      }
+    }, 2000);
+    // A refused source is retried once per page view before giving up for good.
+    const retryAfterFailure = () => setFailed(false);
+    window.addEventListener("pointerdown", retryAfterFailure, { once: true, passive: true });
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(watchdog);
+      window.removeEventListener("pointerdown", retryAfterFailure);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      video.removeEventListener("canplay", sync);
+      window.removeEventListener("pointerdown", onGesture);
+      window.removeEventListener("keydown", onGesture);
+    };
+  }, [mode, narrow]);
+
+  const showVideo = mode === "video" && !failed;
 
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[92vh] items-end overflow-hidden text-white"
+      data-hero-state={failed ? "failed" : mode === "video" ? "video" : blockedBy ? `static-${blockedBy}` : "pending"}
+      className="relative flex min-h-[92vh] items-end overflow-hidden bg-ivory text-navy-deep"
     >
-      {/* Layer 1: video (or poster-only fallback) */}
-      <div className="absolute inset-0">
-        {showVideo ? (
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            style={{ objectPosition: "center" }}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="/img/yas-hero-poster.jpg"
-            aria-hidden="true"
-            tabIndex={-1}
-            onError={() => setVideoFailed(true)}
-          >
-            <source src="/video/yas-hero.webm" type="video/webm" />
-            <source src="/video/yas-hero.mp4" type="video/mp4" />
-          </video>
-        ) : (
-          <div
-            className="h-full w-full bg-cover bg-center"
-            style={{ backgroundImage: "url(/img/yas-hero-poster.jpg)" }}
-            aria-hidden="true"
-          />
-        )}
-      </div>
+      {/* Layer 1 — static poster */}
+      <Image
+        src="/img/yas-live-poster.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
 
-      {/* Layer 2: cinematic overlay — darker left (where type sits), lighter right */}
+      {/* Layer 2 — live background */}
+      {showVideo && (
+        <video
+          key={narrow ? "narrow" : "wide"}
+          ref={videoRef}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-out ${
+            ready ? "opacity-100" : "opacity-0"
+          }`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload={narrow ? "metadata" : "auto"}
+          poster="/img/yas-live-poster.jpg"
+          aria-hidden="true"
+          tabIndex={-1}
+          disablePictureInPicture
+          onLoadedData={() => setReady(true)}
+          onError={() => setFailed(true)}
+        >
+          {narrow ? (
+            <source src="/video/yas-live-mobile.mp4" type="video/mp4" onError={() => setFailed(true)} />
+          ) : (
+            <>
+              <source src="/video/yas-live.webm" type="video/webm" />
+              <source src="/video/yas-live.mp4" type="video/mp4" onError={() => setFailed(true)} />
+            </>
+          )}
+        </video>
+      )}
+
+      {/* Layer 3 — readability: darker where the type sits, lighter at the seal */}
       <div
+        aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(105deg, rgba(10,26,60,0.88) 0%, rgba(10,26,60,0.65) 40%, rgba(10,26,60,0.35) 70%, rgba(10,26,60,0.25) 100%)",
+            "linear-gradient(98deg, rgba(247,243,234,0.86) 0%, rgba(247,243,234,0.7) 28%, rgba(247,243,234,0.22) 50%, rgba(247,243,234,0) 68%)",
         }}
       />
       <div
+        aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(to top, rgba(10,26,60,0.5) 0%, transparent 30%, transparent 70%, rgba(10,26,60,0.3) 100%)",
+            "linear-gradient(to bottom, rgba(247,243,234,0.5) 0%, transparent 18%, transparent 72%, rgba(247,248,250,0.92) 100%)",
         }}
       />
 
-      {/* Layer 3: hero content */}
-      <div className="relative z-10 mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-14 px-6 pb-20 pt-16 md:grid-cols-[1.5fr_1px_1fr] md:px-10">
+      {/* Layer 4 — content */}
+      <div className="relative z-10 mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-12 px-6 pb-20 pt-28 md:grid-cols-[1.45fr_1px_1fr] md:gap-14 md:px-10 md:pt-24">
         <div>
-          <span className="mb-5 block animate-[riseIn_0.9s_ease_0.1s_both] text-[0.8rem] font-bold tracking-wide text-gold-soft">
+          <span className="mb-5 block animate-[riseIn_0.9s_ease_0.1s_both] text-[0.8rem] font-bold tracking-wide text-[#6f5013]">
             Kenyatta University School of Law
           </span>
-          <h1 className="mb-6 animate-[riseIn_0.9s_ease_0.25s_both] font-serif text-[clamp(2.6rem,5.6vw,4.6rem)] font-normal leading-[1.04] tracking-tight">
+          <h1 className="mb-6 animate-[riseIn_0.9s_ease_0.25s_both] font-serif text-[clamp(2.5rem,4.9vw,4.4rem)] font-normal leading-[1.04] tracking-tight text-navy-deep">
             Shaping the future of
             <br />
-            <em className="font-light not-italic italic text-gold-soft">arbitration</em> and
+            <em className="font-light not-italic italic text-gold-on-light">arbitration</em> and
             dispute resolution.
           </h1>
-          <p className="mb-9 max-w-[480px] animate-[riseIn_0.9s_ease_0.4s_both] text-[1.08rem] leading-relaxed text-white/72">
+          <p className="mb-9 max-w-[480px] animate-[riseIn_0.9s_ease_0.4s_both] text-[1.08rem] leading-relaxed text-ink-soft">
             Young Arbitrators Society trains, publishes, and convenes the
             next generation of ADR practitioners — through moot advocacy,
             research, and institutional partnership.
@@ -124,7 +242,7 @@ export function VideoHero() {
           <div className="flex animate-[riseIn_0.9s_ease_0.55s_both] flex-wrap gap-4">
             <Link
               href="/about"
-              className="group inline-flex items-center gap-2 rounded-[2px] bg-gold px-[26px] py-[15px] text-[0.84rem] font-bold text-navy-deep transition-colors hover:bg-gold-soft"
+              className="glass-cta glass-cta-navy group inline-flex min-h-12 items-center gap-2 px-[26px] py-[15px] text-[0.84rem] font-bold"
             >
               Explore YAS
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1">
@@ -133,7 +251,7 @@ export function VideoHero() {
             </Link>
             <Link
               href="/join"
-              className="group inline-flex items-center gap-2 rounded-[2px] border border-white/35 px-[26px] py-[15px] text-[0.84rem] font-bold text-white transition-colors hover:border-white hover:bg-white/6"
+              className="glass-cta glass-cta-light group inline-flex min-h-12 items-center gap-2 px-[26px] py-[15px] text-[0.84rem] font-bold"
             >
               Join the Society
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1">
@@ -143,18 +261,28 @@ export function VideoHero() {
           </div>
         </div>
 
-        <div className="hidden bg-white/16 md:block" />
+        <div className="hidden bg-gradient-to-b from-transparent via-gold/50 to-transparent md:block" />
 
-        <div className="animate-[riseIn_0.9s_ease_0.5s_both] flex flex-col justify-end">
-          <div className="flex flex-col gap-1.5 text-[0.76rem] font-medium text-white/45">
+        <div className="relative order-first flex animate-[riseIn_1.1s_ease_0.2s_both] flex-col items-center justify-center md:order-none md:self-center">
+          {/* Warm glow so the gold seal sits in light of its own. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-[42%] h-[135%] w-[135%] -translate-x-1/2 -translate-y-1/2"
+            style={{
+              background:
+                "radial-gradient(closest-side, rgba(255,255,255,0.7), rgba(255,250,235,0.35) 55%, rgba(255,255,255,0) 100%)",
+            }}
+          />
+          <YasSeal className="w-[clamp(210px,min(32vw,50vh),430px)]" />
+          <div className="glass-light relative mt-12 flex flex-col items-center gap-1 px-7 py-3.5 text-center text-[0.76rem] font-medium text-ink md:mt-16">
             <span>Est. Kenyatta University School of Law</span>
-            <span>2025/26 Administration</span>
+            <span className="font-semibold text-[#6f5013]">2025/26 Administration</span>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-7 left-6 z-10 flex items-center gap-2.5 text-[0.72rem] font-semibold text-white/50 md:left-10">
-        <div className="relative h-9 w-px overflow-hidden bg-white/30">
+      <div className="absolute bottom-7 left-6 z-10 flex items-center gap-2.5 text-[0.72rem] font-semibold text-ink-soft md:left-10">
+        <div className="relative h-9 w-px overflow-hidden bg-navy-deep/30">
           <div className="animate-scroll-indicator absolute inset-0" />
         </div>
         Scroll

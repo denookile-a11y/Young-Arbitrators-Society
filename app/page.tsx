@@ -5,6 +5,11 @@ import { VideoHero } from "@/components/hero/video-hero";
 import { NewsletterForm } from "@/components/ui/newsletter-form";
 import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { getHomepageData } from "@/lib/queries/homepage";
+import { listDepartments } from "@/lib/queries/departments";
+import { FALLBACK_DEPARTMENTS } from "@/lib/departments-fallback";
+import { departmentHeading } from "@/lib/department-copy";
+import { DepartmentCarousel } from "@/components/departments/department-carousel";
+import { buildCarouselItems } from "@/lib/department-carousel";
 
 export default async function HomePage() {
   const configured = isSupabaseConfigured();
@@ -18,6 +23,21 @@ export default async function HomePage() {
         partners: [],
         stats: { memberCount: 0, eventCount: 0, mootCount: 0, publicationCount: 0, partnerCount: 0 },
       };
+
+  // The CMS is the source of truth. Built-in defaults are used only when
+  // Supabase is not configured; a connected CMS with no published
+  // departments shows none.
+  let departments: typeof FALLBACK_DEPARTMENTS = FALLBACK_DEPARTMENTS;
+  if (configured) {
+    // A failed departments query must not take down the whole homepage:
+    // log it and render the empty state (no fabricated fallback here).
+    try {
+      departments = (await listDepartments()).filter((d) => d.status === "published");
+    } catch (error) {
+      console.error("Homepage: departments query failed", error);
+      departments = [];
+    }
+  }
 
   return (
     <>
@@ -118,20 +138,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="px-6 py-[140px] md:px-10">
+      <section className="stage-champagne px-6 pb-[90px] pt-[110px] text-navy-deep md:px-10">
         <div className="mx-auto max-w-[1240px]">
-          <div className="mb-15 flex flex-wrap items-end justify-between gap-10">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-10">
             <div>
-              <span className="mb-4 block text-[0.78rem] font-bold text-gold-on-light">
+              <span className="mb-4 block text-[0.78rem] font-bold text-[#7a5b16]">
                 Departments
               </span>
               <h2 className="max-w-[640px] font-serif text-[clamp(1.9rem,3.2vw,2.7rem)] font-normal leading-tight">
-                Seven departments, one institutional mandate.
+                {departmentHeading(departments.length)}
               </h2>
             </div>
             <Link
               href="/departments"
-              className="group inline-flex items-center gap-2 border-b-[1.5px] border-gold pb-1 text-[0.84rem] font-bold text-navy-deep"
+              className="group inline-flex min-h-11 items-center gap-2 border-b-[1.5px] border-gold pb-1 text-[0.84rem] font-bold text-navy-deep"
             >
               View all departments
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1">
@@ -139,36 +159,14 @@ export default async function HomePage() {
               </svg>
             </Link>
           </div>
-
-          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline md:grid-cols-6">
-            <Link
-              href="/departments/moot"
-              className="flex flex-col justify-between bg-navy-deep p-7 text-white transition-colors hover:bg-navy-mid md:col-span-3 md:row-span-2"
-            >
-              <span className="text-xs font-bold text-gold-soft">Registration open</span>
-              <div>
-                <div className="font-serif text-[2rem] font-normal">Moot</div>
-                <p className="mt-2 max-w-[280px] text-sm opacity-65">
-                  Advocacy training through competitive arbitration moots,
-                  from problem drafting to national rounds.
-                </p>
-              </div>
-            </Link>
-            {[
-              ["Research", "research"],
-              ["Conferences", "conferences"],
-              ["CSR", "csr"],
-              ["Partnerships", "partnerships"],
-              ["Media & Comms", "media"],
-            ].map(([label, slug]) => (
-              <Link
-                key={slug}
-                href={`/departments/${slug}`}
-                className="flex min-h-[200px] flex-col justify-between bg-white p-7 transition-colors hover:bg-off-white md:col-span-3"
-              >
-                <div className="font-serif text-[1.5rem] font-normal">{label}</div>
-              </Link>
-            ))}
+        </div>
+        <div className="-mx-6 md:-mx-10">
+          <div className="mx-auto max-w-[1500px]">
+            {departments.length > 0 ? (
+              <DepartmentCarousel items={buildCarouselItems(departments)} />
+            ) : (
+              <p className="py-16 text-center text-sm text-ink-soft">No departments are published yet.</p>
+            )}
           </div>
         </div>
       </section>
@@ -298,7 +296,7 @@ export default async function HomePage() {
             Whether as a member, sponsor, or institutional partner — there is a place for you.
           </p>
           <div className="flex flex-wrap gap-3.5">
-            <Link href="/join" className="rounded-[2px] bg-gold px-6 py-3.5 text-sm font-bold text-navy-deep hover:bg-gold-soft">
+            <Link href="/join" className="btn-burgundy px-7 py-3.5 text-sm">
               Join YAS
             </Link>
             <Link href="/partners" className="rounded-[2px] border border-white/35 px-6 py-3.5 text-sm font-bold text-white hover:border-white">

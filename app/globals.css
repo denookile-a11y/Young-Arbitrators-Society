@@ -10,6 +10,7 @@
   --color-navy-mid: #132B5E;
   --color-white: #FFFFFF;
   --color-off-white: #F7F8FA;
+  --color-ivory: #F6F1E6;
   --color-gold: #B8912F;
   --color-gold-soft: #D9BC72;
   --color-gold-on-light: #8C6A22;
@@ -23,6 +24,7 @@
   --color-navy-deep: var(--color-navy-deep);
   --color-navy-mid: var(--color-navy-mid);
   --color-off-white: var(--color-off-white);
+  --color-ivory: var(--color-ivory);
   --color-gold: var(--color-gold);
   --color-gold-soft: var(--color-gold-soft);
   --color-gold-on-light: var(--color-gold-on-light);
@@ -31,8 +33,8 @@
   --color-hairline: var(--color-hairline);
   --color-hairline-on-navy: var(--color-hairline-on-navy);
 
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Manrope", -apple-system, sans-serif;
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", -apple-system, sans-serif;
 }
 
 html {
@@ -95,4 +97,665 @@ input:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--color-gold);
   outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------
+   Department tiles — on pointer devices at lg+, hovering or
+   focusing a tile dims its graphic and fades in the department
+   mandate in the same space (no layout shift). On touch and
+   smaller screens the mandate is not shown; the tagline and the
+   department page carry it, so nothing depends on hover.
+   ------------------------------------------------------------ */
+.dept-mandate {
+  display: none;
+}
+@media (hover: hover) and (min-width: 1024px) {
+  .dept-mandate {
+    display: -webkit-box;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .dept-motif {
+    transition: opacity 0.5s ease;
+  }
+  .dept-tile:hover .dept-mandate,
+  .dept-tile:focus-visible .dept-mandate {
+    opacity: 1;
+  }
+  .dept-tile:hover .dept-motif,
+  .dept-tile:focus-visible .dept-motif {
+    opacity: 0.12;
+  }
+}
+
+/* ============================================================
+   YAS glass system
+   One language, used sparingly: translucent navy over the live
+   or atmospheric background, a gold hairline, a faint inner
+   highlight. Blur is lighter on small screens for performance,
+   and surfaces fall back to near-opaque navy where
+   backdrop-filter is unsupported.
+   ============================================================ */
+
+/* Bordered glass — hero plaque, nav panels */
+.glass {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 45%),
+    rgba(10, 26, 60, 0.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid rgba(217, 188, 114, 0.22);
+  border-radius: 2px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 60px -28px rgba(2, 8, 24, 0.75);
+}
+
+/* Glass call-to-action */
+.glass-cta {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0)),
+    rgba(10, 26, 60, 0.42);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.glass-cta:hover {
+  border-color: rgba(217, 188, 114, 0.85);
+  background-color: rgba(19, 43, 94, 0.6);
+}
+.glass-cta-gold {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0)),
+    rgba(184, 145, 47, 0.42);
+  border-color: rgba(217, 188, 114, 0.7);
+}
+.glass-cta-gold:hover {
+  background-color: rgba(184, 145, 47, 0.6);
+  border-color: rgba(217, 188, 114, 1);
+}
+
+/* Glass pane — department tiles. Borderless: the grid's 1px gap is the
+   gold hairline between divisions. */
+.glass-pane {
+  --pane: rgba(10, 26, 60, 0.5);
+  --pane-hover: rgba(19, 43, 94, 0.6);
+  background-color: var(--pane);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 38%);
+  -webkit-backdrop-filter: blur(12px) saturate(1.15);
+  backdrop-filter: blur(12px) saturate(1.15);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  transition: background-color 0.4s ease;
+}
+.glass-pane:hover,
+.glass-pane:focus-visible {
+  background-color: var(--pane-hover);
+}
+.glass-pane--deep {
+  --pane: rgba(6, 16, 38, 0.62);
+  --pane-hover: rgba(12, 30, 68, 0.7);
+}
+.glass-pane--ivory {
+  --pane: rgba(120, 132, 160, 0.14);
+  --pane-hover: rgba(140, 152, 182, 0.2);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-cta,
+  .glass-pane {
+    background-color: rgba(10, 26, 60, 0.9);
+  }
+  .glass-light {
+    background-color: rgba(255, 255, 255, 0.92);
+  }
+}
+@media (max-width: 767px) {
+  .glass,
+  .glass-light,
+  .glass-cta,
+  .glass-pane {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+}
+
+/* Atmosphere — a still frame of the live background, darkened, behind
+   glass content. It drifts very slowly on pointer-driven desktops only
+   (a transform on one layer, so it stays on the GPU); everywhere else
+   it is static. */
+.atmosphere {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #071329;
+}
+.atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: -4%;
+  z-index: -2;
+  background: url("/img/yas-atmosphere.jpg") center / cover no-repeat;
+  opacity: 0.85;
+}
+.atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 19, 41, 0.82) 0%,
+    rgba(7, 19, 41, 0.5) 45%,
+    rgba(7, 19, 41, 0.86) 100%
+  );
+}
+@keyframes atmosphere-drift {
+  from { transform: translate3d(-1.5%, -0.8%, 0) scale(1.04); }
+  to { transform: translate3d(1.5%, 0.8%, 0) scale(1.04); }
+}
+@media (hover: hover) and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .atmosphere::before {
+    animation: atmosphere-drift 70s ease-in-out infinite alternate;
+  }
+}
+
+/* ------------------------------------------------------------
+   Light glass — for the bright hero and light navigation.
+   Frosted white over the bright background, gold hairline.
+   ------------------------------------------------------------ */
+.glass-light {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.22)),
+    rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid rgba(184, 145, 47, 0.4);
+  border-radius: 2px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 18px 44px -26px rgba(10, 26, 60, 0.35);
+}
+/* Primary CTA on light surfaces: navy glass, gold hairline */
+.glass-cta-navy {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)),
+    rgba(10, 26, 60, 0.9);
+  border-color: rgba(217, 188, 114, 0.6);
+  color: #fff;
+}
+.glass-cta-navy:hover {
+  background-color: rgba(19, 43, 94, 0.96);
+  border-color: rgba(217, 188, 114, 1);
+}
+/* Secondary CTA on light surfaces: frosted white, navy type */
+.glass-cta-light {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)),
+    rgba(255, 255, 255, 0.3);
+  border-color: rgba(10, 26, 60, 0.28);
+  color: #0a1a3c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.glass-cta-light:hover {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(184, 145, 47, 0.95);
+}
+
+/* ============================================================
+   Crystal glass — department panels.
+   ONE architecture; seven lenses vary only the custom properties
+   below (tint, highlight, edge temperature, accent, blur).
+   Lens is chosen from department data (lib/department-lenses.ts).
+   ============================================================ */
+.crystal {
+  --c-tint: rgba(10, 26, 60, 0.46);
+  --c-tint-hover: rgba(19, 43, 94, 0.56);
+  --c-hi: rgba(255, 255, 255, 0.16);
+  --c-edge: rgba(217, 188, 114, 0.3);
+  --c-edge-hover: rgba(217, 188, 114, 0.85);
+  --c-accent: #d9bc72;
+  --c-blur: 10px;
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid var(--c-edge);
+  background-color: var(--c-tint);
+  background-image:
+    linear-gradient(152deg, var(--c-hi) 0%, rgba(255, 255, 255, 0) 32%, rgba(255, 255, 255, 0) 72%, rgba(255, 255, 255, 0.05) 100%);
+  -webkit-backdrop-filter: blur(var(--c-blur)) saturate(1.2);
+  backdrop-filter: blur(var(--c-blur)) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 40px -28px rgba(2, 8, 24, 0.8);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+/* Light catching the glass: a soft diagonal band that settles in on hover/focus. */
+.crystal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, 0.13) 50%, transparent 62%);
+  opacity: 0;
+  transform: translateX(-14%);
+  transition: opacity 0.6s ease, transform 0.9s ease;
+}
+.crystal:hover,
+.crystal:focus-visible {
+  background-color: var(--c-tint-hover);
+  border-color: var(--c-edge-hover);
+}
+.crystal:hover::before,
+.crystal:focus-visible::before {
+  opacity: 1;
+  transform: translateX(8%);
+}
+.crystal:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+.crystal .crystal-accent { color: var(--c-accent); }
+.crystal .crystal-rule { background-color: var(--c-accent); }
+
+.crystal[data-lens="clear"] {
+  --c-tint: rgba(96, 138, 200, 0.18); --c-tint-hover: rgba(110, 152, 214, 0.26);
+  --c-edge: rgba(190, 215, 255, 0.5); --c-edge-hover: rgba(215, 232, 255, 0.95);
+  --c-accent: #d3e3ff; --c-hi: rgba(255, 255, 255, 0.22);
+}
+.crystal[data-lens="frosted"] {
+  --c-tint: rgba(150, 168, 196, 0.2); --c-tint-hover: rgba(166, 184, 212, 0.28);
+  --c-edge: rgba(235, 242, 255, 0.46); --c-edge-hover: rgba(245, 249, 255, 0.95);
+  --c-accent: #e6edf9; --c-blur: 16px;
+}
+.crystal[data-lens="smoked"] {
+  --c-tint: rgba(18, 20, 26, 0.5); --c-tint-hover: rgba(30, 33, 42, 0.6);
+  --c-edge: rgba(255, 255, 255, 0.26); --c-edge-hover: rgba(255, 255, 255, 0.8);
+  --c-accent: #e9e4d8; --c-hi: rgba(255, 255, 255, 0.12);
+}
+.crystal[data-lens="champagne"] {
+  --c-tint: rgba(128, 88, 30, 0.34); --c-tint-hover: rgba(148, 104, 38, 0.44);
+  --c-edge: rgba(236, 206, 140, 0.55); --c-edge-hover: rgba(246, 224, 168, 1);
+  --c-accent: #f0d9a0; --c-hi: rgba(255, 236, 190, 0.2);
+}
+.crystal[data-lens="pearl"] {
+  --c-tint: rgba(120, 118, 122, 0.3); --c-tint-hover: rgba(138, 136, 140, 0.38);
+  --c-edge: rgba(255, 248, 236, 0.55); --c-edge-hover: rgba(255, 252, 244, 1);
+  --c-accent: #f6ecd2; --c-hi: rgba(255, 255, 255, 0.24);
+}
+.crystal[data-lens="navy"] {
+  --c-tint: rgba(8, 22, 56, 0.6); --c-tint-hover: rgba(14, 34, 80, 0.7);
+  --c-edge: rgba(130, 168, 236, 0.4); --c-edge-hover: rgba(170, 198, 246, 0.95);
+  --c-accent: #d9bc72; --c-hi: rgba(160, 190, 255, 0.14);
+}
+.crystal[data-lens="gold"] {
+  --c-tint: rgba(150, 108, 28, 0.34); --c-tint-hover: rgba(172, 126, 36, 0.44);
+  --c-edge: rgba(224, 192, 108, 0.62); --c-edge-hover: rgba(240, 214, 140, 1);
+  --c-accent: #f2dc94; --c-hi: rgba(255, 228, 150, 0.2);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .crystal { background-color: rgba(10, 26, 60, 0.9); }
+}
+@media (max-width: 767px) {
+  .crystal { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crystal, .crystal::before { transition: none; }
+  .crystal:hover::before, .crystal:focus-visible::before { transform: none; }
+}
+
+/* ============================================================
+   Premium experience — smooth scroll + pointer
+   ============================================================ */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+
+.premium-penumbra {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 560px;
+  height: 560px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  /* Soft-edged: no ring, no hard boundary — light falling off like a penumbra.
+     "screen" brightens dark surfaces and is nearly invisible on light ones. */
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 232, 178, 0.30) 0%,
+    rgba(255, 232, 178, 0.16) 35%,
+    rgba(255, 232, 178, 0.05) 68%,
+    rgba(255, 232, 178, 0) 100%
+  );
+  mix-blend-mode: screen;
+  will-change: transform;
+  transition: opacity 0.5s ease;
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .premium-penumbra { display: none; }
+}
+
+/* Pointer-tracking specular light on crystal panels */
+.crystal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 16;
+  pointer-events: none;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.17), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.crystal:hover::after { opacity: 1; }
+
+/* Magnetic pull on glass buttons (individual `translate` so transforms aren't clobbered) */
+.glass-cta {
+  translate: var(--tx, 0) var(--ty, 0);
+  transition: background-color 0.3s ease, border-color 0.3s ease, translate 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .crystal::after { display: none; }
+  .glass-cta { translate: none; }
+}
+
+/* ============================================================
+   Homepage 3D glass carousel (presentation layer)
+   Geometry is pure CSS variables so server-rendered HTML already has the
+   correct 3D layout; JS only sets the ring angle + per-slab --f/--rel.
+   ============================================================ */
+.stage-champagne {
+  /* Warm beige stage sampled from the reference video: a soft light disc
+     on the left, deeper champagne to the right and toward the floor. */
+  background:
+    radial-gradient(46% 70% at 30% 46%, rgba(255, 249, 236, 0.92) 0%, rgba(255, 249, 236, 0) 72%),
+    radial-gradient(60% 80% at 92% 30%, rgba(176, 150, 118, 0.38) 0%, rgba(176, 150, 118, 0) 70%),
+    linear-gradient(180deg, #e6d6bf 0%, #dccab0 55%, #d3bfa3 100%);
+}
+.dc-stage {
+  --pw: min(31vw, 54vh, 470px);
+  --ph: calc(var(--pw) * 0.78);
+  --t: 18px;
+  --rk: var(--rk-d);
+  --r: calc(var(--pw) * var(--rk));
+  position: relative;
+  overflow-x: clip;
+  padding: calc(var(--ph) * 0.1) 0 calc(var(--ph) * 0.06);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.dc-stage:active { cursor: grabbing; }
+@media (max-width: 767px) {
+  .dc-stage { --pw: clamp(170px, 50vw, 250px); --t: 11px; --rk: var(--rk-m); }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dc-stage { --pw: clamp(250px, 36vw, 340px); }
+}
+.dc-scene {
+  position: relative;
+  height: calc(var(--ph) * 1.5);
+  perspective: calc(var(--pw) * 3.7);
+  perspective-origin: 50% 40%;
+}
+@media (max-width: 767px) {
+  .dc-scene { perspective: calc(var(--pw) * 3.1); }
+}
+.dc-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.dc-slot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--r));
+}
+.dc-slab {
+  position: absolute;
+  left: calc(var(--pw) / -2);
+  top: calc(var(--ph) / -2);
+  width: var(--pw);
+  height: var(--ph);
+  transform-style: preserve-3d;
+}
+
+/* --- glass faces ------------------------------------------------------ */
+.dc-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.14) 38%, rgba(255, 255, 255, 0.3) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(150, 190, 180, 0.45),
+    inset 0 0 44px rgba(255, 255, 255, 0.34),
+    0 40px 50px -34px rgba(74, 52, 20, 0.6);
+}
+.dc-front { transform: translateZ(calc(var(--t) / 2)); color: #fff; text-decoration: none; }
+.dc-back {
+  transform: rotateY(180deg) translateZ(calc(var(--t) / 2));
+  background: linear-gradient(225deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.12) 45%, rgba(214, 232, 226, 0.34));
+}
+.dc-front:focus-visible { outline: 2px solid #b8912f; outline-offset: 4px; }
+
+.dc-photo {
+  position: absolute;
+  inset: 5% 5% 15% 5%;
+  overflow: hidden;
+  border-radius: 7px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.55), 0 8px 18px -8px rgba(30, 20, 5, 0.45);
+}
+.dc-cap { display: contents; }
+.dc-photo::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0 0;
+  background: linear-gradient(to top, rgba(7, 16, 38, 0.72), rgba(7, 16, 38, 0));
+  pointer-events: none;
+}
+.dc-name {
+  position: absolute;
+  left: 9%;
+  bottom: calc(5% + 2rem);
+  z-index: 2;
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+  font-size: clamp(1.05rem, calc(var(--pw) * 0.085), 1.9rem);
+  line-height: 1.05;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}
+.dc-pill {
+  position: absolute;
+  left: 8%;
+  bottom: 5%;
+  z-index: 2;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #14233f;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.dc-slot[data-front="true"] .dc-pill { opacity: 1; transform: none; }
+
+/* light travelling across the glass as the slab turns */
+.dc-sheen {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.4) 47%, rgba(255, 240, 205, 0.22) 52%, transparent 62%);
+  transform: translateX(calc(var(--rel, 0) * -0.6%));
+}
+/* receding panels wash toward the stage colour — reads as see-through glass */
+.dc-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #eadfca;
+  opacity: calc((1 - var(--f, 1)) * 0.4);
+}
+
+/* --- glass thickness (the visible edge when a slab turns edge-on) ------- */
+.dc-edge {
+  position: absolute;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(170, 208, 196, 0.92) 45%, rgba(120, 168, 156, 0.85) 55%, rgba(255, 255, 255, 0.95));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 0 14px rgba(255, 255, 255, 0.35);
+}
+.dc-edge-l, .dc-edge-r {
+  top: 0;
+  left: calc(50% - var(--t) / 2);
+  width: var(--t);
+  height: 100%;
+}
+.dc-edge-l { transform: rotateY(-90deg) translateZ(calc(var(--pw) / 2)); }
+.dc-edge-r { transform: rotateY(90deg) translateZ(calc(var(--pw) / 2)); }
+.dc-edge-t, .dc-edge-b {
+  left: 0;
+  top: calc(50% - var(--t) / 2);
+  width: 100%;
+  height: var(--t);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.98), rgba(170, 208, 196, 0.92) 45%, rgba(120, 168, 156, 0.85) 55%, rgba(255, 255, 255, 0.95));
+}
+.dc-edge-t { transform: rotateX(90deg) translateZ(calc(var(--ph) / 2)); }
+.dc-edge-b { transform: rotateX(-90deg) translateZ(calc(var(--ph) / 2)); }
+
+/* --- the empty future panel: same glass, no photograph ---------------- */
+.dc-future { background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0.24)); }
+.dc-future-frame {
+  position: absolute;
+  inset: 5.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 7px;
+  border: 1px solid rgba(184, 145, 47, 0.5);
+  color: #5d4510;
+}
+.dc-future-eyebrow { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.34em; text-indent: 0.34em; }
+.dc-future-rule { width: 34px; height: 1px; background: rgba(184, 145, 47, 0.8); }
+.dc-future-note { font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; }
+
+/* --- stage dressing: soft arcs + ghost slabs (static, decorative) ------ */
+.dc-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.dc-floor {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--ph) * 1.36);
+  width: 78%;
+  height: calc(var(--ph) * 0.3);
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(74, 52, 20, 0.24), rgba(74, 52, 20, 0.08) 55%, rgba(74, 52, 20, 0));
+}
+.dc-arc { position: absolute; border-radius: 9999px; border: 1px solid rgba(184, 145, 47, 0.26); }
+.dc-arc-a { width: 92%; aspect-ratio: 1; left: 4%; top: -8%; }
+.dc-arc-b { width: 66%; aspect-ratio: 1; left: 17%; top: 8%; border-color: rgba(255, 255, 255, 0.7); }
+.dc-ghost {
+  position: absolute;
+  width: calc(var(--pw) * 0.62);
+  height: calc(var(--ph) * 0.62);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.06));
+}
+.dc-ghost-a { left: 3%; top: 8%; transform: rotate(-4deg); }
+.dc-ghost-b { right: 4%; top: 2%; transform: rotate(3deg); }
+.dc-ghost-c { right: 12%; bottom: 14%; transform: rotate(-2deg); opacity: 0.7; }
+@media (max-width: 767px) { .dc-ghost { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-pill { transition: none; }
+}
+
+/* Newsletter field: the whole field (border + ring via :focus-within) is the single
+   focus indicator, so suppress the global per-input outline inside it. Unlayered on
+   purpose — Tailwind utilities are layered and cannot override the global rule. */
+.nl-field input:focus-visible { outline: none; }
+
+/* ============================================================
+   Premium burgundy button — obsidian lining
+   Burgundy face (deep claret, lit from above), an obsidian outer
+   lining, a fine obsidian pinstripe inside it, and a hairline of
+   light on the inner edge. Ivory type. One class, reused.
+   ============================================================ */
+.btn-burgundy {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #f8efe2;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  border: 1.5px solid #0b0b10; /* obsidian outer lining */
+  border-radius: var(--btn-radius, 3px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.17) 0%, rgba(255, 255, 255, 0) 46%, rgba(0, 0, 0, 0.2) 100%),
+    linear-gradient(135deg, #7d1733 0%, #5c1027 55%, #3f0a1b 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 205, 205, 0.15), /* hairline of light on the inner edge */
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.08), /* keeps the lining legible on navy */
+    0 12px 22px -12px rgba(0, 0, 0, 0.7);
+  transition: filter 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+/* obsidian pinstripe inside the face */
+.btn-burgundy::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  border: 1px solid rgba(7, 7, 11, 0.6);
+  border-radius: max(1px, calc(var(--btn-radius, 3px) - 2px));
+  pointer-events: none;
+}
+.btn-burgundy:hover {
+  filter: brightness(1.14) saturate(1.06);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 205, 205, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 16px 26px -12px rgba(0, 0, 0, 0.75);
+}
+.btn-burgundy:active { transform: none; filter: brightness(0.94); }
+.btn-burgundy:focus-visible { outline: 2px solid #f3e3c1; outline-offset: 3px; }
+.btn-burgundy:disabled { opacity: 0.6; cursor: not-allowed; transform: none; filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-burgundy { transition: none; }
+  .btn-burgundy:hover { transform: none; }
 }

@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 const STATIC_ROUTES = [
   "", "about", "leadership", "departments", "moot", "research", "events",
   "conferences", "publications", "gallery", "partners", "csr", "join",
-  "contact", "archive", "search",
+  "contact", "archive", "search", "privacy", "terms",
 ];
 
 /**

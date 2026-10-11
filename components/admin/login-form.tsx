@@ -14,8 +14,8 @@ export function LoginForm() {
   return (
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="redirectTo" value={redirectTo} />
-      <div className="border-b border-white/35 pb-3 transition-colors focus-within:border-gold-soft">
-        <label htmlFor="email" className="sr-only">
+      <div>
+        <label htmlFor="email" className="mb-1.5 block text-[0.7rem] font-bold uppercase tracking-[0.18em] text-white/70">
           Email
         </label>
         <input
@@ -23,8 +23,8 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          placeholder="Email"
-          className="w-full bg-transparent text-sm text-white placeholder:text-white/50 outline-none"
+          placeholder="you@example.org"
+          className="min-h-12 w-full rounded-md border border-white/25 bg-white/[0.06] px-3.5 text-base text-white placeholder:text-white/40 outline-none transition-colors focus:border-gold-soft focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-gold-soft/60 disabled:opacity-60 sm:text-sm"
           disabled={isPending}
         />
         {state.fieldErrors?.email && (
@@ -32,8 +32,8 @@ export function LoginForm() {
         )}
       </div>
 
-      <div className="border-b border-white/35 pb-3 transition-colors focus-within:border-gold-soft">
-        <label htmlFor="password" className="sr-only">
+      <div>
+        <label htmlFor="password" className="mb-1.5 block text-[0.7rem] font-bold uppercase tracking-[0.18em] text-white/70">
           Password
         </label>
         <input
@@ -42,7 +42,7 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           placeholder="Password"
-          className="w-full bg-transparent text-sm text-white placeholder:text-white/50 outline-none"
+          className="min-h-12 w-full rounded-md border border-white/25 bg-white/[0.06] px-3.5 text-base text-white placeholder:text-white/40 outline-none transition-colors focus:border-gold-soft focus:bg-white/[0.09] focus-visible:ring-2 focus-visible:ring-gold-soft/60 disabled:opacity-60 sm:text-sm"
           disabled={isPending}
         />
         {state.fieldErrors?.password && (
@@ -51,7 +51,7 @@ export function LoginForm() {
       </div>
 
       {state.error && (
-        <p className="rounded-[2px] border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+        <p className="rounded-md border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200">
           {state.error}
         </p>
       )}
@@ -59,7 +59,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="inline-flex items-center gap-2 rounded-[2px] bg-gold px-7 py-4 text-sm font-bold text-navy-deep transition-colors hover:bg-gold-soft disabled:opacity-60"
+        className="btn-burgundy [--btn-radius:6px] min-h-12 w-full px-7 py-3.5 text-sm"
       >
         {isPending ? "Signing in…" : "Sign In"}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3.5 w-3.5">
