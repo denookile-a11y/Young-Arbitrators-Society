@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 import { YasSeal } from "./yas-seal";
 
@@ -9,6 +9,13 @@ type Mode = "pending" | "video" | "static";
 type Blocked = "data-saver" | null;
 
 const NARROW = "(max-width: 767px)";
+
+// Portrait (4:5) reframe of the 720p master, cropped around the subject. The
+// old mobile file was a 854x480 LANDSCAPE downscale: object-cover on a portrait
+// phone magnified it ~4x and showed a slice that cut through the subject.
+const MOBILE_VIDEO = "/video/yas-live-portrait.mp4";
+const DESKTOP_POSTER = "/img/yas-live-poster.jpg";
+const MOBILE_POSTER = "/img/yas-live-poster-portrait.jpg";
 
 /**
  * Homepage hero.
@@ -21,9 +28,14 @@ const NARROW = "(max-width: 767px)";
  *
  * The <video> is mounted only after the client has decided it is appropriate
  * (no data-saver request), so a single file is
- * requested — the lighter 480p file on narrow screens, WebM/MP4 on desktop.
+ * requested — the portrait-framed file on narrow screens, WebM/MP4 on desktop.
  */
 export function VideoHero() {
+  // Art-directed poster: exactly one image is requested per viewport, and the
+  // mobile one matches the mobile video's framing so the fade-in does not jump.
+  const posterCommon = { alt: "", fill: true, priority: true, sizes: "100vw" } as const;
+  const { props: desktopPoster } = getImageProps({ ...posterCommon, src: DESKTOP_POSTER });
+  const { props: mobilePoster } = getImageProps({ ...posterCommon, src: MOBILE_POSTER });
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [decided, setDecided] = useState(false);
@@ -164,14 +176,18 @@ export function VideoHero() {
       className="relative flex min-h-[92vh] items-end overflow-hidden bg-ivory text-navy-deep"
     >
       {/* Layer 1 — static poster */}
-      <Image
-        src="/img/yas-live-poster.jpg"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
+      <picture>
+        <source media="(min-width: 768px)" srcSet={desktopPoster.srcSet} sizes="100vw" />
+        <source media="(max-width: 767px)" srcSet={mobilePoster.srcSet} sizes="100vw" />
+        <img
+          src={desktopPoster.src}
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+          style={desktopPoster.style}
+          className="object-cover"
+        />
+      </picture>
 
       {/* Layer 2 — live background */}
       {showVideo && (
@@ -186,7 +202,7 @@ export function VideoHero() {
           loop
           playsInline
           preload={narrow ? "metadata" : "auto"}
-          poster="/img/yas-live-poster.jpg"
+          poster={narrow ? MOBILE_POSTER : DESKTOP_POSTER}
           aria-hidden="true"
           tabIndex={-1}
           disablePictureInPicture
@@ -194,7 +210,7 @@ export function VideoHero() {
           onError={() => setFailed(true)}
         >
           {narrow ? (
-            <source src="/video/yas-live-mobile.mp4" type="video/mp4" onError={() => setFailed(true)} />
+            <source src={MOBILE_VIDEO} type="video/mp4" onError={() => setFailed(true)} />
           ) : (
             <>
               <source src="/video/yas-live.webm" type="video/webm" />

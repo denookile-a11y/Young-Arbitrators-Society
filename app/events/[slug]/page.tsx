@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
+import { heroImage } from "@/lib/wallpapers";
 import { getContentBySlug } from "@/lib/queries/generic";
 import type { Event } from "@/types/database";
 
@@ -42,6 +43,7 @@ export default async function EventDetailPage({
         title={event.title}
         subtitle={`${new Date(event.starts_at).toLocaleString()}${event.venue ? " · " + event.venue : ""}`}
         trail={[{ label: "Events", href: "/events" }, { label: event.title }]}
+        image={heroImage("eventDetail")}
       />
       <section className="px-6 py-18 md:px-10">
         <div className="mx-auto max-w-[720px]">

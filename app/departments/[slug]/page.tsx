@@ -6,6 +6,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { getDepartmentBySlug } from "@/lib/queries/departments";
 import { createClient } from "@/lib/supabase/server";
 import type { LeadershipRole, Profile } from "@/types/database";
+import { departmentWallpaper } from "@/lib/department-wallpapers";
 
 export async function generateMetadata({
   params,
@@ -51,6 +52,7 @@ export default async function DepartmentDetailPage({
         title={department.name}
         subtitle={department.tagline ?? undefined}
         trail={[{ label: "Departments", href: "/departments" }, { label: department.name }]}
+        image={departmentWallpaper(department)}
       />
 
       {department.mandate && (

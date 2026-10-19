@@ -122,6 +122,10 @@ export interface Announcement extends ContentBase {
   category: string | null;
   publish_at: string | null;
   expires_at: string | null;
+  /** null = global (homepage); set = that department's page only. */
+  department_id: string | null;
+  notify_subscribers: boolean;
+  notified_at: string | null;
 }
 
 export interface Event extends ContentBase {
@@ -273,6 +277,8 @@ export interface NewsletterSubscriber {
   subscribed_at: string;
   unsubscribed_at: string | null;
   source: string | null;
+  status: "pending" | "confirmed" | "unsubscribed";
+  confirmed_at: string | null;
 }
 
 export interface TimelineEntry extends Timestamped {

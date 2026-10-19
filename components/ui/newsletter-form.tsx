@@ -9,7 +9,12 @@ export function NewsletterForm() {
   const [state, formAction, isPending] = useActionState(subscribeNewsletterAction, initialState);
 
   if (state.success) {
-    return <p className="text-sm font-semibold text-navy-deep">Subscribed — thank you.</p>;
+    return (
+      <p role="status" className="max-w-[400px] text-sm font-semibold text-navy-deep">
+        Almost done — if this address can be subscribed, we&apos;ve sent a confirmation email.
+        Please open it and confirm to start receiving YAS announcements.
+      </p>
+    );
   }
 
   return (
@@ -32,6 +37,10 @@ export function NewsletterForm() {
         >
           {isPending ? "Subscribing…" : "Subscribe"}
         </button>
+      </div>
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor="nl-website">Leave this field empty</label>
+        <input id="nl-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
       {state.error && <p className="text-xs text-red-600">{state.error}</p>}
     </form>

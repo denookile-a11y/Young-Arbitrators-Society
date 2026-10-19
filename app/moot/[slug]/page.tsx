@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
+import { heroImage } from "@/lib/wallpapers";
 import { getContentBySlug } from "@/lib/queries/generic";
 import { createClient } from "@/lib/supabase/server";
 import type { Moot, MootDocument } from "@/types/database";
@@ -46,6 +47,7 @@ export default async function MootDetailPage({
         title={moot.title}
         subtitle={moot.description ?? undefined}
         trail={[{ label: "Moot", href: "/moot" }, { label: moot.title }]}
+        image={heroImage("mootDetail")}
       />
 
       {moot.problem_summary && (
