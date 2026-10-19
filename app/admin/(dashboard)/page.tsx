@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import { ADMIN_WALLPAPERS } from "@/lib/wallpapers";
 import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { getDashboardStats, getRecentContent } from "@/lib/queries/dashboard";
 import { NotConnectedBanner } from "@/components/admin/not-connected-banner";
@@ -29,12 +31,26 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <span className="mb-2 block text-xs font-bold tracking-wide text-gold-on-light">
-        Admin CMS
-      </span>
-      <h1 className="mb-8 font-serif text-3xl font-normal text-navy-deep">
-        Dashboard Overview
-      </h1>
+      <header className="relative mb-8 overflow-hidden rounded-[2px] bg-gradient-to-br from-navy-deep via-[#0d2148] to-navy-mid px-6 py-9 sm:px-9">
+        <Image
+          src={ADMIN_WALLPAPERS.dashboard.src}
+          alt=""
+          fill
+          priority
+          sizes="(min-width: 1024px) 80vw, 100vw"
+          className="object-cover"
+          style={{ objectPosition: ADMIN_WALLPAPERS.dashboard.focus }}
+        />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-navy-deep/90 via-navy-deep/70 to-navy-deep/45" />
+        <div className="relative">
+          <span className="mb-2 block text-xs font-bold tracking-wide text-gold-soft">
+            Admin CMS
+          </span>
+          <h1 className="font-serif text-3xl font-normal text-white">
+            Dashboard Overview
+          </h1>
+        </div>
+      </header>
 
       {!configured && <NotConnectedBanner />}
 

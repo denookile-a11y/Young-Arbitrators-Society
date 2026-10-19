@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
+import { heroImage } from "@/lib/wallpapers";
 import { getContentBySlug } from "@/lib/queries/generic";
 import type { Research } from "@/types/database";
 
@@ -46,6 +47,7 @@ export default async function ResearchDetailPage({
             : undefined
         }
         trail={[{ label: "Research", href: "/research" }, { label: research.title }]}
+        image={heroImage("researchDetail")}
       />
       <section className="px-6 py-18 md:px-10">
         <div className="mx-auto grid max-w-[1240px] grid-cols-1 gap-[70px] md:grid-cols-[0.9fr_1fr]">

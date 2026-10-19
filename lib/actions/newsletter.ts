@@ -19,20 +19,38 @@ export async function unsubscribeSubscriberAction(id: string) {
   const supabase = await createClient();
   const { error } = await supabase
     .from("newsletter_subscribers")
-    .update({ unsubscribed_at: new Date().toISOString() })
+    // `status` is authoritative for email eligibility (see lib/newsletter/state.ts);
+    // unsubscribed_at is kept in step so the two can never disagree.
+    .update({
+      status: "unsubscribed",
+      unsubscribed_at: new Date().toISOString(),
+      confirm_token_hash: null,
+      confirm_token_expires_at: null,
+    })
     .eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/newsletter");
 }
 
-/** Re-subscribe someone who previously opted out. */
+/**
+ * Lift an opt-out. An administrator cannot grant consent on someone's behalf,
+ * so this returns the person to PENDING (they receive nothing until they
+ * confirm by email) — it never marks them confirmed.
+ */
 export async function resubscribeSubscriberAction(id: string) {
   await requireAdmin("admin");
 
   const supabase = await createClient();
   const { error } = await supabase
     .from("newsletter_subscribers")
-    .update({ unsubscribed_at: null })
+    .update({
+      status: "pending",
+      unsubscribed_at: null,
+      confirmed_at: null,
+      confirm_token_hash: null,
+      confirm_token_expires_at: null,
+      confirmation_sent_at: null,
+    })
     .eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/newsletter");

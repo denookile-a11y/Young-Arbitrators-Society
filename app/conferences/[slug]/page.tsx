@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
+import { heroImage } from "@/lib/wallpapers";
 import { getContentBySlug } from "@/lib/queries/generic";
 import { createClient } from "@/lib/supabase/server";
 import type { Conference, ConferenceSpeaker } from "@/types/database";
@@ -51,6 +52,7 @@ export default async function ConferenceDetailPage({
         title={conference.title}
         subtitle={conference.description ?? undefined}
         trail={[{ label: "Conferences", href: "/conferences" }, { label: conference.title }]}
+        image={heroImage("conferenceDetail")}
       />
 
       {conference.registration_url && (

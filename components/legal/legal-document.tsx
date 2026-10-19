@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
+import type { PageHeroImage } from "@/components/ui/page-hero";
 
 export interface LegalSection {
   id: string;
@@ -58,6 +59,7 @@ export function LegalDocument({
   trailLabel,
   intro,
   sections,
+  image,
 }: {
   eyebrow: string;
   title: string;
@@ -66,6 +68,8 @@ export function LegalDocument({
   trailLabel: string;
   intro?: ReactNode;
   sections: LegalSection[];
+  /** Optional wallpaper for the hero (each legal page chooses its own). */
+  image?: PageHeroImage;
 }) {
   return (
     <>
@@ -75,6 +79,7 @@ export function LegalDocument({
         title={title}
         subtitle={subtitle}
         trail={[{ label: trailLabel }]}
+        image={image}
       />
       <main className="px-6 py-14 md:px-10 md:py-18">
         <div className="mx-auto grid max-w-[1040px] grid-cols-1 gap-12 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-16">

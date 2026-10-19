@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import Image from "next/image";
+import { ADMIN_WALLPAPERS } from "@/lib/wallpapers";
 import { LoginForm } from "@/components/admin/login-form";
 import { YasSeal } from "@/components/hero/yas-seal";
 
@@ -12,9 +14,24 @@ import { YasSeal } from "@/components/hero/yas-seal";
  * public site (no video is loaded here). Authentication is unchanged and is
  * enforced server-side by proxy.ts and Row Level Security.
  */
+const ADMIN_WALLPAPER_FOCUS = ADMIN_WALLPAPERS.login.focus;
+
 export default function AdminLoginPage() {
   return (
     <section className="atmosphere flex min-h-dvh items-center justify-center px-4 py-12 text-white sm:px-6">
+      {/* Decorative background. z-index -1 puts it above the atmosphere photograph
+          (::before, -2) and BELOW the atmosphere's own overlay gradient (::after),
+          so the original treatment still sits on top and the photograph is the
+          fallback if this image fails. */}
+      <Image
+        src={ADMIN_WALLPAPERS.login.src}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="z-[-1] object-cover brightness-150"
+        style={{ objectPosition: ADMIN_WALLPAPER_FOCUS }}
+      />
       <div className="crystal relative w-full max-w-[420px] px-6 pb-8 pt-9 sm:px-9 sm:pt-10" data-lens="navy">
         <div className="flex flex-col items-center text-center">
           <YasSeal className="w-[68px]" rings={false} priority />

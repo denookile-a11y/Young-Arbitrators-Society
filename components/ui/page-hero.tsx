@@ -41,6 +41,9 @@ export interface PageHeroImage {
   src: string;
   alt: string;
   focus?: string; // CSS object-position value, e.g. "center 20%"
+  /** Lay the branded navy gradient beneath the photograph as a load-failure
+   *  fallback. Opt-in so existing wallpapers render exactly as before. */
+  branded?: boolean;
 }
 
 export function PageHero({
@@ -49,16 +52,25 @@ export function PageHero({
   subtitle,
   trail,
   image,
+  glass = false,
 }: {
   eyebrow: string;
   title: string;
   subtitle?: string;
   trail: { label: string; href?: string }[];
   image?: PageHeroImage;
+  /** Opt-in "clear glass" variant (used by Leadership): a lighter wash so the
+   *  wallpaper shows through, and a transparent frosted title panel. Off by
+   *  default, so every other page renders exactly as before. */
+  glass?: boolean;
 }) {
   if (image) {
     return (
-      <section className="relative overflow-hidden px-6 pb-14 pt-[180px] text-white md:px-10">
+      <section
+        className={`relative overflow-hidden px-6 pb-14 pt-[180px] text-white md:px-10 ${
+          image.branded ? "bg-gradient-to-br from-navy-deep via-[#0d2148] to-navy-mid" : ""
+        }`}
+      >
         {/* Layer 1: supplied photograph */}
         <div className="absolute inset-0">
           <Image
@@ -77,7 +89,9 @@ export function PageHero({
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(105deg, rgba(10,26,60,0.90) 0%, rgba(10,26,60,0.74) 45%, rgba(10,26,60,0.55) 100%)",
+              glass
+                ? "linear-gradient(105deg, rgba(6,10,22,0.50) 0%, rgba(6,10,22,0.28) 50%, rgba(6,10,22,0.18) 100%)"
+                : "linear-gradient(105deg, rgba(10,26,60,0.90) 0%, rgba(10,26,60,0.74) 45%, rgba(10,26,60,0.55) 100%)",
           }}
         />
         <div
@@ -93,12 +107,25 @@ export function PageHero({
           <Breadcrumbs trail={trail} onImage />
           <div
             className="max-w-[720px] rounded-[3px] border px-6 py-7 sm:px-8 sm:py-8"
-            style={{
-              background: "rgba(10, 26, 60, 0.42)",
-              borderColor: "rgba(255,255,255,0.14)",
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
-            }}
+            style={
+              glass
+                ? {
+                    background:
+                      "linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04) 55%, rgba(255,255,255,0.08))",
+                    borderColor: "rgba(255,255,255,0.32)",
+                    borderRadius: 14,
+                    backdropFilter: "blur(16px) saturate(1.25)",
+                    WebkitBackdropFilter: "blur(16px) saturate(1.25)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 24px 48px -28px rgba(0,0,0,0.6)",
+                    textShadow: "0 1px 14px rgba(0,0,0,0.45)",
+                  }
+                : {
+                    background: "rgba(10, 26, 60, 0.42)",
+                    borderColor: "rgba(255,255,255,0.14)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                  }
+            }
           >
             <span className="mb-[14px] block text-[0.8rem] font-bold tracking-wide text-gold-soft">
               {eyebrow}

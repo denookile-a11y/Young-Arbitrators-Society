@@ -2,11 +2,17 @@ import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { listNewsletterSubscribersPaginated, listActiveSubscribersForExport } from "@/lib/queries/newsletter";
 import { CmsListHeader, CmsConnectionGate, CmsEmptyState } from "@/components/admin/cms-list";
 import { Pagination } from "@/components/ui/pagination";
+import { NewsletterReconsentPanel } from "@/components/admin/newsletter-reconsent-panel";
+import { getCurrentAdmin, hasRole } from "@/lib/auth/current-admin";
 import {
   unsubscribeSubscriberAction,
   resubscribeSubscriberAction,
   deleteSubscriberAction,
 } from "@/lib/actions/newsletter";
+
+/** Opted out if EITHER marker says so (legacy rows may only have unsubscribed_at). */
+const optedOut = (sub: { status: string; unsubscribed_at: string | null }) =>
+  sub.status === "unsubscribed" || sub.unsubscribed_at !== null;
 
 export default async function NewsletterAdminPage({
   searchParams,
@@ -14,6 +20,9 @@ export default async function NewsletterAdminPage({
   searchParams: Promise<{ page?: string }>;
 }) {
   const configured = isSupabaseConfigured();
+  // The panel is only offered to super admins; the server action enforces the same rule independently.
+  const admin = configured ? await getCurrentAdmin() : null;
+  const canReconsent = !!admin && hasRole(admin, "super_admin");
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
 
@@ -36,6 +45,7 @@ export default async function NewsletterAdminPage({
       <CmsListHeader eyebrow="Growth" title="Newsletter Subscribers" />
 
       <CmsConnectionGate configured={configured}>
+        {canReconsent && <NewsletterReconsentPanel />}
         {result.totalCount === 0 ? (
           <CmsEmptyState
             title="No subscribers yet"
@@ -63,12 +73,12 @@ export default async function NewsletterAdminPage({
                     <span className="text-xs text-ink-soft">
                       {new Date(sub.subscribed_at).toLocaleDateString()}
                     </span>
-                    <span className={`text-xs font-semibold ${sub.unsubscribed_at ? "text-red-600" : "text-navy-deep"}`}>
-                      {sub.unsubscribed_at ? "Unsubscribed" : "Active"}
+                    <span className={`text-xs font-semibold ${optedOut(sub) ? "text-red-600" : sub.status === "confirmed" ? "text-navy-deep" : "text-ink-soft"}`}>
+                      {optedOut(sub) ? "Unsubscribed" : sub.status === "confirmed" ? "Confirmed" : "Pending confirmation"}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {sub.unsubscribed_at ? (
+                    {optedOut(sub) ? (
                       <form
                         action={async () => {
                           "use server";
@@ -79,7 +89,7 @@ export default async function NewsletterAdminPage({
                           type="submit"
                           className="rounded-[2px] border border-hairline px-3 py-2 text-xs font-semibold text-navy-deep hover:border-navy-deep"
                         >
-                          Re-subscribe
+                          Reset to pending
                         </button>
                       </form>
                     ) : (

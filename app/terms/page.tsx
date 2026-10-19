@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { heroImage } from "@/lib/wallpapers";
 import { ContactLine, LegalDocument, type LegalSection } from "@/components/legal/legal-document";
 
 export const metadata: Metadata = {
@@ -200,6 +201,7 @@ export default function TermsPage() {
       subtitle="The terms that apply when you use the Young Arbitrators Society website."
       lastUpdated={LAST_UPDATED_TERMS}
       trailLabel="Terms of Use"
+      image={heroImage("termsLegal")}
       sections={sections}
     />
   );
