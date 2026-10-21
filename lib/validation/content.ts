@@ -139,17 +139,35 @@ export const partnerSchema = z.object({
 });
 export type PartnerInput = z.infer<typeof partnerSchema>;
 
-export const announcementSchema = z.object({
-  slug: slugField,
-  title: z.string().min(1, "Title is required"),
-  body: z.string().optional(),
-  category: z.string().optional(),
-  status: statusEnum,
-  featured: z.coerce.boolean().default(false),
-  publish_at: z.string().optional(),
-  expires_at: z.string().optional(),
-  order_index: z.coerce.number().int().default(0),
-});
+const instant = z.string().refine((v) => !Number.isNaN(Date.parse(v)), "Enter a valid date and time");
+
+export const announcementSchema = z
+  .object({
+    slug: slugField,
+    title: z.string().min(1, "Title is required"),
+    body: z.string().optional(),
+    category: z.string().optional(),
+    status: statusEnum,
+    featured: z.coerce.boolean().default(false),
+    // ISO instants (the action converts the admin's Nairobi wall-clock time).
+    publish_at: instant.optional(),
+    expires_at: instant.optional(),
+    order_index: z.coerce.number().int().default(0),
+    // "" (the Global option) becomes NULL — a uuid column rejects "".
+    department_id: z
+      .string()
+      .uuid("Select a department")
+      .or(z.literal(""))
+      .optional()
+      .transform((v) => (v ? v : null)),
+    // Explicit admin opt-in. `undefined` (key omitted) = "leave as is / off":
+    // used when the caller is not allowed to change it.
+    notify_subscribers: z.coerce.boolean().optional(),
+  })
+  .refine(
+    (d) => !d.publish_at || !d.expires_at || Date.parse(d.expires_at) > Date.parse(d.publish_at),
+    { path: ["expires_at"], message: "Expiry must be after the publish time" }
+  );
 export type AnnouncementInput = z.infer<typeof announcementSchema>;
 
 export const profileSchema = z.object({

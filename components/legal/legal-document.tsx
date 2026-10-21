@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
 import type { PageHeroImage } from "@/components/ui/page-hero";
+import { getPublicContactSettings } from "@/lib/queries/public-settings";
 
 export interface LegalSection {
   id: string;
@@ -11,13 +12,17 @@ export interface LegalSection {
   body: ReactNode;
 }
 
-export const CONTACT_EMAIL = "info@yas-ku.org";
-
-export function ContactLine() {
+/**
+ * The notice's contact point is the SAME address shown in the footer and on
+ * /contact, so it follows the admin "Contact Email" setting. The only
+ * hardcoded fallback lives in lib/queries/public-settings.ts.
+ */
+export async function ContactLine() {
+  const { contactEmail } = await getPublicContactSettings();
   return (
     <>
-      <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold text-navy-deep underline decoration-gold underline-offset-4">
-        {CONTACT_EMAIL}
+      <a href={`mailto:${contactEmail}`} className="font-semibold text-navy-deep underline decoration-gold underline-offset-4">
+        {contactEmail}
       </a>{" "}
       or through the{" "}
       <Link href="/contact" className="font-semibold text-navy-deep underline decoration-gold underline-offset-4">

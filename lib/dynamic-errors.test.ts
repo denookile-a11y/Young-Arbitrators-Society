@@ -13,6 +13,8 @@ const root = resolve(import.meta.dirname, "..");
 describe("catch sites around cookie-reading queries re-throw Next's control-flow errors", () => {
   it.each([
     ["app/announcements/page.tsx", 1],
+    ["lib/queries/homepage.ts", 2],
+    ["app/departments/[slug]/page.tsx", 1],
   ])("%s", (file, expected) => {
     const src = readFileSync(join(root, file), "utf8");
     expect(src.match(/unstable_rethrow\(error\)/g)?.length ?? 0).toBeGreaterThanOrEqual(expected);
