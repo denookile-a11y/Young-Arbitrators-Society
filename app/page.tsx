@@ -8,6 +8,8 @@ import { getHomepageData } from "@/lib/queries/homepage";
 import { listDepartments } from "@/lib/queries/departments";
 import { FALLBACK_DEPARTMENTS } from "@/lib/departments-fallback";
 import { departmentHeading } from "@/lib/department-copy";
+import { LeadershipSection } from "@/components/home/leadership-section";
+import { AnnouncementSection } from "@/components/announcements/announcement-list";
 import { DepartmentCarousel } from "@/components/departments/department-carousel";
 import { buildCarouselItems } from "@/lib/department-carousel";
 
@@ -17,6 +19,9 @@ export default async function HomePage() {
     ? await getHomepageData()
     : {
         announcements: [],
+        announcementsFailed: false,
+        leaders: [],
+        leadersFailed: false,
         featuredResearch: null,
         upcomingConference: null,
         latestPublications: [],
@@ -41,10 +46,10 @@ export default async function HomePage() {
 
   return (
     <>
-      {data.announcements.length > 0 && (
+      {data.announcements.some((a) => a.featured) && (
         <div className="group/ticker overflow-hidden whitespace-nowrap border-b border-white/16 bg-navy-deep py-2.5">
           <div className="animate-ticker inline-flex">
-            {[...data.announcements, ...data.announcements].map((a, i) => (
+            {[...data.announcements.filter((a) => a.featured), ...data.announcements.filter((a) => a.featured)].map((a, i) => (
               <span
                 key={`${a.id}-${i}`}
                 className="inline-flex items-center gap-2.5 border-r border-white/16 px-8 text-[0.78rem] font-semibold text-white/80"
@@ -100,6 +105,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {configured && (
+        <AnnouncementSection
+          announcements={data.announcements}
+          failed={data.announcementsFailed}
+        />
+      )}
 
       <section className="bg-navy-deep px-6 py-[130px] text-white md:px-10">
         <div className="mx-auto max-w-[920px]">
@@ -170,6 +182,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {configured && <LeadershipSection leaders={data.leaders} failed={data.leadersFailed} />}
 
       {data.featuredResearch && (
         <section className="px-6 pb-14 md:px-10">

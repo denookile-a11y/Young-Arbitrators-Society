@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getPublicContactSettings } from "@/lib/queries/public-settings";
 
 const FOOTER_COLUMNS = [
   {
@@ -31,7 +32,8 @@ const FOOTER_COLUMNS = [
   },
 ];
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const contact = await getPublicContactSettings();
   return (
     <footer className="border-t border-hairline bg-white px-6 pb-9 pt-20 md:px-10">
       <div className="mx-auto max-w-[1240px]">
@@ -77,12 +79,36 @@ export function SiteFooter() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="mailto:info@yas-ku.org"
+                  href={`mailto:${contact.contactEmail}`}
                   className="text-sm text-ink-soft transition-colors hover:text-navy-deep"
                 >
-                  info@yas-ku.org
+                  {contact.contactEmail}
                 </a>
               </li>
+              {contact.instagramHandle && (
+                <li>
+                  <a
+                    href={`https://www.instagram.com/${encodeURIComponent(contact.instagramHandle)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-ink-soft transition-colors hover:text-navy-deep"
+                  >
+                    Instagram
+                  </a>
+                </li>
+              )}
+              {contact.linkedinUrl && (
+                <li>
+                  <a
+                    href={contact.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-ink-soft transition-colors hover:text-navy-deep"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+              )}
               <li>
                 <Link
                   href="/contact"

@@ -6,6 +6,7 @@ import { CmsListHeader, CmsConnectionGate, CmsEmptyState } from "@/components/ad
 import { CmsTableRow } from "@/components/admin/cms-table-row";
 import { Toast } from "@/components/admin/toast";
 import { Pagination } from "@/components/ui/pagination";
+import { formatNairobiDateTime } from "@/lib/time/nairobi";
 import { setContentStatus, toggleFeatured, deleteContent } from "@/lib/actions/content-status";
 
 export default async function AnnouncementsListPage({
@@ -37,7 +38,7 @@ export default async function AnnouncementsListPage({
               <CmsTableRow
                 key={item.id}
                 title={item.title}
-                meta={`${item.category ?? "General"}${item.expires_at ? " · Expires " + new Date(item.expires_at).toLocaleDateString() : ""}`}
+                meta={`${item.category ?? "General"}${item.expires_at ? " · Expires " + formatNairobiDateTime(item.expires_at) : ""}`}
                 status={item.status}
                 editHref={`/admin/announcements/${item.id}`}
                 actions={[

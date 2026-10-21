@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/navigation/site-nav";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { PageHero } from "@/components/ui/page-hero";
 import { LeadershipReveal } from "@/components/leadership/leadership-reveal";
+import { LeadershipPortrait } from "@/components/leadership/leadership-portrait";
 import m from "@/components/leadership/leadership-motion.module.css";
 import { heroImage } from "@/lib/wallpapers";
 import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
@@ -104,16 +105,7 @@ export default async function LeadershipPage({
                 {executives.map((role, i) => (
                   <LeadershipReveal key={role.id} delay={(i % 2) * 90}>
                   <MemberCard slug={role.profile?.slug} className={`flex flex-col gap-3.5 ${m.panel}`}>
-                    <div className={`${m.part} ${m.portrait} aspect-[3/3.2] overflow-hidden bg-gradient-to-br from-navy-mid to-navy-deep`}>
-                      {role.profile?.portrait_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={role.profile.portrait_url}
-                          alt={role.profile.full_name ?? "Leadership portrait"}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : null}
-                    </div>
+                    <LeadershipPortrait name={role.profile?.full_name ?? ""} src={role.profile?.portrait_url} className={`${m.part} ${m.portrait} aspect-[3/3.2]`} />
                     <div className={`${m.part} ${m.i1} font-serif text-[1.5rem] font-normal ${m.light} group-hover:underline group-hover:decoration-gold group-hover:underline-offset-4`}>
                       {role.profile?.full_name ?? "Unassigned"}
                     </div>
@@ -132,16 +124,7 @@ export default async function LeadershipPage({
                 {departmentHeads.map((role, i) => (
                   <LeadershipReveal key={role.id} delay={(i % 4) * 70}>
                   <MemberCard slug={role.profile?.slug} className={`flex flex-col gap-2.5 ${m.panel}`}>
-                    <div className={`${m.part} ${m.portrait} aspect-square overflow-hidden bg-gradient-to-br from-navy-mid to-navy-deep`}>
-                      {role.profile?.portrait_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={role.profile.portrait_url}
-                          alt={role.profile.full_name ?? "Leadership portrait"}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : null}
-                    </div>
+                    <LeadershipPortrait name={role.profile?.full_name ?? ""} src={role.profile?.portrait_url} className={`${m.part} ${m.portrait} aspect-square`} />
                     <div className={`${m.part} ${m.i1} font-serif text-[1.1rem] font-normal leading-tight ${m.light} group-hover:underline group-hover:decoration-gold group-hover:underline-offset-4`}>
                       {role.profile?.full_name ?? "Unassigned"}
                     </div>

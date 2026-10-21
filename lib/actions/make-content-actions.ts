@@ -25,6 +25,11 @@ export interface ContentActionConfig<Schema extends z.ZodTypeAny> {
   listPath: string;
   publicPath: string;
   getSlug: (data: z.infer<Schema>) => string;
+  /**
+   * Optional side effect run after a successful write, before redirecting.
+   * Must not throw into the save flow's success path.
+   */
+  afterSave?: () => void | Promise<void>;
 }
 
 /**
@@ -51,6 +56,7 @@ export async function runCreate<Schema extends z.ZodTypeAny>(
 
   revalidatePath(config.listPath);
   revalidatePath(config.publicPath);
+  await config.afterSave?.();
   redirect(`${config.listPath}?toast=Created successfully`);
 }
 
@@ -72,5 +78,6 @@ export async function runUpdate<Schema extends z.ZodTypeAny>(
   revalidatePath(config.listPath);
   revalidatePath(config.publicPath);
   revalidatePath(`${config.publicPath}/${config.getSlug(parsed.data)}`);
+  await config.afterSave?.();
   redirect(`${config.listPath}?toast=Updated successfully`);
 }

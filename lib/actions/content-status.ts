@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { notifyAndDeliver } from "@/lib/announcements/notify";
 import { createClient } from "@/lib/supabase/server";
 import { requireAnyAdmin } from "@/lib/auth/require-admin";
 import { hasRole } from "@/lib/auth/current-admin";
@@ -85,6 +87,13 @@ export async function setContentStatus(
   const { error } = await supabase.from(table).update({ status }).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePaths.forEach((p) => revalidatePath(p));
+  if (table === "announcements") {
+    // Publishing from the list must behave like publishing from the form.
+    revalidatePath("/announcements");
+    revalidatePath("/announcements/[slug]", "page");
+    revalidatePath("/departments/[slug]", "page");
+    if (status === "published") after(() => notifyAndDeliver());
+  }
 }
 
 export async function toggleFeatured(

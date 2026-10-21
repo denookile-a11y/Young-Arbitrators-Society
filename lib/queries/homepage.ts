@@ -1,4 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
+import { unstable_rethrow } from "next/navigation";
+import { listGlobalAnnouncements } from "@/lib/queries/announcements";
+import { listHomepageLeaders, type HomepageLeader } from "@/lib/queries/homepage-leaders";
 import type { Announcement, Conference, Partner, Publication, Research } from "@/types/database";
 
 export interface HomepageStats {
@@ -11,6 +14,10 @@ export interface HomepageStats {
 
 export interface HomepageData {
   announcements: Announcement[];
+  /** True if the announcements query failed (render an error state, not an empty one). */
+  announcementsFailed: boolean;
+  leaders: HomepageLeader[];
+  leadersFailed: boolean;
   featuredResearch: Research | null;
   upcomingConference: Conference | null;
   latestPublications: Publication[];
@@ -26,15 +33,26 @@ export interface HomepageData {
 export async function getHomepageData(): Promise<HomepageData> {
   const supabase = await createClient();
 
-  const [announcements, research, conference, publications, partners, memberCount, eventCount, mootCount, publicationCount, partnerCount] = await Promise.all([
-    supabase
-      .from("announcements")
-      .select("*")
-      .eq("status", "published")
-      .eq("featured", true)
-      .order("order_index", { ascending: true })
-      .limit(6)
-      .returns<Announcement[]>(),
+  const [announcements, leaders, research, conference, publications, partners, memberCount, eventCount, mootCount, publicationCount, partnerCount] = await Promise.all([
+    // Published, in-window, GLOBAL announcements only (department-specific
+    // ones belong on their department page). A failure must not take the
+    // homepage down, but it must also not masquerade as "no announcements".
+    listGlobalAnnouncements(6)
+      .then((data) => ({ data, failed: false }))
+      .catch((error: Error) => {
+        unstable_rethrow(error);
+        console.error("Homepage: announcements query failed", error.message);
+        return { data: [] as Announcement[], failed: true };
+      }),
+    // Executive roles of the current edition (see homepage-leaders.ts). A
+    // failure must not take the homepage down nor read as "no leadership".
+    listHomepageLeaders()
+      .then((data) => ({ data, failed: false }))
+      .catch((error: Error) => {
+        unstable_rethrow(error);
+        console.error("Homepage: leadership query failed", error.message);
+        return { data: [] as HomepageLeader[], failed: true };
+      }),
     supabase
       .from("research")
       .select("*")
@@ -72,7 +90,10 @@ export async function getHomepageData(): Promise<HomepageData> {
   ]);
 
   return {
-    announcements: announcements.data ?? [],
+    announcements: announcements.data,
+    announcementsFailed: announcements.failed,
+    leaders: leaders.data,
+    leadersFailed: leaders.failed,
     featuredResearch: research.data?.[0] ?? null,
     upcomingConference: conference.data?.[0] ?? null,
     latestPublications: publications.data ?? [],

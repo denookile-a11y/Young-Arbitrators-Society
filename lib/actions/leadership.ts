@@ -64,6 +64,7 @@ export async function createLeadershipRoleAction(
 
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
   redirect("/admin/leadership?toast=Role assigned");
 }
 
@@ -111,6 +112,7 @@ export async function updateLeadershipRoleAction(
 
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
   redirect("/admin/leadership?toast=Role updated");
 }
 
@@ -143,6 +145,7 @@ export async function deleteLeadershipRoleAction(id: string) {
   if (error) throw new Error(error.message);
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
   redirect("/admin/leadership?toast=Role removed");
 }
 
@@ -177,6 +180,7 @@ export async function createEditionAction(
 
   revalidatePath("/admin/leadership");
   revalidatePath("/archive");
+  revalidatePath("/");
   redirect("/admin/leadership?toast=Edition created");
 }
 
@@ -195,6 +199,7 @@ export async function setCurrentEditionAction(editionId: string) {
 
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
   revalidatePath("/archive");
   redirect("/admin/leadership?toast=Current edition updated");
 }

@@ -1,3 +1,4 @@
+import { CONTACT_DEFAULTS } from "@/lib/queries/public-settings";
 import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { listSiteSettings, listAdmins } from "@/lib/queries/settings";
 import { getCurrentAdmin, hasRole } from "@/lib/auth/current-admin";
@@ -26,8 +27,8 @@ export default async function SettingsPage() {
           <SettingsForm
             defaults={{
               site_title: settingValue(settings, "site_title") || "Young Arbitrators Society",
-              contact_email: settingValue(settings, "contact_email") || "info@yas-ku.org",
-              instagram_handle: settingValue(settings, "instagram_handle") || "yas_kusol",
+              contact_email: settingValue(settings, "contact_email") || CONTACT_DEFAULTS.contactEmail,
+              instagram_handle: settingValue(settings, "instagram_handle") || CONTACT_DEFAULTS.instagramHandle,
               linkedin_url: settingValue(settings, "linkedin_url"),
             }}
           />

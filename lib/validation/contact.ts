@@ -9,7 +9,14 @@ import { z } from "zod";
 // a message is capped well above what a genuine inquiry needs) while
 // bounding worst-case size.
 export const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(200, "Name is too long"),
+  name: z
+    .string()
+    .trim()
+    .min(1, "Name is required")
+    .max(200, "Name is too long")
+    // The name is echoed into the email subject; a line break there is the
+    // classic header-injection vector, so refuse it at the boundary too.
+    .refine((v) => !/[\r\n]/.test(v), "Name must be a single line"),
   email: z
     .string()
     .trim()

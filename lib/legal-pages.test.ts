@@ -23,13 +23,10 @@ describe("legal pages", () => {
     expect(src).not.toMatch(/100% secure|fully compliant|ODPC certified|\bISO[ -]?\d/i);
   });
 
-  it("only uses the existing official contact address", () => {
-    const emails = new Set(
-      [read("app/privacy/page.tsx"), read("app/terms/page.tsx"), read("components/legal/legal-document.tsx")]
-        .join("\n")
-        .match(/[\w.-]+@[\w-]+\.[\w.]+/g) ?? []
-    );
-    expect([...emails]).toEqual(["info@yas-ku.org"]);
+  it("legal pages take the contact address from the site setting instead of hardcoding one", () => {
+    const sources = [read("app/privacy/page.tsx"), read("app/terms/page.tsx"), read("components/legal/legal-document.tsx")].join("\n");
+    expect(sources.match(/[\w.-]+@[\w-]+\.[\w.]+/g) ?? []).toEqual([]);
+    expect(read("components/legal/legal-document.tsx")).toContain("getPublicContactSettings");
   });
 
   it("terms page cross-references privacy and Kenyan law", () => {

@@ -49,6 +49,8 @@ export async function createProfileAction(
 
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
+  revalidatePath("/leadership/[slug]", "page");
   redirect("/admin/leadership/people?toast=Person added");
 }
 
@@ -69,6 +71,8 @@ export async function updateProfileAction(
 
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
+  revalidatePath("/leadership/[slug]", "page");
   redirect("/admin/leadership/people?toast=Person updated");
 }
 
@@ -80,5 +84,7 @@ export async function deleteProfileAction(id: string) {
   if (error) throw new Error(error.message);
   revalidatePath("/admin/leadership");
   revalidatePath("/leadership");
+  revalidatePath("/");
+  revalidatePath("/leadership/[slug]", "page");
   redirect("/admin/leadership/people?toast=Person deleted");
 }

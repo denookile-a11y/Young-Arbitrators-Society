@@ -173,8 +173,18 @@ export function VideoHero() {
     <section
       ref={sectionRef}
       data-hero-state={failed ? "failed" : mode === "video" ? "video" : blockedBy ? `static-${blockedBy}` : "pending"}
-      className="relative flex min-h-[92vh] items-end overflow-hidden bg-ivory text-navy-deep"
+      className="relative flex min-h-[92vh] items-end overflow-hidden bg-ivory text-navy-deep supports-[overflow:clip]:max-md:overflow-clip"
     >
+      {/*
+        Layers 1 and 2 share ONE frame so the poster and the video always cover exactly the same area.
+        Desktop and tablet: the frame is the whole hero (unchanged). Phones: the hero is taller than the
+        screen (the text stacks in flow), and covering that whole box magnified the 4:5 portrait source
+        about 1.4x and showed under half of its width. So on phones the frame is one screen tall and
+        pinned while the hero scrolls over it; the footage is cropped from the screen's proportions
+        instead of the page's. Without `overflow: clip` support it falls back to the old full-hero fill.
+      */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="relative h-full w-full supports-[overflow:clip]:max-md:sticky supports-[overflow:clip]:max-md:top-0 supports-[overflow:clip]:max-md:h-screen supports-[overflow:clip]:max-md:max-h-full">
       {/* Layer 1 — static poster */}
       <picture>
         <source media="(min-width: 768px)" srcSet={desktopPoster.srcSet} sizes="100vw" />
@@ -219,6 +229,8 @@ export function VideoHero() {
           )}
         </video>
       )}
+        </div>
+      </div>
 
       {/* Layer 3 — readability: darker where the type sits, lighter at the seal */}
       <div
